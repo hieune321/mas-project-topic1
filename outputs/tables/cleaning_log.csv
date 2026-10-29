@@ -1,0 +1,4 @@
+row_index,student_id,issue_type,detail,action_taken
+7,DE200390,NO_CONSENT,Người tham gia khảo sát không đồng ý chia sẻ dữ liệu nghiên cứu.,Loại bỏ khỏi tập phân tích chính thức
+22,MCP201 ,NO_CONSENT,Người tham gia khảo sát không đồng ý chia sẻ dữ liệu nghiên cứu.,Loại bỏ khỏi tập phân tích chính thức
+34,de200125,DUPLICATE_ID,Trùng lặp mã sinh viên 'de200125'.,Loại bỏ khỏi tập phân tích chính thức
