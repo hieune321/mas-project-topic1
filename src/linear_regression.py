@@ -42,6 +42,17 @@ class OLSResults:
     residuals: np.ndarray        # e = Y - Y_hat
     equation_str: str            # Display equation
 
+    @property
+    def std_x(self) -> float:
+        """Sample standard deviation of X (ddof = 1)."""
+        return float(np.sqrt(self.ss_xx / max(1, self.n - 1)))
+
+    @property
+    def std_y(self) -> float:
+        """Sample standard deviation of Y (ddof = 1)."""
+        return float(np.sqrt(self.ss_yy / max(1, self.n - 1)))
+
+
 
 class SimpleLinearRegression:
     """Implements mathematically rigorous Ordinary Least Squares (OLS)."""

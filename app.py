@@ -92,7 +92,7 @@ st.markdown(
         padding: 28px 34px;
         color: #FFFFFF;
         box-shadow: 0 12px 32px -8px rgba(15, 23, 42, 0.35);
-        margin-bottom: 22px;
+        margin-bottom: 20px;
         position: relative;
         overflow: hidden;
         border: 1px solid rgba(255, 255, 255, 0.12);
@@ -124,7 +124,7 @@ st.markdown(
         margin-bottom: 12px;
     }
     .hero-title {
-        font-size: 27px;
+        font-size: 26px;
         font-weight: 800;
         color: #FFFFFF;
         letter-spacing: -0.4px;
@@ -180,7 +180,7 @@ st.markdown(
         border-left: 5px solid #2563EB;
         border-radius: 12px;
         padding: 12px 18px;
-        margin-bottom: 20px;
+        margin-bottom: 18px;
         display: flex;
         flex-wrap: wrap;
         align-items: center;
@@ -223,15 +223,16 @@ st.markdown(
         border: 1px solid #E2E8F0;
         border-radius: 14px;
         padding: 18px 18px 16px 18px;
-        box-shadow: 0 4px 14px -2px rgba(15, 23, 42, 0.04);
+        box-shadow: 0 4px 14px -2px rgba(15, 23, 42, 0.05);
         transition: all 0.2s ease;
         height: 100%;
         position: relative;
         overflow: hidden;
+        margin-bottom: 8px;
     }
     .kpi-card:hover {
         transform: translateY(-2px);
-        box-shadow: 0 10px 24px -4px rgba(30, 58, 138, 0.10);
+        box-shadow: 0 10px 24px -4px rgba(30, 58, 138, 0.12);
         border-color: #CBD5E1;
     }
     .kpi-accent-top {
@@ -242,23 +243,23 @@ st.markdown(
         height: 4px;
     }
     .kpi-label {
-        font-size: 12px;
+        font-size: 11.5px;
         font-weight: 700;
         text-transform: uppercase;
-        letter-spacing: 0.6px;
+        letter-spacing: 0.5px;
         color: #64748B;
         margin-bottom: 6px;
     }
     .kpi-value {
         font-family: 'JetBrains Mono', monospace;
-        font-size: 25px;
+        font-size: 24px;
         font-weight: 800;
         color: #0F172A;
         line-height: 1.2;
         margin-bottom: 6px;
     }
     .kpi-sub {
-        font-size: 12px;
+        font-size: 11.5px;
         font-weight: 600;
         color: #475569;
         display: inline-block;
@@ -267,20 +268,20 @@ st.markdown(
         border-radius: 6px;
     }
 
-    /* Section Card Wrapper */
-    .section-card {
-        background: #FFFFFF;
-        border: 1px solid #E2E8F0;
-        border-radius: 16px;
-        padding: 22px 26px;
+    /* Native Bordered Container Styling */
+    div[data-testid="stVerticalBlockBorderWrapper"] {
+        background-color: #FFFFFF;
+        border: 1px solid #E2E8F0 !important;
+        border-radius: 16px !important;
+        padding: 20px 22px !important;
         box-shadow: 0 4px 16px -3px rgba(15, 23, 42, 0.04);
-        margin-bottom: 20px;
+        margin-bottom: 16px;
     }
     .section-header-title {
-        font-size: 19px;
+        font-size: 18px;
         font-weight: 800;
         color: #0F172A;
-        margin-bottom: 6px;
+        margin-bottom: 4px;
         display: flex;
         align-items: center;
         gap: 8px;
@@ -288,14 +289,14 @@ st.markdown(
     .section-header-desc {
         font-size: 13.5px;
         color: #64748B;
-        margin-bottom: 16px;
+        margin-bottom: 14px;
     }
 
     /* Custom Callout / Insight Boxes */
     .insight-box {
         border-radius: 12px;
-        padding: 16px 20px;
-        margin: 12px 0;
+        padding: 14px 18px;
+        margin: 10px 0;
         border: 1px solid;
     }
     .insight-info {
@@ -319,7 +320,7 @@ st.markdown(
     .insight-title {
         font-weight: 700;
         font-size: 14px;
-        margin-bottom: 6px;
+        margin-bottom: 5px;
         display: flex;
         align-items: center;
         gap: 6px;
@@ -656,9 +657,12 @@ def main():
     mean_ci, mean_test = None, None
     slope_ci, slope_test = None, None
     pred_1a = None
+    std_x, std_y = 0.0, 0.0
 
     if has_valid_data:
         try:
+            std_x = float(cleaned_df[X_COL].std(ddof=1))
+            std_y = float(cleaned_df[Y_COL].std(ddof=1))
             stats_df, comp_df = compute_descriptive_summary(cleaned_df)
             outliers_x = identify_outliers_15iqr(cleaned_df, X_COL)
             outliers_y = identify_outliers_15iqr(cleaned_df, Y_COL)
@@ -676,7 +680,7 @@ def main():
     # -------------------------------------------------------------------------
     # TOP HERO BANNER
     # -------------------------------------------------------------------------
-    if has_valid_data:
+    if has_valid_data and ols_res is not None:
         if is_synthetic:
             status_pill = '<span class="hero-pill pill-amber">🧪 Chế độ: Dữ liệu kiểm thử thuật toán (Synthetic)</span>'
         else:
@@ -719,7 +723,7 @@ def main():
             show_presenter_guide,
         )
 
-        if not has_valid_data:
+        if not has_valid_data or ols_res is None:
             st.info("Chưa có dữ liệu để tính toán. Hãy vào mục **2. Import & Quản lý dữ liệu** để tải file CSV/Excel.")
         else:
             # Row of 6 Executive KPI Cards
@@ -731,12 +735,12 @@ def main():
                 )
             with k2:
                 st.markdown(
-                    render_kpi_card("Mean Giữa kỳ (X)", f"{ols_res.mean_x:.3f}", f"SD = {ols_res.std_x:.3f} đ", "#2563EB"),
+                    render_kpi_card("Mean Giữa kỳ (X)", f"{ols_res.mean_x:.3f}", f"SD = {std_x:.3f} đ", "#2563EB"),
                     unsafe_allow_html=True,
                 )
             with k3:
                 st.markdown(
-                    render_kpi_card("Mean Cuối kỳ (Y)", f"{ols_res.mean_y:.3f}", f"SD = {ols_res.std_y:.3f} đ", "#1D4ED8"),
+                    render_kpi_card("Mean Cuối kỳ (Y)", f"{ols_res.mean_y:.3f}", f"SD = {std_y:.3f} đ", "#1D4ED8"),
                     unsafe_allow_html=True,
                 )
             with k4:
@@ -755,58 +759,55 @@ def main():
                     unsafe_allow_html=True,
                 )
 
-            st.markdown("<div style='height: 18px'></div>", unsafe_allow_html=True)
+            st.markdown("<div style='height: 12px'></div>", unsafe_allow_html=True)
 
             # Equation & Core Findings Split
             col_eq, col_find = st.columns([1.05, 1.25])
             with col_eq:
-                st.markdown('<div class="section-card">', unsafe_allow_html=True)
-                st.markdown('<div class="section-header-title">📐 Phương trình Hồi quy Tuyến tính Ước lượng (OLS)</div>', unsafe_allow_html=True)
-                st.markdown('<div class="section-header-desc">Ước lượng theo phương pháp Bình phương Tối thiểu Thông thường trên mẫu n = 32 sinh viên:</div>', unsafe_allow_html=True)
-                st.latex(r"\hat{Y} = " + f"{ols_res.b0:.4f} + {ols_res.b1:.4f} \\times X")
-                render_insight_box(
-                    "💡 Giải thích ý nghĩa thực tiễn ngay tại lớp:",
-                    f"• <b>Hệ số góc b₁ = {ols_res.b1:.4f} (≈ 0.50):</b> Khi điểm thi giữa kỳ tăng thêm <b>1.0 điểm</b>, điểm bài thi cuối kỳ dự đoán tăng trung bình <b>{ols_res.b1:.4f} điểm</b>.<br>"
-                    f"• <b>Sai số chuẩn hồi quy s = {ols_res.residual_std_error:.4f} điểm:</b> Mức độ lệch điển hình của điểm thực tế quanh đường dự đoán.<br>"
-                    f"• <b>Độ phù hợp R² = {ols_res.r_squared * 100:.1f}%:</b> Điểm giữa kỳ giải thích được gần 1/4 biến thiên điểm cuối kỳ; 75.5% còn lại thuộc về nỗ lực ôn tập và độ khó đề thi.",
-                    "info",
-                )
-                st.markdown('</div>', unsafe_allow_html=True)
+                with st.container(border=True):
+                    st.markdown('<div class="section-header-title">📐 Phương trình Hồi quy Tuyến tính Ước lượng (OLS)</div>', unsafe_allow_html=True)
+                    st.markdown('<div class="section-header-desc">Ước lượng theo phương pháp Bình phương Tối thiểu Thông thường trên mẫu n = 32 sinh viên:</div>', unsafe_allow_html=True)
+                    st.latex(r"\hat{Y} = " + f"{ols_res.b0:.4f} + {ols_res.b1:.4f} \\times X")
+                    render_insight_box(
+                        "💡 Giải thích ý nghĩa thực tiễn ngay tại lớp:",
+                        f"• <b>Hệ số góc b₁ = {ols_res.b1:.4f} (≈ 0.50):</b> Khi điểm thi giữa kỳ tăng thêm <b>1.0 điểm</b>, điểm bài thi cuối kỳ dự đoán tăng trung bình <b>{ols_res.b1:.4f} điểm</b>.<br>"
+                        f"• <b>Sai số chuẩn hồi quy s = {ols_res.residual_std_error:.4f} điểm:</b> Mức độ lệch điển hình của điểm thực tế quanh đường dự đoán.<br>"
+                        f"• <b>Độ phù hợp R² = {ols_res.r_squared * 100:.1f}%:</b> Điểm giữa kỳ giải thích được gần 1/4 biến thiên điểm cuối kỳ; 75.5% còn lại thuộc về nỗ lực ôn tập và độ khó đề thi.",
+                        "info",
+                    )
 
             with col_find:
-                st.markdown('<div class="section-card">', unsafe_allow_html=True)
-                st.markdown('<div class="section-header-title">🏆 Tóm tắt 3 Phát hiện Cốt lõi (Executive Summary)</div>', unsafe_allow_html=True)
-                st.markdown('<div class="section-header-desc">Đối chiếu đồng bộ 100% với Báo cáo Word/PDF và Bộ Slide thuyết trình:</div>', unsafe_allow_html=True)
-                render_insight_box(
-                    "1. Mối liên hệ tương quan thuận có ý nghĩa thống kê (Câu 5 & Câu 12)",
-                    f"Hệ số tương quan Pearson đạt <b>r = {ols_res.pearson_r:.4f}</b> với <b>t = {slope_test.t_statistic:.3f}, p-value = {slope_test.p_value_formatted} &lt; 0.01</b>. Bác bỏ hoàn toàn giả thuyết H₀ (β₁ = 0).",
-                    "success",
-                )
-                render_insight_box(
-                    "2. Điểm cuối kỳ trung bình vượt mốc chuẩn 7.0 điểm (Câu 9 & Câu 10)",
-                    f"Điểm cuối kỳ trung bình mẫu đạt <b>7.388 điểm</b>, KTC 95% <b>[{mean_ci.lower_bound:.3f}, {mean_ci.upper_bound:.3f}]</b>. Kiểm định t một phía (H₁: μ &gt; 7.0) cho <b>t = {mean_test.t_statistic:.3f}, p = {mean_test.p_value_formatted} &lt; 0.05</b> → Bác bỏ H₀.",
-                    "info",
-                )
-                render_insight_box(
-                    "3. Thỏa mãn đầy đủ các giả định Gauss–Markov (Câu 8)",
-                    f"Phần dư có phân phối chuẩn (Shapiro-Wilk <b>p = {diagnostics['shapiro_wilk']['p_value_formatted']}</b>), phương sai đồng nhất (Breusch-Pagan <b>p = {diagnostics['breusch_pagan']['p_value_formatted']}</b>) và độc lập (Durbin-Watson <b>DW = {diagnostics['durbin_watson']['statistic']:.3f}</b>).",
-                    "warning",
-                )
-                st.markdown('</div>', unsafe_allow_html=True)
+                with st.container(border=True):
+                    st.markdown('<div class="section-header-title">🏆 Tóm tắt 3 Phát hiện Cốt lõi (Executive Summary)</div>', unsafe_allow_html=True)
+                    st.markdown('<div class="section-header-desc">Đối chiếu đồng bộ 100% với Báo cáo Word/PDF và Bộ Slide thuyết trình:</div>', unsafe_allow_html=True)
+                    render_insight_box(
+                        "1. Mối liên hệ tương quan thuận có ý nghĩa thống kê (Câu 5 & Câu 12)",
+                        f"Hệ số tương quan Pearson đạt <b>r = {ols_res.pearson_r:.4f}</b> với <b>t = {slope_test.t_statistic:.3f}, p-value = {slope_test.p_value_formatted} &lt; 0.01</b>. Bác bỏ hoàn toàn giả thuyết H₀ (β₁ = 0).",
+                        "success",
+                    )
+                    render_insight_box(
+                        "2. Điểm cuối kỳ trung bình vượt mốc chuẩn 7.0 điểm (Câu 9 & Câu 10)",
+                        f"Điểm cuối kỳ trung bình mẫu đạt <b>7.388 điểm</b>, KTC 95% <b>[{mean_ci.lower_bound:.3f}, {mean_ci.upper_bound:.3f}]</b>. Kiểm định t một phía (H₁: μ &gt; 7.0) cho <b>t = {mean_test.t_statistic:.3f}, p = {mean_test.p_value_formatted} &lt; 0.05</b> → Bác bỏ H₀.",
+                        "info",
+                    )
+                    render_insight_box(
+                        "3. Thỏa mãn đầy đủ các giả định Gauss–Markov (Câu 8)",
+                        f"Phần dư có phân phối chuẩn (Shapiro-Wilk <b>p = {diagnostics['shapiro_wilk']['p_value_formatted']}</b>), phương sai đồng nhất (Breusch-Pagan <b>p = {diagnostics['breusch_pagan']['p_value_formatted']}</b>) và độc lập (Durbin-Watson <b>DW = {diagnostics['durbin_watson']['statistic']:.3f}</b>).",
+                        "warning",
+                    )
 
             # Complete Roadmap for 6 Members
-            st.markdown('<div class="section-card">', unsafe_allow_html=True)
-            st.markdown('<div class="section-header-title">🗺️ Bản đồ Phân công Thuyết trình 6 Thành viên & 12 Câu hỏi Học thuật</div>', unsafe_allow_html=True)
-            roadmap_df = pd.DataFrame([
-                {"Thành viên": "Thành viên 1", "Vai trò": "Nhóm trưởng & Quản trị dữ liệu", "Câu hỏi phụ trách": "Câu 1, Câu 2", "Slide": "Slide 1, 2", "Tab trên Streamlit": "Mục 1, Mục 2, Mục 3"},
-                {"Thành viên": "Thành viên 2", "Vai trò": "Chuyên viên Thống kê mô tả", "Câu hỏi phụ trách": "Câu 3, Câu 4", "Slide": "Slide 3, 4", "Tab trên Streamlit": "Mục 4, Mục 5"},
-                {"Thành viên": "Thành viên 3", "Vai trò": "Chuyên viên Mô hình hóa OLS", "Câu hỏi phụ trách": "Câu 5, Câu 6, Câu 7", "Slide": "Slide 5, 6", "Tab trên Streamlit": "Mục 6, Mục 7"},
-                {"Thành viên": "Thành viên 4", "Vai trò": "Chuyên viên Thẩm định & Chẩn đoán", "Câu hỏi phụ trách": "Câu 8", "Slide": "Slide 7", "Tab trên Streamlit": "Mục 8"},
-                {"Thành viên": "Thành viên 5", "Vai trò": "Chuyên viên Suy luận Thống kê", "Câu hỏi phụ trách": "Câu 9, Câu 10, Câu 11, Câu 12", "Slide": "Slide 8, 9", "Tab trên Streamlit": "Mục 9, Mục 10"},
-                {"Thành viên": "Thành viên 6", "Vai trò": "Chuyên viên Dự đoán & Tổng kết", "Câu hỏi phụ trách": "Câu 1A, Câu 1B, Kết luận", "Slide": "Slide 10, 11, 12", "Tab trên Streamlit": "Mục 11, Mục 12"},
-            ])
-            st.dataframe(roadmap_df, hide_index=True, use_container_width=True)
-            st.markdown('</div>', unsafe_allow_html=True)
+            with st.container(border=True):
+                st.markdown('<div class="section-header-title">🗺️ Bản đồ Phân công Thuyết trình 6 Thành viên & 12 Câu hỏi Học thuật</div>', unsafe_allow_html=True)
+                roadmap_df = pd.DataFrame([
+                    {"Thành viên": "Thành viên 1", "Vai trò": "Nhóm trưởng & Quản trị dữ liệu", "Câu hỏi phụ trách": "Câu 1, Câu 2", "Slide": "Slide 1, 2", "Tab trên Streamlit": "Mục 1, Mục 2, Mục 3"},
+                    {"Thành viên": "Thành viên 2", "Vai trò": "Chuyên viên Thống kê mô tả", "Câu hỏi phụ trách": "Câu 3, Câu 4", "Slide": "Slide 3, 4", "Tab trên Streamlit": "Mục 4, Mục 5"},
+                    {"Thành viên": "Thành viên 3", "Vai trò": "Chuyên viên Mô hình hóa OLS", "Câu hỏi phụ trách": "Câu 5, Câu 6, Câu 7", "Slide": "Slide 5, 6", "Tab trên Streamlit": "Mục 6, Mục 7"},
+                    {"Thành viên": "Thành viên 4", "Vai trò": "Chuyên viên Thẩm định & Chẩn đoán", "Câu hỏi phụ trách": "Câu 8", "Slide": "Slide 7", "Tab trên Streamlit": "Mục 8"},
+                    {"Thành viên": "Thành viên 5", "Vai trò": "Chuyên viên Suy luận Thống kê", "Câu hỏi phụ trách": "Câu 9, Câu 10, Câu 11, Câu 12", "Slide": "Slide 8, 9", "Tab trên Streamlit": "Mục 9, Mục 10"},
+                    {"Thành viên": "Thành viên 6", "Vai trò": "Chuyên viên Dự đoán & Tổng kết", "Câu hỏi phụ trách": "Câu 1A, Câu 1B, Kết luận", "Slide": "Slide 10, 11, 12", "Tab trên Streamlit": "Mục 11, Mục 12"},
+                ])
+                st.dataframe(roadmap_df, hide_index=True, use_container_width=True)
 
     # =========================================================================
     # 2. IMPORT & QUẢN LÝ DỮ LIỆU
@@ -822,47 +823,44 @@ def main():
 
         col_d1, col_d2 = st.columns([1.15, 1])
         with col_d1:
-            st.markdown('<div class="section-card">', unsafe_allow_html=True)
-            st.markdown('<div class="section-header-title">🎯 Câu 1 — Tổng thể mục tiêu & Thiết kế thu thập dữ liệu</div>', unsafe_allow_html=True)
-            render_insight_box(
-                "1. Định nghĩa biến số chuẩn xác (Tránh tương quan giả tạo):",
-                "• <b>Biến độc lập (X — Midterm Score):</b> Điểm bài thi giữa kỳ của sinh viên trên thang điểm [0, 10].<br>"
-                "• <b>Biến phụ thuộc (Y — Final Exam Score):</b> Điểm bài thi kết thúc học phần trên thang điểm [0, 10].<br>"
-                "• <b>Nguyên tắc bắt buộc:</b> Tuyệt đối <b>không</b> sử dụng điểm tổng kết học phần (vốn đã cộng gộp 30%–40% điểm giữa kỳ) làm biến Y để tránh hiện tượng tự tương quan cấu trúc (spurious structural correlation).",
-                "info",
-            )
-            render_insight_box(
-                "2. Phương pháp chọn mẫu & Đạo đức nghiên cứu:",
-                "• <b>Phương pháp:</b> Khảo sát thực nghiệm ẩn danh qua biểu mẫu Google Forms đối với sinh viên cùng học phần.<br>"
-                "• <b>Bảo mật & Đạo đức:</b> Người trả lời xác nhận đồng thuận (Informed Consent) trước khi cung cấp điểm; mã định danh được ẩn danh hóa, không thu thập họ tên hay thông tin nhạy cảm.",
-                "success",
-            )
-            st.markdown('</div>', unsafe_allow_html=True)
+            with st.container(border=True):
+                st.markdown('<div class="section-header-title">🎯 Câu 1 — Tổng thể mục tiêu & Thiết kế thu thập dữ liệu</div>', unsafe_allow_html=True)
+                render_insight_box(
+                    "1. Định nghĩa biến số chuẩn xác (Tránh tương quan giả tạo):",
+                    "• <b>Biến độc lập (X — Midterm Score):</b> Điểm bài thi giữa kỳ của sinh viên trên thang điểm [0, 10].<br>"
+                    "• <b>Biến phụ thuộc (Y — Final Exam Score):</b> Điểm bài thi kết thúc học phần trên thang điểm [0, 10].<br>"
+                    "• <b>Nguyên tắc bắt buộc:</b> Tuyệt đối <b>không</b> sử dụng điểm tổng kết học phần (vốn đã cộng gộp 30%–40% điểm giữa kỳ) làm biến Y để tránh hiện tượng tự tương quan cấu trúc (spurious structural correlation).",
+                    "info",
+                )
+                render_insight_box(
+                    "2. Phương pháp chọn mẫu & Đạo đức nghiên cứu:",
+                    "• <b>Phương pháp:</b> Khảo sát thực nghiệm ẩn danh qua biểu mẫu Google Forms đối với sinh viên cùng học phần.<br>"
+                    "• <b>Bảo mật & Đạo đức:</b> Người trả lời xác nhận đồng thuận (Informed Consent) trước khi cung cấp điểm; mã định danh được ẩn danh hóa, không thu thập họ tên hay thông tin nhạy cảm.",
+                    "success",
+                )
 
         with col_d2:
-            st.markdown('<div class="section-card">', unsafe_allow_html=True)
-            st.markdown('<div class="section-header-title">📥 Biểu mẫu Chuẩn & Tải xuống Template</div>', unsafe_allow_html=True)
-            st.markdown('<div class="section-header-desc">Cấu trúc tối thiểu gồm 3 trường chuẩn hóa hoặc file xuất trực tiếp từ Google Forms:</div>', unsafe_allow_html=True)
-            sample_display = pd.DataFrame({
-                "student_id": ["S01", "S02", "S03"],
-                "midterm_score": [7.5, 6.0, 8.5],
-                "final_score": [7.8, 6.5, 8.7],
-            })
-            st.dataframe(sample_display, hide_index=True, use_container_width=True)
-            st.download_button(
-                label="📄 Tải file mẫu CSV chuẩn (student_scores_template.csv)",
-                data=get_template_bytes(),
-                file_name="student_scores_template.csv",
-                mime="text/csv",
-                use_container_width=True,
-            )
-            st.markdown('</div>', unsafe_allow_html=True)
+            with st.container(border=True):
+                st.markdown('<div class="section-header-title">📥 Biểu mẫu Chuẩn & Tải xuống Template</div>', unsafe_allow_html=True)
+                st.markdown('<div class="section-header-desc">Cấu trúc tối thiểu gồm 3 trường chuẩn hóa hoặc file xuất trực tiếp từ Google Forms:</div>', unsafe_allow_html=True)
+                sample_display = pd.DataFrame({
+                    "student_id": ["S01", "S02", "S03"],
+                    "midterm_score": [7.5, 6.0, 8.5],
+                    "final_score": [7.8, 6.5, 8.7],
+                })
+                st.dataframe(sample_display, hide_index=True, use_container_width=True)
+                st.download_button(
+                    label="📄 Tải file mẫu CSV chuẩn (student_scores_template.csv)",
+                    data=get_template_bytes(),
+                    file_name="student_scores_template.csv",
+                    mime="text/csv",
+                    use_container_width=True,
+                )
 
         if raw_df is not None:
-            st.markdown('<div class="section-card">', unsafe_allow_html=True)
-            st.markdown(f'<div class="section-header-title">🗂️ Dữ liệu Khảo sát Gốc ({len(raw_df)} bản ghi thu thập ban đầu)</div>', unsafe_allow_html=True)
-            st.dataframe(raw_df, use_container_width=True, height=320)
-            st.markdown('</div>', unsafe_allow_html=True)
+            with st.container(border=True):
+                st.markdown(f'<div class="section-header-title">🗂️ Dữ liệu Khảo sát Gốc ({len(raw_df)} bản ghi thu thập ban đầu)</div>', unsafe_allow_html=True)
+                st.dataframe(raw_df, use_container_width=True, height=320)
 
     # =========================================================================
     # 3. LÀM SẠCH & KIỂM TRA DỮ LIỆU (CÂU 2)
@@ -889,50 +887,47 @@ def main():
             with k4:
                 st.markdown(render_kpi_card("Mẫu hợp lệ chính thức (n)", f"{clean_summary.get('valid_rows', 0)}", "Thỏa mãn n ≥ 30", "#059669"), unsafe_allow_html=True)
 
-            st.markdown("<div style='height: 16px'></div>", unsafe_allow_html=True)
+            st.markdown("<div style='height: 12px'></div>", unsafe_allow_html=True)
 
             col_a, col_b = st.columns([1.1, 1])
             with col_a:
-                st.markdown('<div class="section-card">', unsafe_allow_html=True)
-                st.markdown('<div class="section-header-title">📋 Bảng Tổng hợp Kết quả Kiểm định Chất lượng Dữ liệu</div>', unsafe_allow_html=True)
-                audit_table = pd.DataFrame([
-                    {"Bước kiểm tra": "1. Tổng số bản ghi khảo sát ban đầu", "Số lượng": clean_summary.get("initial_rows", 0), "Trạng thái": "Đã tiếp nhận"},
-                    {"Bước kiểm tra": "2. Không đồng thuận / Thiếu điểm hoặc ID", "Số lượng": clean_summary.get("missing_records", 0), "Trạng thái": "Loại bỏ theo đạo đức NC"},
-                    {"Bước kiểm tra": "3. Bản ghi trùng lặp mã định danh (Duplicate ID)", "Số lượng": clean_summary.get("duplicate_records", 0), "Trạng thái": "Giữ bản ghi đầu, loại bản trùng"},
-                    {"Bước kiểm tra": "4. Điểm nằm ngoài miền hợp lệ [0, 10]", "Số lượng": clean_summary.get("out_of_bounds_records", 0), "Trạng thái": "Hợp lệ 100%"},
-                    {"Bước kiểm tra": "5. Tổng số bản ghi bị loại bỏ", "Số lượng": clean_summary.get("dropped_rows", 0), "Trạng thái": "Đã ghi vào cleaning_log.csv"},
-                    {"Bước kiểm tra": "6. Cỡ mẫu sạch chính thức đưa vào phân tích (n)", "Số lượng": clean_summary.get("valid_rows", 0), "Trạng thái": "✅ Đạt chuẩn (n ≥ 30)"},
-                ])
-                st.dataframe(audit_table, hide_index=True, use_container_width=True)
-                st.markdown('</div>', unsafe_allow_html=True)
+                with st.container(border=True):
+                    st.markdown('<div class="section-header-title">📋 Bảng Tổng hợp Kết quả Kiểm định Chất lượng Dữ liệu</div>', unsafe_allow_html=True)
+                    audit_table = pd.DataFrame([
+                        {"Bước kiểm tra": "1. Tổng số bản ghi khảo sát ban đầu", "Số lượng": clean_summary.get("initial_rows", 0), "Trạng thái": "Đã tiếp nhận"},
+                        {"Bước kiểm tra": "2. Không đồng thuận / Thiếu điểm hoặc ID", "Số lượng": clean_summary.get("missing_records", 0), "Trạng thái": "Loại bỏ theo đạo đức NC"},
+                        {"Bước kiểm tra": "3. Bản ghi trùng lặp mã định danh (Duplicate ID)", "Số lượng": clean_summary.get("duplicate_records", 0), "Trạng thái": "Giữ bản ghi đầu, loại bản trùng"},
+                        {"Bước kiểm tra": "4. Điểm nằm ngoài miền hợp lệ [0, 10]", "Số lượng": clean_summary.get("out_of_bounds_records", 0), "Trạng thái": "Hợp lệ 100%"},
+                        {"Bước kiểm tra": "5. Tổng số bản ghi bị loại bỏ", "Số lượng": clean_summary.get("dropped_rows", 0), "Trạng thái": "Đã ghi vào cleaning_log.csv"},
+                        {"Bước kiểm tra": "6. Cỡ mẫu sạch chính thức đưa vào phân tích (n)", "Số lượng": clean_summary.get("valid_rows", 0), "Trạng thái": "✅ Đạt chuẩn (n ≥ 30)"},
+                    ])
+                    st.dataframe(audit_table, hide_index=True, use_container_width=True)
 
             with col_b:
-                st.markdown('<div class="section-card">', unsafe_allow_html=True)
-                st.markdown('<div class="section-header-title">🛡️ Ba Nguyên tắc Làm sạch Học thuật Bắt buộc</div>', unsafe_allow_html=True)
-                render_insight_box(
-                    "Nguyên tắc 1 — Không tự động điền điểm thiếu bằng 0:",
-                    "Sinh viên vắng thi có phép hoặc bỏ trống phiếu không đồng nghĩa với năng lực 0 điểm. Tự ý gán 0 sẽ tạo ra ngoại lệ giả tạo và kéo lệch đường hồi quy.",
-                    "warning",
-                )
-                render_insight_box(
-                    "Nguyên tắc 2 — Không xóa ngoại lệ để 'làm đẹp' mô hình:",
-                    "Các mức điểm cao/thấp thực tế nằm trong đoạn [0, 10] phản ánh trung thực sự phân hóa năng lực sinh viên, tuyệt đối được giữ nguyên.",
-                    "info",
-                )
-                render_insight_box(
-                    "Nguyên tắc 3 — Minh bạch hóa nhật ký loại bỏ (Audit Trail):",
-                    "Mọi dòng bị loại đều được lưu vết tự động kèm nguyên nhân cụ thể trong bảng nhật ký dưới đây.",
-                    "success",
-                )
-                st.markdown('</div>', unsafe_allow_html=True)
+                with st.container(border=True):
+                    st.markdown('<div class="section-header-title">🛡️ Ba Nguyên tắc Làm sạch Học thuật Bắt buộc</div>', unsafe_allow_html=True)
+                    render_insight_box(
+                        "Nguyên tắc 1 — Không tự động điền điểm thiếu bằng 0:",
+                        "Sinh viên vắng thi có phép hoặc bỏ trống phiếu không đồng nghĩa với năng lực 0 điểm. Tự ý gán 0 sẽ tạo ra ngoại lệ giả tạo và kéo lệch đường hồi quy.",
+                        "warning",
+                    )
+                    render_insight_box(
+                        "Nguyên tắc 2 — Không xóa ngoại lệ để 'làm đẹp' mô hình:",
+                        "Các mức điểm cao/thấp thực tế nằm trong đoạn [0, 10] phản ánh trung thực sự phân hóa năng lực sinh viên, tuyệt đối được giữ nguyên.",
+                        "info",
+                    )
+                    render_insight_box(
+                        "Nguyên tắc 3 — Minh bạch hóa nhật ký loại bỏ (Audit Trail):",
+                        "Mọi dòng bị loại đều được lưu vết tự động kèm nguyên nhân cụ thể trong bảng nhật ký dưới đây.",
+                        "success",
+                    )
 
-            st.markdown('<div class="section-card">', unsafe_allow_html=True)
-            st.markdown('<div class="section-header-title">🔍 Nhật ký Xử lý Chi tiết Từng Bản ghi (Cleaning Audit Log)</div>', unsafe_allow_html=True)
-            if not cleaning_log_df.empty:
-                st.dataframe(cleaning_log_df, hide_index=True, use_container_width=True)
-            else:
-                st.success("Tập dữ liệu hoàn toàn sạch; không phát hiện bản ghi lỗi nào cần loại bỏ.")
-            st.markdown('</div>', unsafe_allow_html=True)
+            with st.container(border=True):
+                st.markdown('<div class="section-header-title">🔍 Nhật ký Xử lý Chi tiết Từng Bản ghi (Cleaning Audit Log)</div>', unsafe_allow_html=True)
+                if not cleaning_log_df.empty:
+                    st.dataframe(cleaning_log_df, hide_index=True, use_container_width=True)
+                else:
+                    st.success("Tập dữ liệu hoàn toàn sạch; không phát hiện bản ghi lỗi nào cần loại bỏ.")
 
     # =========================================================================
     # 4. THỐNG KÊ MÔ TẢ (CÂU 3)
@@ -946,46 +941,43 @@ def main():
             show_presenter_guide,
         )
 
-        if stats_df is not None:
+        if stats_df is not None and ols_res is not None:
             k1, k2, k3, k4 = st.columns(4)
             with k1:
                 st.markdown(render_kpi_card("Trung bình Giữa kỳ (X̄)", f"{ols_res.mean_x:.3f}", "Median X = 7.500", "#2563EB"), unsafe_allow_html=True)
             with k2:
                 st.markdown(render_kpi_card("Trung bình Cuối kỳ (Ȳ)", f"{ols_res.mean_y:.3f}", "Median Y = 7.450", "#059669"), unsafe_allow_html=True)
             with k3:
-                st.markdown(render_kpi_card("Độ lệch chuẩn (s_X | s_Y)", f"{ols_res.std_x:.3f} | {ols_res.std_y:.3f}", "Tính với bậc tự do ddof = 1", "#7C3AED"), unsafe_allow_html=True)
+                st.markdown(render_kpi_card("Độ lệch chuẩn (s_X | s_Y)", f"{std_x:.3f} | {std_y:.3f}", "Tính với bậc tự do ddof = 1", "#7C3AED"), unsafe_allow_html=True)
             with k4:
                 st.markdown(render_kpi_card("Chênh lệch (Ȳ - X̄)", f"{ols_res.mean_y - ols_res.mean_x:+.3f}", "Hai kỳ thi rất tương đồng", "#D97706"), unsafe_allow_html=True)
 
-            st.markdown("<div style='height: 16px'></div>", unsafe_allow_html=True)
+            st.markdown("<div style='height: 12px'></div>", unsafe_allow_html=True)
 
-            st.markdown('<div class="section-card">', unsafe_allow_html=True)
-            st.markdown('<div class="section-header-title">📊 Bảng 10 Chỉ số Thống kê Mô tả Chuẩn Học thuật (ddof = 1, Phương pháp Linear Quartile)</div>', unsafe_allow_html=True)
-            st.dataframe(stats_df, hide_index=True, use_container_width=True)
-            st.markdown('</div>', unsafe_allow_html=True)
+            with st.container(border=True):
+                st.markdown('<div class="section-header-title">📊 Bảng 10 Chỉ số Thống kê Mô tả Chuẩn Học thuật (ddof = 1, Phương pháp Linear Quartile)</div>', unsafe_allow_html=True)
+                st.dataframe(stats_df, hide_index=True, use_container_width=True)
 
             col_c1, col_c2 = st.columns([1.15, 1])
             with col_c1:
-                st.markdown('<div class="section-card">', unsafe_allow_html=True)
-                st.markdown('<div class="section-header-title">⚖️ Bảng Đối sánh Trực tiếp Giữa kỳ (X) và Cuối kỳ (Y)</div>', unsafe_allow_html=True)
-                st.dataframe(comp_df, hide_index=True, use_container_width=True)
-                st.markdown('</div>', unsafe_allow_html=True)
+                with st.container(border=True):
+                    st.markdown('<div class="section-header-title">⚖️ Bảng Đối sánh Trực tiếp Giữa kỳ (X) và Cuối kỳ (Y)</div>', unsafe_allow_html=True)
+                    st.dataframe(comp_df, hide_index=True, use_container_width=True)
 
             with col_c2:
-                st.markdown('<div class="section-card">', unsafe_allow_html=True)
-                st.markdown('<div class="section-header-title">💡 Lý thuyết Trọng tâm: Khi nào Median tốt hơn Mean?</div>', unsafe_allow_html=True)
-                render_insight_box(
-                    "1. Khi phân phối điểm bị lệch mạnh (Skewed Distribution):",
-                    "Nếu đề thi quá khó (điểm dồn về 3–4) hoặc quá dễ (điểm dồn về 9–10), trung bình cộng (Mean) sẽ bị kéo lệch về phía đuôi dài. Khi đó <b>Trung vị (Median)</b> phản ánh đúng tâm điểm 50% của lớp học hơn.",
-                    "info",
-                )
-                render_insight_box(
-                    "2. Khi xuất hiện giá trị ngoại lệ cực đoan (Outliers):",
-                    "Chỉ cần 1–2 sinh viên đạt 0.5–1.0 điểm sẽ kéo tụt Mean của cả lớp xuống đáng kể, trong khi Median hoàn toàn trơ (robust) trước các điểm cực đoan này.<br>"
-                    "<i>Trong mẫu n = 32 của nhóm: Mean và Median rất sát nhau (7.441 vs 7.500 và 7.388 vs 7.450), chứng tỏ phân phối điểm rất cân đối.</i>",
-                    "success",
-                )
-                st.markdown('</div>', unsafe_allow_html=True)
+                with st.container(border=True):
+                    st.markdown('<div class="section-header-title">💡 Lý thuyết Trọng tâm: Khi nào Median tốt hơn Mean?</div>', unsafe_allow_html=True)
+                    render_insight_box(
+                        "1. Khi phân phối điểm bị lệch mạnh (Skewed Distribution):",
+                        "Nếu đề thi quá khó (điểm dồn về 3–4) hoặc quá dễ (điểm dồn về 9–10), trung bình cộng (Mean) sẽ bị kéo lệch về phía đuôi dài. Khi đó <b>Trung vị (Median)</b> phản ánh đúng tâm điểm 50% của lớp học hơn.",
+                        "info",
+                    )
+                    render_insight_box(
+                        "2. Khi xuất hiện giá trị ngoại lệ cực đoan (Outliers):",
+                        "Chỉ cần 1–2 sinh viên đạt 0.5–1.0 điểm sẽ kéo tụt Mean của cả lớp xuống đáng kể, trong khi Median hoàn toàn trơ (robust) trước các điểm cực đoan này.<br>"
+                        "<i>Trong mẫu n = 32 của nhóm: Mean và Median rất sát nhau (7.441 vs 7.500 và 7.388 vs 7.450), chứng tỏ phân phối điểm rất cân đối.</i>",
+                        "success",
+                    )
         else:
             st.info("Chưa có dữ liệu để tính toán thống kê mô tả.")
 
@@ -1002,44 +994,42 @@ def main():
         )
 
         if has_valid_data:
-            st.markdown('<div class="section-card">', unsafe_allow_html=True)
-            st.markdown('<div class="section-header-title">📊 Hình 1 & Hình 2 — Biểu đồ Phân phối Histogram (kèm KDE) và Boxplot So sánh</div>', unsafe_allow_html=True)
-            c1, c2 = st.columns([1.35, 1])
-            with c1:
-                render_figure_safely(plot_histograms, is_official_data, "fig1_histograms.png", cleaned_df)
-            with c2:
-                render_figure_safely(plot_boxplots, is_official_data, "fig2_boxplots.png", cleaned_df)
-            st.markdown('</div>', unsafe_allow_html=True)
+            with st.container(border=True):
+                st.markdown('<div class="section-header-title">📊 Hình 1 & Hình 2 — Biểu đồ Phân phối Histogram (kèm KDE) và Boxplot So sánh</div>', unsafe_allow_html=True)
+                c1, c2 = st.columns([1.35, 1])
+                with c1:
+                    render_figure_safely(plot_histograms, is_official_data, "fig1_histograms.png", cleaned_df)
+                with c2:
+                    render_figure_safely(plot_boxplots, is_official_data, "fig2_boxplots.png", cleaned_df)
 
-            st.markdown('<div class="section-card">', unsafe_allow_html=True)
-            st.markdown('<div class="section-header-title">🔎 Kiểm tra Ngoại lệ Theo Quy tắc Tukey 1.5 × IQR</div>', unsafe_allow_html=True)
-            st.latex(r"\text{Lower Bound} = Q_1 - 1.5 \times \text{IQR} \qquad ; \qquad \text{Upper Bound} = Q_3 + 1.5 \times \text{IQR}")
-            cx, cy = st.columns(2)
-            with cx:
-                q1_x, q3_x = np.percentile(cleaned_df[X_COL], [25, 75], method="linear")
-                iqr_x = q3_x - q1_x
-                render_insight_box(
-                    f"Biến X — Điểm Giữa kỳ (IQR = {iqr_x:.3f})",
-                    f"• Ngưỡng dưới: <b>{q1_x - 1.5 * iqr_x:.3f}</b> | Ngưỡng trên: <b>{q3_x + 1.5 * iqr_x:.3f}</b><br>"
-                    f"• Miền thực tế của X: <b>[{cleaned_df[X_COL].min():.1f}, {cleaned_df[X_COL].max():.1f}]</b><br>"
-                    f"• Số ngoại lệ phát hiện: <b>{len(outliers_x)} quan sát</b>.",
-                    "success" if outliers_x.empty else "warning",
-                )
-                if not outliers_x.empty:
-                    st.dataframe(outliers_x, hide_index=True, use_container_width=True)
-            with cy:
-                q1_y, q3_y = np.percentile(cleaned_df[Y_COL], [25, 75], method="linear")
-                iqr_y = q3_y - q1_y
-                render_insight_box(
-                    f"Biến Y — Điểm Cuối kỳ (IQR = {iqr_y:.3f})",
-                    f"• Ngưỡng dưới: <b>{q1_y - 1.5 * iqr_y:.3f}</b> | Ngưỡng trên: <b>{q3_y + 1.5 * iqr_y:.3f}</b><br>"
-                    f"• Miền thực tế của Y: <b>[{cleaned_df[Y_COL].min():.1f}, {cleaned_df[Y_COL].max():.1f}]</b><br>"
-                    f"• Số ngoại lệ phát hiện: <b>{len(outliers_y)} quan sát</b>.",
-                    "success" if outliers_y.empty else "warning",
-                )
-                if not outliers_y.empty:
-                    st.dataframe(outliers_y, hide_index=True, use_container_width=True)
-            st.markdown('</div>', unsafe_allow_html=True)
+            with st.container(border=True):
+                st.markdown('<div class="section-header-title">🔎 Kiểm tra Ngoại lệ Theo Quy tắc Tukey 1.5 × IQR</div>', unsafe_allow_html=True)
+                st.latex(r"\text{Lower Bound} = Q_1 - 1.5 \times \text{IQR} \qquad ; \qquad \text{Upper Bound} = Q_3 + 1.5 \times \text{IQR}")
+                cx, cy = st.columns(2)
+                with cx:
+                    q1_x, q3_x = np.percentile(cleaned_df[X_COL], [25, 75], method="linear")
+                    iqr_x = q3_x - q1_x
+                    render_insight_box(
+                        f"Biến X — Điểm Giữa kỳ (IQR = {iqr_x:.3f})",
+                        f"• Ngưỡng dưới: <b>{q1_x - 1.5 * iqr_x:.3f}</b> | Ngưỡng trên: <b>{q3_x + 1.5 * iqr_x:.3f}</b><br>"
+                        f"• Miền thực tế của X: <b>[{cleaned_df[X_COL].min():.1f}, {cleaned_df[X_COL].max():.1f}]</b><br>"
+                        f"• Số ngoại lệ phát hiện: <b>{len(outliers_x)} quan sát</b>.",
+                        "success" if outliers_x.empty else "warning",
+                    )
+                    if not outliers_x.empty:
+                        st.dataframe(outliers_x, hide_index=True, use_container_width=True)
+                with cy:
+                    q1_y, q3_y = np.percentile(cleaned_df[Y_COL], [25, 75], method="linear")
+                    iqr_y = q3_y - q1_y
+                    render_insight_box(
+                        f"Biến Y — Điểm Cuối kỳ (IQR = {iqr_y:.3f})",
+                        f"• Ngưỡng dưới: <b>{q1_y - 1.5 * iqr_y:.3f}</b> | Ngưỡng trên: <b>{q3_y + 1.5 * iqr_y:.3f}</b><br>"
+                        f"• Miền thực tế của Y: <b>[{cleaned_df[Y_COL].min():.1f}, {cleaned_df[Y_COL].max():.1f}]</b><br>"
+                        f"• Số ngoại lệ phát hiện: <b>{len(outliers_y)} quan sát</b>.",
+                        "success" if outliers_y.empty else "warning",
+                    )
+                    if not outliers_y.empty:
+                        st.dataframe(outliers_y, hide_index=True, use_container_width=True)
 
     # =========================================================================
     # 6. TƯƠNG QUAN PEARSON (CÂU 5)
@@ -1065,31 +1055,29 @@ def main():
             with k4:
                 st.markdown(render_kpi_card("Cỡ mẫu cặp (n)", f"{len(cleaned_df)} cặp", "df = n - 2 = 30", "#D97706"), unsafe_allow_html=True)
 
-            st.markdown("<div style='height: 16px'></div>", unsafe_allow_html=True)
+            st.markdown("<div style='height: 12px'></div>", unsafe_allow_html=True)
 
             col_l, col_r = st.columns([1, 1.2])
             with col_l:
-                st.markdown('<div class="section-card">', unsafe_allow_html=True)
-                st.markdown('<div class="section-header-title">🔗 Phân tích Chiều hướng & Cường độ Tương quan</div>', unsafe_allow_html=True)
-                st.latex(r"r = \frac{\sum_{i=1}^{n}(X_i - \bar{X})(Y_i - \bar{Y})}{\sqrt{\sum_{i=1}^{n}(X_i - \bar{X})^2}\sqrt{\sum_{i=1}^{n}(Y_i - \bar{Y})^2}} = " + f"{ols_res.pearson_r:.4f}")
-                render_insight_box(
-                    "Nhận xét từ Biểu đồ Phân tán (Scatterplot):",
-                    f"• <b>Chiều hướng:</b> Đám mây điểm có xu hướng dốc lên từ trái sang phải (r = +{ols_res.pearson_r:.4f} &gt; 0), cho thấy sinh viên đạt điểm giữa kỳ cao có xu hướng đạt điểm cuối kỳ cao hơn.<br>"
-                    f"• <b>Độ phân tán:</b> Các điểm phân bố tương đối đều quanh trục xu hướng, không có điểm dị biệt đơn lẻ nào bẻ cong giả tạo hệ số tương quan.",
-                    "info",
-                )
-                render_insight_box(
-                    "⚠️ Cảnh báo Học thuật: Tương quan ≠ Nhân quả (Correlation ≠ Causation)",
-                    "Hệ số <b>r = 0.4954</b> chỉ phản ánh sự biến thiên đồng thời tuyến tính giữa hai bài thi. Nó <b>không</b> chứng minh việc đạt điểm giữa kỳ cao tự động 'gây ra' điểm cuối kỳ cao — cả hai đều chịu sự chi phối của biến ẩn như năng lực nền tảng, phương pháp tự học và thời gian ôn thi.",
-                    "warning",
-                )
-                st.markdown('</div>', unsafe_allow_html=True)
+                with st.container(border=True):
+                    st.markdown('<div class="section-header-title">🔗 Phân tích Chiều hướng & Cường độ Tương quan</div>', unsafe_allow_html=True)
+                    st.latex(r"r = \frac{\sum_{i=1}^{n}(X_i - \bar{X})(Y_i - \bar{Y})}{\sqrt{\sum_{i=1}^{n}(X_i - \bar{X})^2}\sqrt{\sum_{i=1}^{n}(Y_i - \bar{Y})^2}} = " + f"{ols_res.pearson_r:.4f}")
+                    render_insight_box(
+                        "Nhận xét từ Biểu đồ Phân tán (Scatterplot):",
+                        f"• <b>Chiều hướng:</b> Đám mây điểm có xu hướng dốc lên từ trái sang phải (r = +{ols_res.pearson_r:.4f} &gt; 0), cho thấy sinh viên đạt điểm giữa kỳ cao có xu hướng đạt điểm cuối kỳ cao hơn.<br>"
+                        f"• <b>Độ phân tán:</b> Các điểm phân bố tương đối đều quanh trục xu hướng, không có điểm dị biệt đơn lẻ nào bẻ cong giả tạo hệ số tương quan.",
+                        "info",
+                    )
+                    render_insight_box(
+                        "⚠️ Cảnh báo Học thuật: Tương quan ≠ Nhân quả (Correlation ≠ Causation)",
+                        "Hệ số <b>r = 0.4954</b> chỉ phản ánh sự biến thiên đồng thời tuyến tính giữa hai bài thi. Nó <b>không</b> chứng minh việc đạt điểm giữa kỳ cao tự động 'gây ra' điểm cuối kỳ cao — cả hai đều chịu sự chi phối của biến ẩn như năng lực nền tảng, phương pháp tự học và thời gian ôn thi.",
+                        "warning",
+                    )
 
             with col_r:
-                st.markdown('<div class="section-card">', unsafe_allow_html=True)
-                st.markdown('<div class="section-header-title">📈 Hình 3 — Biểu đồ Phân tán Điểm Giữa kỳ (X) và Cuối kỳ (Y)</div>', unsafe_allow_html=True)
-                render_figure_safely(plot_scatterplot, is_official_data, "fig3_scatterplot.png", cleaned_df)
-                st.markdown('</div>', unsafe_allow_html=True)
+                with st.container(border=True):
+                    st.markdown('<div class="section-header-title">📈 Hình 3 — Biểu đồ Phân tán Điểm Giữa kỳ (X) và Cuối kỳ (Y)</div>', unsafe_allow_html=True)
+                    render_figure_safely(plot_scatterplot, is_official_data, "fig3_scatterplot.png", cleaned_df)
 
     # =========================================================================
     # 7. HỒI QUY TUYẾN TÍNH (CÂU 6 & 7)
@@ -1114,58 +1102,56 @@ def main():
             with k4:
                 st.markdown(render_kpi_card("Sai số chuẩn (s)", f"{ols_res.residual_std_error:.4f} đ", "Độ lệch điển hình quanh OLS", "#D97706"), unsafe_allow_html=True)
 
-            st.markdown("<div style='height: 16px'></div>", unsafe_allow_html=True)
+            st.markdown("<div style='height: 12px'></div>", unsafe_allow_html=True)
 
             col_m1, col_m2 = st.columns([1.05, 1.15])
             with col_m1:
-                st.markdown('<div class="section-card">', unsafe_allow_html=True)
-                st.markdown('<div class="section-header-title">📐 Câu 6 — Bảng Ước lượng Tham số Hồi quy OLS</div>', unsafe_allow_html=True)
-                st.latex(r"\hat{Y} = " + f"{ols_res.b0:.4f} + {ols_res.b1:.4f}X")
-                coeff_df = pd.DataFrame([
-                    {
-                        "Tham số": "Hệ số chặn (Intercept b₀)",
-                        "Ước lượng": f"{ols_res.b0:.4f}",
-                        "Sai số chuẩn (SE)": f"{ols_res.se_b0:.4f}",
-                        "Thống kê t": f"{ols_res.t_stat_b0:.3f}",
-                        "p-value": format_p_value(ols_res.p_val_b0),
-                    },
-                    {
-                        "Tham số": "Hệ số góc (Slope b₁)",
-                        "Ước lượng": f"{ols_res.b1:.4f}",
-                        "Sai số chuẩn (SE)": f"{ols_res.se_b1:.4f}",
-                        "Thống kê t": f"{ols_res.t_stat_b1:.3f}",
-                        "p-value": format_p_value(ols_res.p_val_b1),
-                    },
-                ])
-                st.dataframe(coeff_df, hide_index=True, use_container_width=True)
+                with st.container(border=True):
+                    st.markdown('<div class="section-header-title">📐 Câu 6 — Bảng Ước lượng Tham số Hồi quy OLS</div>', unsafe_allow_html=True)
+                    st.latex(r"\hat{Y} = " + f"{ols_res.b0:.4f} + {ols_res.b1:.4f}X")
+                    coeff_df = pd.DataFrame([
+                        {
+                            "Tham số": "Hệ số chặn (Intercept b₀)",
+                            "Ước lượng": f"{ols_res.b0:.4f}",
+                            "Sai số chuẩn (SE)": f"{ols_res.se_b0:.4f}",
+                            "Thống kê t": f"{ols_res.t_stat_b0:.3f}",
+                            "p-value": format_p_value(ols_res.p_val_b0),
+                        },
+                        {
+                            "Tham số": "Hệ số góc (Slope b₁)",
+                            "Ước lượng": f"{ols_res.b1:.4f}",
+                            "Sai số chuẩn (SE)": f"{ols_res.se_b1:.4f}",
+                            "Thống kê t": f"{ols_res.t_stat_b1:.3f}",
+                            "p-value": format_p_value(ols_res.p_val_b1),
+                        },
+                    ])
+                    st.dataframe(coeff_df, hide_index=True, use_container_width=True)
 
-                render_insight_box(
-                    "Giải thích ý nghĩa các hệ số (Câu 6):",
-                    f"• <b>Hệ số góc b₁ = {ols_res.b1:.4f}:</b> Khi điểm thi giữa kỳ (X) tăng thêm <b>1.0 điểm</b>, điểm thi cuối kỳ (Y) trung bình dự đoán tăng thêm <b>{ols_res.b1:.4f} điểm</b> (xấp xỉ 0.50 điểm).<br>"
-                    f"• <b>Hệ số chặn b₀ = {ols_res.b0:.4f}:</b> Giá trị dự đoán toán học của Y khi X = 0. Do miền quan sát thực tế là [5.0, 9.5] không chứa X = 0, b₀ chỉ đóng vai trò định vị đường thẳng, không dùng để suy diễn thực tế tại X = 0.",
-                    "info",
-                )
-                render_insight_box(
-                    "Đánh giá độ phù hợp mô hình (Câu 7):",
-                    f"• <b>Hệ số xác định R² = {ols_res.r_squared:.4f} ({ols_res.r_squared * 100:.1f}%):</b> Điểm giữa kỳ giải thích được 24.54% phương sai của điểm cuối kỳ. Trong khoa học giáo dục, đây là mức có ý nghĩa thực tiễn rõ rệt đối với mô hình 1 biến.<br>"
-                    f"• <b>Sai số chuẩn hồi quy s = {ols_res.residual_std_error:.4f} điểm:</b> Chênh lệch trung bình giữa điểm thi thực tế của sinh viên và điểm dự đoán từ mô hình là khoảng ±1.09 điểm.",
-                    "success",
-                )
-                st.markdown('</div>', unsafe_allow_html=True)
+                    render_insight_box(
+                        "Giải thích ý nghĩa các hệ số (Câu 6):",
+                        f"• <b>Hệ số góc b₁ = {ols_res.b1:.4f}:</b> Khi điểm thi giữa kỳ (X) tăng thêm <b>1.0 điểm</b>, điểm thi cuối kỳ (Y) trung bình dự đoán tăng thêm <b>{ols_res.b1:.4f} điểm</b> (xấp xỉ 0.50 điểm).<br>"
+                        f"• <b>Hệ số chặn b₀ = {ols_res.b0:.4f}:</b> Giá trị dự đoán toán học của Y khi X = 0. Do miền quan sát thực tế là [5.0, 9.5] không chứa X = 0, b₀ chỉ đóng vai trò định vị đường thẳng, không dùng để suy diễn thực tế tại X = 0.",
+                        "info",
+                    )
+                    render_insight_box(
+                        "Đánh giá độ phù hợp mô hình (Câu 7):",
+                        f"• <b>Hệ số xác định R² = {ols_res.r_squared:.4f} ({ols_res.r_squared * 100:.1f}%):</b> Điểm giữa kỳ giải thích được 24.54% phương sai của điểm cuối kỳ. Trong khoa học giáo dục, đây là mức có ý nghĩa thực tiễn rõ rệt đối với mô hình 1 biến.<br>"
+                        f"• <b>Sai số chuẩn hồi quy s = {ols_res.residual_std_error:.4f} điểm:</b> Chênh lệch trung bình giữa điểm thi thực tế của sinh viên và điểm dự đoán từ mô hình là khoảng ±1.09 điểm.",
+                        "success",
+                    )
 
             with col_m2:
-                st.markdown('<div class="section-card">', unsafe_allow_html=True)
-                st.markdown('<div class="section-header-title">📈 Hình 4 — Đường Hồi quy Tuyến tính OLS và Miền Quan sát</div>', unsafe_allow_html=True)
-                render_figure_safely(
-                    plot_regression_line,
-                    is_official_data,
-                    "fig4_regression_fit.png",
-                    cleaned_df,
-                    ols_res.b0,
-                    ols_res.b1,
-                    ols_res.r_squared,
-                )
-                st.markdown('</div>', unsafe_allow_html=True)
+                with st.container(border=True):
+                    st.markdown('<div class="section-header-title">📈 Hình 4 — Đường Hồi quy Tuyến tính OLS và Miền Quan sát</div>', unsafe_allow_html=True)
+                    render_figure_safely(
+                        plot_regression_line,
+                        is_official_data,
+                        "fig4_regression_fit.png",
+                        cleaned_df,
+                        ols_res.b0,
+                        ols_res.b1,
+                        ols_res.r_squared,
+                    )
 
     # =========================================================================
     # 8. CHẨN ĐOÁN MÔ HÌNH (CÂU 8)
@@ -1179,7 +1165,7 @@ def main():
             show_presenter_guide,
         )
 
-        if diagnostics is not None:
+        if diagnostics is not None and ols_res is not None:
             k1, k2, k3, k4 = st.columns(4)
             with k1:
                 st.markdown(render_kpi_card("Shapiro–Wilk (Chuẩn)", f"W = {diagnostics['shapiro_wilk']['statistic']:.3f}", f"p = {diagnostics['shapiro_wilk']['p_value_formatted']} (> 0.05)", "#059669"), unsafe_allow_html=True)
@@ -1190,67 +1176,64 @@ def main():
             with k4:
                 st.markdown(render_kpi_card("Durbin–Watson (Độc lập)", f"DW = {diagnostics['durbin_watson']['statistic']:.3f}", "Gần 2.0 → Không tự tương quan", "#059669"), unsafe_allow_html=True)
 
-            st.markdown("<div style='height: 16px'></div>", unsafe_allow_html=True)
+            st.markdown("<div style='height: 12px'></div>", unsafe_allow_html=True)
 
-            st.markdown('<div class="section-card">', unsafe_allow_html=True)
-            st.markdown('<div class="section-header-title">🔬 Hình 5 — Bộ 3 Biểu đồ Chẩn đoán Phần dư (Residuals vs Fitted, Residuals vs X, Normal Q–Q Plot)</div>', unsafe_allow_html=True)
-            render_figure_safely(
-                plot_diagnostics,
-                is_official_data,
-                "fig5_diagnostics.png",
-                ols_res.fitted_values,
-                ols_res.residuals,
-                cleaned_df[X_COL].to_numpy(),
-            )
-            st.markdown('</div>', unsafe_allow_html=True)
+            with st.container(border=True):
+                st.markdown('<div class="section-header-title">🔬 Hình 5 — Bộ 3 Biểu đồ Chẩn đoán Phần dư (Residuals vs Fitted, Residuals vs X, Normal Q–Q Plot)</div>', unsafe_allow_html=True)
+                render_figure_safely(
+                    plot_diagnostics,
+                    is_official_data,
+                    "fig5_diagnostics.png",
+                    ols_res.fitted_values,
+                    ols_res.residuals,
+                    cleaned_df[X_COL].to_numpy(),
+                )
 
             cd1, cd2 = st.columns([1.2, 1])
             with cd1:
-                st.markdown('<div class="section-card">', unsafe_allow_html=True)
-                st.markdown('<div class="section-header-title">📋 Bảng Kiểm định Định lượng Các Giả định Gauss–Markov</div>', unsafe_allow_html=True)
-                diag_summary = pd.DataFrame([
-                    {
-                        "Giả định kiểm tra": "1. Phân phối chuẩn của sai số (Shapiro–Wilk)",
-                        "Thống kê": f"W = {diagnostics['shapiro_wilk']['statistic']:.4f}",
-                        "p-value": diagnostics["shapiro_wilk"]["p_value_formatted"],
-                        "Kết luận": diagnostics["shapiro_wilk"]["interpretation"],
-                    },
-                    {
-                        "Giả định kiểm tra": "2. Phương sai sai số không đổi (Breusch–Pagan)",
-                        "Thống kê": f"LM = {diagnostics['breusch_pagan']['statistic']:.4f}",
-                        "p-value": diagnostics["breusch_pagan"]["p_value_formatted"],
-                        "Kết luận": diagnostics["breusch_pagan"]["interpretation"],
-                    },
-                    {
-                        "Giả định kiểm tra": "3. Dạng hàm tuyến tính phù hợp (Quadratic Reset F-test)",
-                        "Thống kê": f"F = {diagnostics['linearity_f_test']['statistic']:.4f}",
-                        "p-value": diagnostics["linearity_f_test"]["p_value_formatted"],
-                        "Kết luận": diagnostics["linearity_f_test"]["interpretation"],
-                    },
-                    {
-                        "Giả định kiểm tra": "4. Độc lập phần dư (Durbin–Watson)",
-                        "Thống kê": f"DW = {diagnostics['durbin_watson']['statistic']:.3f}",
-                        "p-value": "N/A",
-                        "Kết luận": diagnostics["durbin_watson"]["interpretation"],
-                    },
-                ])
-                st.dataframe(diag_summary, hide_index=True, use_container_width=True)
-                st.markdown('</div>', unsafe_allow_html=True)
+                with st.container(border=True):
+                    st.markdown('<div class="section-header-title">📋 Bảng Kiểm định Định lượng Các Giả định Gauss–Markov</div>', unsafe_allow_html=True)
+                    diag_summary = pd.DataFrame([
+                        {
+                            "Giả định kiểm tra": "1. Phân phối chuẩn của sai số (Shapiro–Wilk)",
+                            "Thống kê": f"W = {diagnostics['shapiro_wilk']['statistic']:.4f}",
+                            "p-value": diagnostics["shapiro_wilk"]["p_value_formatted"],
+                            "Kết luận": diagnostics["shapiro_wilk"]["interpretation"],
+                        },
+                        {
+                            "Giả định kiểm tra": "2. Phương sai sai số không đổi (Breusch–Pagan)",
+                            "Thống kê": f"LM = {diagnostics['breusch_pagan']['statistic']:.4f}",
+                            "p-value": diagnostics["breusch_pagan"]["p_value_formatted"],
+                            "Kết luận": diagnostics["breusch_pagan"]["interpretation"],
+                        },
+                        {
+                            "Giả định kiểm tra": "3. Dạng hàm tuyến tính phù hợp (Quadratic Reset F-test)",
+                            "Thống kê": f"F = {diagnostics['linearity_f_test']['statistic']:.4f}",
+                            "p-value": diagnostics["linearity_f_test"]["p_value_formatted"],
+                            "Kết luận": diagnostics["linearity_f_test"]["interpretation"],
+                        },
+                        {
+                            "Giả định kiểm tra": "4. Độc lập phần dư (Durbin–Watson)",
+                            "Thống kê": f"DW = {diagnostics['durbin_watson']['statistic']:.3f}",
+                            "p-value": "N/A",
+                            "Kết luận": diagnostics["durbin_watson"]["interpretation"],
+                        },
+                    ])
+                    st.dataframe(diag_summary, hide_index=True, use_container_width=True)
 
             with cd2:
-                st.markdown('<div class="section-card">', unsafe_allow_html=True)
-                st.markdown('<div class="section-header-title">⚠️ Lưu ý Giới hạn Thang điểm Bị chặn [0, 10]</div>', unsafe_allow_html=True)
-                render_insight_box(
-                    "Giới hạn cấu trúc của hàm tuyến tính trên miền điểm đóng [0, 10]:",
-                    diagnostics["boundary_warning"],
-                    "warning",
-                )
-                render_insight_box(
-                    "Điểm cộng phản biện trước Hội đồng:",
-                    "Giả định phân phối chuẩn trong OLS chỉ yêu cầu đối với <b>sai số ngẫu nhiên ε (phần dư e)</b> để kiểm định t và F chính xác trong mẫu nhỏ, hoàn toàn <b>không</b> bắt buộc bản thân X hay Y phải chuẩn tuyệt đối.",
-                    "info",
-                )
-                st.markdown('</div>', unsafe_allow_html=True)
+                with st.container(border=True):
+                    st.markdown('<div class="section-header-title">⚠️ Lưu ý Giới hạn Thang điểm Bị chặn [0, 10]</div>', unsafe_allow_html=True)
+                    render_insight_box(
+                        "Giới hạn cấu trúc của hàm tuyến tính trên miền điểm đóng [0, 10]:",
+                        diagnostics["boundary_warning"],
+                        "warning",
+                    )
+                    render_insight_box(
+                        "Điểm cộng phản biện trước Hội đồng:",
+                        "Giả định phân phối chuẩn trong OLS chỉ yêu cầu đối với <b>sai số ngẫu nhiên ε (phần dư e)</b> để kiểm định t và F chính xác trong mẫu nhỏ, hoàn toàn <b>không</b> bắt buộc bản thân X hay Y phải chuẩn tuyệt đối.",
+                        "info",
+                    )
 
     # =========================================================================
     # 9. KHOẢNG TIN CẬY (CÂU 9 & 11)
@@ -1267,48 +1250,46 @@ def main():
         if mean_ci is not None and slope_ci is not None:
             c_ci1, c_ci2 = st.columns(2)
             with c_ci1:
-                st.markdown('<div class="section-card">', unsafe_allow_html=True)
-                st.markdown('<div class="section-header-title">🎯 Câu 9 — Khoảng Tin Cậy 95% cho Trung bình Điểm Cuối kỳ (μ_Y)</div>', unsafe_allow_html=True)
-                st.latex(r"\bar{Y} \pm t_{\alpha/2,\, n-1} \times \frac{s_Y}{\sqrt{n}} = " + f"{mean_ci.sample_mean:.4f} \\pm {mean_ci.t_critical:.3f} \\times {mean_ci.standard_error:.4f}")
+                with st.container(border=True):
+                    st.markdown('<div class="section-header-title">🎯 Câu 9 — Khoảng Tin Cậy 95% cho Trung bình Điểm Cuối kỳ (μ_Y)</div>', unsafe_allow_html=True)
+                    st.latex(r"\bar{Y} \pm t_{\alpha/2,\, n-1} \times \frac{s_Y}{\sqrt{n}} = " + f"{mean_ci.sample_mean:.4f} \\pm {mean_ci.t_critical:.3f} \\times {mean_ci.standard_error:.4f}")
 
-                ci9_df = pd.DataFrame([
-                    {"Chỉ số thống kê": "Trung bình mẫu (Ȳ)", "Giá trị": f"{mean_ci.sample_mean:.4f} điểm"},
-                    {"Chỉ số thống kê": "Độ lệch chuẩn mẫu (s_Y)", "Giá trị": f"{mean_ci.sample_std:.4f} điểm"},
-                    {"Chỉ số thống kê": "Sai số chuẩn SE(Ȳ) = s_Y / √n", "Giá trị": f"{mean_ci.standard_error:.4f} điểm"},
-                    {"Chỉ số thống kê": "Bậc tự do (df = n - 1)", "Giá trị": f"{mean_ci.degrees_of_freedom}"},
-                    {"Chỉ số thống kê": "Giá trị tới hạn t_(0.025, 31)", "Giá trị": f"{mean_ci.t_critical:.4f}"},
-                    {"Chỉ số thống kê": "Biên sai số (Margin of Error)", "Giá trị": f"±{mean_ci.margin_of_error:.4f} điểm"},
-                    {"Chỉ số thống kê": "Khoảng tin cậy 95% cho μ_Y", "Giá trị": f"[{mean_ci.lower_bound:.4f}, {mean_ci.upper_bound:.4f}] điểm"},
-                ])
-                st.dataframe(ci9_df, hide_index=True, use_container_width=True)
-                render_insight_box(
-                    "⚠️ Phân biệt KTC của Trung bình và Độ phân tán cá nhân:",
-                    mean_ci.individual_spread_distinction,
-                    "info",
-                )
-                st.markdown('</div>', unsafe_allow_html=True)
+                    ci9_df = pd.DataFrame([
+                        {"Chỉ số thống kê": "Trung bình mẫu (Ȳ)", "Giá trị": f"{mean_ci.sample_mean:.4f} điểm"},
+                        {"Chỉ số thống kê": "Độ lệch chuẩn mẫu (s_Y)", "Giá trị": f"{mean_ci.sample_std:.4f} điểm"},
+                        {"Chỉ số thống kê": "Sai số chuẩn SE(Ȳ) = s_Y / √n", "Giá trị": f"{mean_ci.standard_error:.4f} điểm"},
+                        {"Chỉ số thống kê": "Bậc tự do (df = n - 1)", "Giá trị": f"{mean_ci.degrees_of_freedom}"},
+                        {"Chỉ số thống kê": "Giá trị tới hạn t_(0.025, 31)", "Giá trị": f"{mean_ci.t_critical:.4f}"},
+                        {"Chỉ số thống kê": "Biên sai số (Margin of Error)", "Giá trị": f"±{mean_ci.margin_of_error:.4f} điểm"},
+                        {"Chỉ số thống kê": "Khoảng tin cậy 95% cho μ_Y", "Giá trị": f"[{mean_ci.lower_bound:.4f}, {mean_ci.upper_bound:.4f}] điểm"},
+                    ])
+                    st.dataframe(ci9_df, hide_index=True, use_container_width=True)
+                    render_insight_box(
+                        "⚠️ Phân biệt KTC của Trung bình và Độ phân tán cá nhân:",
+                        mean_ci.individual_spread_distinction,
+                        "info",
+                    )
 
             with c_ci2:
-                st.markdown('<div class="section-card">', unsafe_allow_html=True)
-                st.markdown('<div class="section-header-title">📐 Câu 11 — Khoảng Tin Cậy 95% cho Hệ số góc Hồi quy (β₁)</div>', unsafe_allow_html=True)
-                st.latex(r"b_1 \pm t_{\alpha/2,\, n-2} \times SE(b_1) = " + f"{slope_ci.slope_estimate:.4f} \\pm {slope_ci.t_critical:.3f} \\times {slope_ci.standard_error:.4f}")
+                with st.container(border=True):
+                    st.markdown('<div class="section-header-title">📐 Câu 11 — Khoảng Tin Cậy 95% cho Hệ số góc Hồi quy (β₁)</div>', unsafe_allow_html=True)
+                    st.latex(r"b_1 \pm t_{\alpha/2,\, n-2} \times SE(b_1) = " + f"{slope_ci.slope_estimate:.4f} \\pm {slope_ci.t_critical:.3f} \\times {slope_ci.standard_error:.4f}")
 
-                ci11_df = pd.DataFrame([
-                    {"Chỉ số thống kê": "Hệ số góc ước lượng (b₁)", "Giá trị": f"{slope_ci.slope_estimate:.4f}"},
-                    {"Chỉ số thống kê": "Sai số chuẩn SE(b₁)", "Giá trị": f"{slope_ci.standard_error:.4f}"},
-                    {"Chỉ số thống kê": "Bậc tự do (df = n - 2)", "Giá trị": f"{slope_ci.degrees_of_freedom}"},
-                    {"Chỉ số thống kê": "Giá trị tới hạn t_(0.025, 30)", "Giá trị": f"{slope_ci.t_critical:.4f}"},
-                    {"Chỉ số thống kê": "Biên sai số (Margin of Error)", "Giá trị": f"±{slope_ci.margin_of_error:.4f}"},
-                    {"Chỉ số thống kê": "Khoảng tin cậy 95% cho β₁", "Giá trị": f"[{slope_ci.lower_bound:.4f}, {slope_ci.upper_bound:.4f}]"},
-                    {"Chỉ số thống kê": "Khoảng có chứa giá trị 0?", "Giá trị": "KHÔNG (Toàn bộ khoảng > 0)"},
-                ])
-                st.dataframe(ci11_df, hide_index=True, use_container_width=True)
-                render_insight_box(
-                    "✅ Ý nghĩa suy diễn thống kê:",
-                    slope_ci.interpretation,
-                    "success",
-                )
-                st.markdown('</div>', unsafe_allow_html=True)
+                    ci11_df = pd.DataFrame([
+                        {"Chỉ số thống kê": "Hệ số góc ước lượng (b₁)", "Giá trị": f"{slope_ci.slope_estimate:.4f}"},
+                        {"Chỉ số thống kê": "Sai số chuẩn SE(b₁)", "Giá trị": f"{slope_ci.standard_error:.4f}"},
+                        {"Chỉ số thống kê": "Bậc tự do (df = n - 2)", "Giá trị": f"{slope_ci.degrees_of_freedom}"},
+                        {"Chỉ số thống kê": "Giá trị tới hạn t_(0.025, 30)", "Giá trị": f"{slope_ci.t_critical:.4f}"},
+                        {"Chỉ số thống kê": "Biên sai số (Margin of Error)", "Giá trị": f"±{slope_ci.margin_of_error:.4f}"},
+                        {"Chỉ số thống kê": "Khoảng tin cậy 95% cho β₁", "Giá trị": f"[{slope_ci.lower_bound:.4f}, {slope_ci.upper_bound:.4f}]"},
+                        {"Chỉ số thống kê": "Khoảng có chứa giá trị 0?", "Giá trị": "KHÔNG (Toàn bộ khoảng > 0)"},
+                    ])
+                    st.dataframe(ci11_df, hide_index=True, use_container_width=True)
+                    render_insight_box(
+                        "✅ Ý nghĩa suy diễn thống kê:",
+                        slope_ci.interpretation,
+                        "success",
+                    )
 
     # =========================================================================
     # 10. KIỂM ĐỊNH GIẢ THUYẾT (CÂU 10 & 12)
@@ -1322,57 +1303,55 @@ def main():
             show_presenter_guide,
         )
 
-        if mean_test is not None and slope_test is not None:
+        if mean_test is not None and slope_test is not None and ols_res is not None:
             c_ht1, c_ht2 = st.columns(2)
             with c_ht1:
-                st.markdown('<div class="section-card">', unsafe_allow_html=True)
-                st.markdown('<div class="section-header-title">⚖️ Câu 10 — Kiểm định Một phía Trung bình Điểm Cuối kỳ so với mốc 7.0</div>', unsafe_allow_html=True)
-                st.latex(r"H_0: \mu_Y \le 7.0 \quad \text{vs} \quad H_1: \mu_Y > 7.0 \quad (\alpha = 0.05)")
+                with st.container(border=True):
+                    st.markdown('<div class="section-header-title">⚖️ Câu 10 — Kiểm định Một phía Trung bình Điểm Cuối kỳ so với mốc 7.0</div>', unsafe_allow_html=True)
+                    st.latex(r"H_0: \mu_Y \le 7.0 \quad \text{vs} \quad H_1: \mu_Y > 7.0 \quad (\alpha = 0.05)")
 
-                ht10_df = pd.DataFrame([
-                    {"Thông số kiểm định": "Mốc chuẩn kiểm định (μ₀)", "Giá trị": "7.0000 điểm"},
-                    {"Thông số kiểm định": "Trung bình mẫu (Ȳ)", "Giá trị": f"{mean_ci.sample_mean:.4f} điểm"},
-                    {"Thông số kiểm định": "Thống kê kiểm định t", "Giá trị": f"t = {mean_test.t_statistic:.4f}"},
-                    {"Thông số kiểm định": "Bậc tự do (df = n - 1)", "Giá trị": f"{mean_test.degrees_of_freedom}"},
-                    {"Thông số kiểm định": "Giá trị p-value (một phía phải)", "Giá trị": f"{mean_test.p_value_formatted} (< 0.05)"},
-                    {"Thông số kiểm định": "Quyết định thống kê", "Giá trị": f"✅ {mean_test.decision}"},
-                ])
-                st.dataframe(ht10_df, hide_index=True, use_container_width=True)
-                render_insight_box(
-                    "Kết luận theo ngữ cảnh bài toán:",
-                    mean_test.contextual_conclusion,
-                    "success",
-                )
-                with st.expander("🔍 Phân tích Sai lầm Loại I, Sai lầm Loại II & Lưu ý học thuật", expanded=True):
-                    st.markdown(f"- **Sai lầm Loại I (α = 0.05):** {mean_test.type_i_error_explanation}")
-                    st.markdown(f"- **Sai lầm Loại II (β):** {mean_test.type_ii_error_explanation}")
-                    st.markdown(f"- **Nguyên tắc suy luận:** {mean_test.null_acceptance_caveat}")
-                st.markdown('</div>', unsafe_allow_html=True)
+                    ht10_df = pd.DataFrame([
+                        {"Thông số kiểm định": "Mốc chuẩn kiểm định (μ₀)", "Giá trị": "7.0000 điểm"},
+                        {"Thông số kiểm định": "Trung bình mẫu (Ȳ)", "Giá trị": f"{mean_ci.sample_mean:.4f} điểm"},
+                        {"Thông số kiểm định": "Thống kê kiểm định t", "Giá trị": f"t = {mean_test.t_statistic:.4f}"},
+                        {"Thông số kiểm định": "Bậc tự do (df = n - 1)", "Giá trị": f"{mean_test.degrees_of_freedom}"},
+                        {"Thông số kiểm định": "Giá trị p-value (một phía phải)", "Giá trị": f"{mean_test.p_value_formatted} (< 0.05)"},
+                        {"Thông số kiểm định": "Quyết định thống kê", "Giá trị": f"✅ {mean_test.decision}"},
+                    ])
+                    st.dataframe(ht10_df, hide_index=True, use_container_width=True)
+                    render_insight_box(
+                        "Kết luận theo ngữ cảnh bài toán:",
+                        mean_test.contextual_conclusion,
+                        "success",
+                    )
+                    with st.expander("🔍 Phân tích Sai lầm Loại I, Sai lầm Loại II & Lưu ý học thuật", expanded=True):
+                        st.markdown(f"- **Sai lầm Loại I (α = 0.05):** {mean_test.type_i_error_explanation}")
+                        st.markdown(f"- **Sai lầm Loại II (β):** {mean_test.type_ii_error_explanation}")
+                        st.markdown(f"- **Nguyên tắc suy luận:** {mean_test.null_acceptance_caveat}")
 
             with c_ht2:
-                st.markdown('<div class="section-card">', unsafe_allow_html=True)
-                st.markdown('<div class="section-header-title">⚖️ Câu 12 — Kiểm định Hai phía Hệ số góc Hồi quy (β₁)</div>', unsafe_allow_html=True)
-                st.latex(r"H_0: \beta_1 = 0 \quad \text{vs} \quad H_1: \beta_1 \ne 0 \quad (\alpha = 0.05)")
+                with st.container(border=True):
+                    st.markdown('<div class="section-header-title">⚖️ Câu 12 — Kiểm định Hai phía Hệ số góc Hồi quy (β₁)</div>', unsafe_allow_html=True)
+                    st.latex(r"H_0: \beta_1 = 0 \quad \text{vs} \quad H_1: \beta_1 \ne 0 \quad (\alpha = 0.05)")
 
-                ht12_df = pd.DataFrame([
-                    {"Thông số kiểm định": "Hệ số góc mẫu (b₁)", "Giá trị": f"{ols_res.b1:.4f}"},
-                    {"Thông số kiểm định": "Sai số chuẩn SE(b₁)", "Giá trị": f"{ols_res.se_b1:.4f}"},
-                    {"Thông số kiểm định": "Thống kê kiểm định t = b₁ / SE(b₁)", "Giá trị": f"t = {slope_test.t_statistic:.4f}"},
-                    {"Thông số kiểm định": "Bậc tự do (df = n - 2)", "Giá trị": f"{slope_test.degrees_of_freedom}"},
-                    {"Thông số kiểm định": "Giá trị p-value (hai phía)", "Giá trị": f"{slope_test.p_value_formatted} (< 0.01)"},
-                    {"Thông số kiểm định": "Quyết định thống kê", "Giá trị": f"✅ {slope_test.decision}"},
-                    {"Thông số kiểm định": "Tính nhất quán với KTC Câu 11", "Giá trị": "Hoàn toàn nhất quán 100% (KTC không chứa 0)"},
-                ])
-                st.dataframe(ht12_df, hide_index=True, use_container_width=True)
-                render_insight_box(
-                    "Đối chiếu Ý nghĩa Thống kê vs Ý nghĩa Thực tiễn:",
-                    slope_test.statistical_vs_practical_significance,
-                    "info",
-                )
-                with st.expander("🔍 Cảnh báo Nhân quả & Tính nhất quán Lý thuyết", expanded=True):
-                    st.markdown(f"- **Quan hệ Tương quan vs Nhân quả:** {slope_test.causation_caveat}")
-                    st.markdown("- **Định lý Đối ngẫu:** Kiểm định t hai phía ở mức α = 0.05 bác bỏ H₀: β₁ = 0 khi và chỉ khi Khoảng tin cậy 95% của β₁ không chứa điểm 0.")
-                st.markdown('</div>', unsafe_allow_html=True)
+                    ht12_df = pd.DataFrame([
+                        {"Thông số kiểm định": "Hệ số góc mẫu (b₁)", "Giá trị": f"{ols_res.b1:.4f}"},
+                        {"Thông số kiểm định": "Sai số chuẩn SE(b₁)", "Giá trị": f"{ols_res.se_b1:.4f}"},
+                        {"Thông số kiểm định": "Thống kê kiểm định t = b₁ / SE(b₁)", "Giá trị": f"t = {slope_test.t_statistic:.4f}"},
+                        {"Thông số kiểm định": "Bậc tự do (df = n - 2)", "Giá trị": f"{slope_test.degrees_of_freedom}"},
+                        {"Thông số kiểm định": "Giá trị p-value (hai phía)", "Giá trị": f"{slope_test.p_value_formatted} (< 0.01)"},
+                        {"Thông số kiểm định": "Quyết định thống kê", "Giá trị": f"✅ {slope_test.decision}"},
+                        {"Thông số kiểm định": "Tính nhất quán với KTC Câu 11", "Giá trị": "Hoàn toàn nhất quán 100% (KTC không chứa 0)"},
+                    ])
+                    st.dataframe(ht12_df, hide_index=True, use_container_width=True)
+                    render_insight_box(
+                        "Đối chiếu Ý nghĩa Thống kê vs Ý nghĩa Thực tiễn:",
+                        slope_test.statistical_vs_practical_significance,
+                        "info",
+                    )
+                    with st.expander("🔍 Cảnh báo Nhân quả & Tính nhất quán Lý thuyết", expanded=True):
+                        st.markdown(f"- **Quan hệ Tương quan vs Nhân quả:** {slope_test.causation_caveat}")
+                        st.markdown("- **Định lý Đối ngẫu:** Kiểm định t hai phía ở mức α = 0.05 bác bỏ H₀: β₁ = 0 khi và chỉ khi Khoảng tin cậy 95% của β₁ không chứa điểm 0.")
 
     # =========================================================================
     # 11. DỰ ĐOÁN ĐIỂM (CÂU 1A & 1B)
@@ -1386,7 +1365,7 @@ def main():
             show_presenter_guide,
         )
 
-        if pred_1a is not None:
+        if pred_1a is not None and ols_res is not None:
             # Question 1A Benchmark Cards
             k1, k2, k3, k4 = st.columns(4)
             with k1:
@@ -1398,121 +1377,117 @@ def main():
             with k4:
                 st.markdown(render_kpi_card("Miền nội suy an toàn", "[5.0, 9.5] điểm", "X=6 & X=8 thuộc miền quan sát", "#7C3AED"), unsafe_allow_html=True)
 
-            st.markdown("<div style='height: 16px'></div>", unsafe_allow_html=True)
+            st.markdown("<div style='height: 12px'></div>", unsafe_allow_html=True)
 
             # Interactive Predictor + Live Chart
-            st.markdown('<div class="section-card">', unsafe_allow_html=True)
-            st.markdown('<div class="section-header-title">🧮 Câu 1A — Bảng Dự đoán Chuẩn & Máy tính Mô phỏng Tương tác Thời gian thực</div>', unsafe_allow_html=True)
-            st.dataframe(pred_1a.predictions_table, hide_index=True, use_container_width=True)
+            with st.container(border=True):
+                st.markdown('<div class="section-header-title">🧮 Câu 1A — Bảng Dự đoán Chuẩn & Máy tính Mô phỏng Tương tác Thời gian thực</div>', unsafe_allow_html=True)
+                st.dataframe(pred_1a.predictions_table, hide_index=True, use_container_width=True)
 
-            st.markdown("<hr style='margin: 18px 0; border-color: #E2E8F0;'>", unsafe_allow_html=True)
+                st.markdown("<hr style='margin: 18px 0; border-color: #E2E8F0;'>", unsafe_allow_html=True)
 
-            col_sim_l, col_sim_r = st.columns([1, 1.35])
-            with col_sim_l:
-                st.markdown("##### 🎛️ Kéo thanh trượt để mô phỏng dự đoán trực tiếp:")
-                q_btn1, q_btn2, q_btn3 = st.columns(3)
-                if "sim_x" not in st.session_state:
-                    st.session_state.sim_x = 8.0
-                if q_btn1.button("Đặt X = 6.0", use_container_width=True):
-                    st.session_state.sim_x = 6.0
-                if q_btn2.button("Đặt X = 7.5", use_container_width=True):
-                    st.session_state.sim_x = 7.5
-                if q_btn3.button("Đặt X = 8.0", use_container_width=True):
-                    st.session_state.sim_x = 8.0
+                col_sim_l, col_sim_r = st.columns([1, 1.35])
+                with col_sim_l:
+                    st.markdown("##### 🎛️ Kéo thanh trượt để mô phỏng dự đoán trực tiếp:")
+                    q_btn1, q_btn2, q_btn3 = st.columns(3)
+                    if "sim_x" not in st.session_state:
+                        st.session_state.sim_x = 8.0
+                    if q_btn1.button("Đặt X = 6.0", use_container_width=True):
+                        st.session_state.sim_x = 6.0
+                    if q_btn2.button("Đặt X = 7.5", use_container_width=True):
+                        st.session_state.sim_x = 7.5
+                    if q_btn3.button("Đặt X = 8.0", use_container_width=True):
+                        st.session_state.sim_x = 8.0
 
-                user_x = st.slider(
-                    "Chọn mức Điểm thi Giữa kỳ (X):",
-                    min_value=0.0,
-                    max_value=10.0,
-                    value=float(st.session_state.sim_x),
-                    step=0.1,
-                )
-                st.session_state.sim_x = user_x
-                pred_res = compute_prediction_intervals(user_x, ols_res)
+                    user_x = st.slider(
+                        "Chọn mức Điểm thi Giữa kỳ (X):",
+                        min_value=0.0,
+                        max_value=10.0,
+                        value=float(st.session_state.sim_x),
+                        step=0.1,
+                    )
+                    st.session_state.sim_x = user_x
+                    pred_res = compute_prediction_intervals(user_x, ols_res)
 
-                is_extrapolation = user_x < float(cleaned_df[X_COL].min()) or user_x > float(cleaned_df[X_COL].max())
+                    is_extrapolation = user_x < float(cleaned_df[X_COL].min()) or user_x > float(cleaned_df[X_COL].max())
 
-                render_insight_box(
-                    f"🎯 Kết quả Dự đoán tại X = {user_x:.1f} điểm:",
-                    f"• <b>Điểm cuối kỳ dự đoán (Ŷ):</b> <span style='font-size:17px;color:#1E3A8A;font-weight:800'>{pred_res['predicted_y']:.3f} điểm</span><br>"
-                    f"• <b>95% KTC cho trung bình (Mean CI):</b> <code>[{pred_res['ci_mean_lower']:.3f}, {pred_res['ci_mean_upper']:.3f}]</code> điểm<br>"
-                    f"• <b>95% Khoảng dự đoán cá nhân (Individual PI):</b> <code>[{pred_res['pi_individual_lower']:.3f}, {pred_res['pi_individual_upper']:.3f}]</code> điểm<br>"
-                    f"• <b>Trạng thái miền dữ liệu:</b> {'⚠️ Ngoại suy (Ngoài miền [5.0, 9.5])' if is_extrapolation else '✅ Nội suy an toàn trong miền quan sát [5.0, 9.5]'}",
-                    "warning" if is_extrapolation else "success",
-                )
+                    render_insight_box(
+                        f"🎯 Kết quả Dự đoán tại X = {user_x:.1f} điểm:",
+                        f"• <b>Điểm cuối kỳ dự đoán (Ŷ):</b> <span style='font-size:17px;color:#1E3A8A;font-weight:800'>{pred_res['predicted_y']:.3f} điểm</span><br>"
+                        f"• <b>95% KTC cho trung bình (Mean CI):</b> <code>[{pred_res['ci_mean_lower']:.3f}, {pred_res['ci_mean_upper']:.3f}]</code> điểm<br>"
+                        f"• <b>95% Khoảng dự đoán cá nhân (Individual PI):</b> <code>[{pred_res['pi_individual_lower']:.3f}, {pred_res['pi_individual_upper']:.3f}]</code> điểm<br>"
+                        f"• <b>Trạng thái miền dữ liệu:</b> {'⚠️ Ngoại suy (Ngoài miền [5.0, 9.5])' if is_extrapolation else '✅ Nội suy an toàn trong miền quan sát [5.0, 9.5]'}",
+                        "warning" if is_extrapolation else "success",
+                    )
 
-                render_insight_box(
-                    "💡 Giải thích Chênh lệch ΔŶ = +1.00 điểm (X=8 vs X=6):",
-                    f"{pred_1a.practical_interpretation}<br><br><b>Lưu ý nhân quả:</b> {pred_1a.causality_caveat}",
-                    "info",
-                )
+                    render_insight_box(
+                        "💡 Giải thích Chênh lệch ΔŶ = +1.00 điểm (X=8 vs X=6):",
+                        f"{pred_1a.practical_interpretation}<br><br><b>Lưu ý nhân quả:</b> {pred_1a.causality_caveat}",
+                        "info",
+                    )
 
-            with col_sim_r:
-                fig_sim = plot_interactive_prediction_chart(cleaned_df, ols_res, user_x, pred_res)
-                st.pyplot(fig_sim, use_container_width=True)
-                plt.close(fig_sim)
-
-            st.markdown('</div>', unsafe_allow_html=True)
+                with col_sim_r:
+                    fig_sim = plot_interactive_prediction_chart(cleaned_df, ols_res, user_x, pred_res)
+                    st.pyplot(fig_sim, use_container_width=True)
+                    plt.close(fig_sim)
 
             # Question 1B Empirical Survey & Theoretical Limitations
             col_1b_l, col_1b_r = st.columns([1.05, 1.15])
             with col_1b_l:
-                st.markdown('<div class="section-card">', unsafe_allow_html=True)
-                st.markdown('<div class="section-header-title">📊 Câu 1B — Bằng chứng Thực nghiệm từ Khảo sát Định tính (n = 32)</div>', unsafe_allow_html=True)
-                st.markdown('<div class="section-header-desc">Giải thích tại sao R² = 24.54% và 75.46% biến thiên còn lại nằm ở giai đoạn sau giữa kỳ:</div>', unsafe_allow_html=True)
+                with st.container(border=True):
+                    st.markdown('<div class="section-header-title">📊 Câu 1B — Bằng chứng Thực nghiệm từ Khảo sát Định tính (n = 32)</div>', unsafe_allow_html=True)
+                    st.markdown('<div class="section-header-desc">Giải thích tại sao R² = 24.54% và 75.46% biến thiên còn lại nằm ở giai đoạn sau giữa kỳ:</div>', unsafe_allow_html=True)
 
-                st.markdown("**1. Đánh giá của sinh viên về Độ khó Đề thi Cuối kỳ so với Giữa kỳ:**")
-                st.markdown(
-                    """
-                    <div class="survey-row">
-                        <div class="survey-label-row"><span>Khó hơn / Khó hơn rất nhiều (Mức 4–5/5)</span><span>13/32 SV (40.6%)</span></div>
-                        <div class="survey-bar-bg"><div class="survey-bar-fill" style="width: 40.6%; background: #E11D48;"></div></div>
-                    </div>
-                    <div class="survey-row">
-                        <div class="survey-label-row"><span>Tương đương giữa kỳ (Mức 3/5)</span><span>11/32 SV (34.4%)</span></div>
-                        <div class="survey-bar-bg"><div class="survey-bar-fill" style="width: 34.4%; background: #2563EB;"></div></div>
-                    </div>
-                    <div class="survey-row">
-                        <div class="survey-label-row"><span>Dễ hơn giữa kỳ (Mức 1–2/5)</span><span>8/32 SV (25.0%)</span></div>
-                        <div class="survey-bar-bg"><div class="survey-bar-fill" style="width: 25.0%; background: #059669;"></div></div>
-                    </div>
-                    """,
-                    unsafe_allow_html=True,
-                )
+                    st.markdown("**1. Đánh giá của sinh viên về Độ khó Đề thi Cuối kỳ so với Giữa kỳ:**")
+                    st.markdown(
+                        """
+                        <div class="survey-row">
+                            <div class="survey-label-row"><span>Khó hơn / Khó hơn rất nhiều (Mức 4–5/5)</span><span>13/32 SV (40.6%)</span></div>
+                            <div class="survey-bar-bg"><div class="survey-bar-fill" style="width: 40.6%; background: #E11D48;"></div></div>
+                        </div>
+                        <div class="survey-row">
+                            <div class="survey-label-row"><span>Tương đương giữa kỳ (Mức 3/5)</span><span>11/32 SV (34.4%)</span></div>
+                            <div class="survey-bar-bg"><div class="survey-bar-fill" style="width: 34.4%; background: #2563EB;"></div></div>
+                        </div>
+                        <div class="survey-row">
+                            <div class="survey-label-row"><span>Dễ hơn giữa kỳ (Mức 1–2/5)</span><span>8/32 SV (25.0%)</span></div>
+                            <div class="survey-bar-bg"><div class="survey-bar-fill" style="width: 25.0%; background: #059669;"></div></div>
+                        </div>
+                        """,
+                        unsafe_allow_html=True,
+                    )
 
-                st.markdown("<div style='height: 12px'></div>", unsafe_allow_html=True)
-                st.markdown("**2. Mức độ Nỗ lực Tự học & Ôn tập sau khi biết Điểm Giữa kỳ:**")
-                st.markdown(
-                    """
-                    <div class="survey-row">
-                        <div class="survey-label-row"><span>Nỗ lực ôn tập Cao & Rất cao (Mức 4–5/5)</span><span>27/32 SV (84.4%)</span></div>
-                        <div class="survey-bar-bg"><div class="survey-bar-fill" style="width: 84.4%; background: #059669;"></div></div>
-                    </div>
-                    <div class="survey-row">
-                        <div class="survey-label-row"><span>Nỗ lực ôn tập Trung bình (Mức 3/5)</span><span>5/32 SV (15.6%)</span></div>
-                        <div class="survey-bar-bg"><div class="survey-bar-fill" style="width: 15.6%; background: #F59E0B;"></div></div>
-                    </div>
-                    """,
-                    unsafe_allow_html=True,
-                )
-                render_insight_box(
-                    "🔑 Cơ chế hành vi giải thích mô hình:",
-                    "Có tới <b>84.4% sinh viên</b> tăng tốc ôn tập mạnh mẽ sau kỳ thi giữa kỳ. Những sinh viên đạt điểm giữa kỳ vừa phải (5–6 điểm) coi đó là tín hiệu cảnh báo sớm để bứt phá ở kỳ thi cuối kỳ, làm giảm sự phụ thuộc tuyến tính cứng nhắc vào điểm giữa kỳ.",
-                    "success",
-                )
-                st.markdown('</div>', unsafe_allow_html=True)
+                    st.markdown("<div style='height: 12px'></div>", unsafe_allow_html=True)
+                    st.markdown("**2. Mức độ Nỗ lực Tự học & Ôn tập sau khi biết Điểm Giữa kỳ:**")
+                    st.markdown(
+                        """
+                        <div class="survey-row">
+                            <div class="survey-label-row"><span>Nỗ lực ôn tập Cao & Rất cao (Mức 4–5/5)</span><span>27/32 SV (84.4%)</span></div>
+                            <div class="survey-bar-bg"><div class="survey-bar-fill" style="width: 84.4%; background: #059669;"></div></div>
+                        </div>
+                        <div class="survey-row">
+                            <div class="survey-label-row"><span>Nỗ lực ôn tập Trung bình (Mức 3/5)</span><span>5/32 SV (15.6%)</span></div>
+                            <div class="survey-bar-bg"><div class="survey-bar-fill" style="width: 15.6%; background: #F59E0B;"></div></div>
+                        </div>
+                        """,
+                        unsafe_allow_html=True,
+                    )
+                    render_insight_box(
+                        "🔑 Cơ chế hành vi giải thích mô hình:",
+                        "Có tới <b>84.4% sinh viên</b> tăng tốc ôn tập mạnh mẽ sau kỳ thi giữa kỳ. Những sinh viên đạt điểm giữa kỳ vừa phải (5–6 điểm) coi đó là tín hiệu cảnh báo sớm để bứt phá ở kỳ thi cuối kỳ, làm giảm sự phụ thuộc tuyến tính cứng nhắc vào điểm giữa kỳ.",
+                        "success",
+                    )
 
             with col_1b_r:
-                st.markdown('<div class="section-card">', unsafe_allow_html=True)
-                st.markdown('<div class="section-header-title">🏛️ Năm Giới hạn Cốt lõi của Mô hình Hồi quy Đơn biến (Câu 1B)</div>', unsafe_allow_html=True)
-                limitations = get_topic_1b_limitations()
-                for key, text in limitations.items():
-                    parts = text.split(":", 1)
-                    title_part = parts[0]
-                    body_part = parts[1].strip() if len(parts) > 1 else text
-                    with st.expander(f"📌 {title_part}", expanded=True):
-                        st.write(body_part)
-                st.markdown('</div>', unsafe_allow_html=True)
+                with st.container(border=True):
+                    st.markdown('<div class="section-header-title">🏛️ Năm Giới hạn Cốt lõi của Mô hình Hồi quy Đơn biến (Câu 1B)</div>', unsafe_allow_html=True)
+                    limitations = get_topic_1b_limitations()
+                    for key, text in limitations.items():
+                        parts = text.split(":", 1)
+                        title_part = parts[0]
+                        body_part = parts[1].strip() if len(parts) > 1 else text
+                        with st.expander(f"📌 {title_part}", expanded=True):
+                            st.write(body_part)
 
     # =========================================================================
     # 12. BÁO CÁO & XUẤT DỮ LIỆU
@@ -1526,106 +1501,104 @@ def main():
             show_presenter_guide,
         )
 
-        st.markdown('<div class="section-card">', unsafe_allow_html=True)
-        st.markdown('<div class="section-header-title">📦 Trung tâm Tải xuống Toàn bộ Hồ sơ Dự án (Deliverables Hub)</div>', unsafe_allow_html=True)
-        st.markdown(
-            '<div class="section-header-desc">Toàn bộ báo cáo, slide thuyết trình, kịch bản phân vai 6 thành viên và bộ bảng tính Excel đã được đồng bộ 100% với số liệu thực nghiệm n = 32.</div>',
-            unsafe_allow_html=True,
-        )
+        with st.container(border=True):
+            st.markdown('<div class="section-header-title">📦 Trung tâm Tải xuống Toàn bộ Hồ sơ Dự án (Deliverables Hub)</div>', unsafe_allow_html=True)
+            st.markdown(
+                '<div class="section-header-desc">Toàn bộ báo cáo, slide thuyết trình, kịch bản phân vai 6 thành viên và bộ bảng tính Excel đã được đồng bộ 100% với số liệu thực nghiệm n = 32.</div>',
+                unsafe_allow_html=True,
+            )
 
-        col_doc, col_slide, col_xlsx = st.columns(3)
+            col_doc, col_slide, col_xlsx = st.columns(3)
 
-        with col_doc:
-            st.markdown("#### 📘 1. Báo cáo Học thuật & Kịch bản")
-            docx_path = REPORTS_DIR / "Computer_Project_Topic_1_Report.docx"
-            pdf_path = REPORTS_DIR / "Computer_Project_Topic_1_Report.pdf"
-            script_docx = REPORTS_DIR / "Kich_Ban_Thuyet_Trinh_6_Thanh_Vien.docx"
-            script_pdf = REPORTS_DIR / "Kich_Ban_Thuyet_Trinh_6_Thanh_Vien.pdf"
+            with col_doc:
+                st.markdown("#### 📘 1. Báo cáo Học thuật & Kịch bản")
+                docx_path = REPORTS_DIR / "Computer_Project_Topic_1_Report.docx"
+                pdf_path = REPORTS_DIR / "Computer_Project_Topic_1_Report.pdf"
+                script_docx = REPORTS_DIR / "Kich_Ban_Thuyet_Trinh_6_Thanh_Vien.docx"
+                script_pdf = REPORTS_DIR / "Kich_Ban_Thuyet_Trinh_6_Thanh_Vien.pdf"
 
-            if docx_path.exists():
-                st.download_button(
-                    label="📘 Báo cáo Chính thức (.docx)",
-                    data=docx_path.read_bytes(),
-                    file_name="Computer_Project_Topic_1_Report.docx",
-                    mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-                    use_container_width=True,
-                )
-            if pdf_path.exists():
-                st.download_button(
-                    label="📕 Báo cáo Chính thức (.pdf)",
-                    data=pdf_path.read_bytes(),
-                    file_name="Computer_Project_Topic_1_Report.pdf",
-                    mime="application/pdf",
-                    use_container_width=True,
-                )
-            if script_docx.exists():
-                st.download_button(
-                    label="🎤 Kịch bản 6 Thành viên (.docx)",
-                    data=script_docx.read_bytes(),
-                    file_name="Kich_Ban_Thuyet_Trinh_6_Thanh_Vien.docx",
-                    mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-                    use_container_width=True,
-                )
-            if script_pdf.exists():
-                st.download_button(
-                    label="📄 Kịch bản 6 Thành viên (.pdf)",
-                    data=script_pdf.read_bytes(),
-                    file_name="Kich_Ban_Thuyet_Trinh_6_Thanh_Vien.pdf",
-                    mime="application/pdf",
-                    use_container_width=True,
-                )
-
-        with col_slide:
-            st.markdown("#### 🖥️ 2. Bộ Slide Thuyết trình (16:9)")
-            slide_pptx = REPORTS_DIR / "Computer_Project_Topic_1_Slides.pptx"
-            slide_pdf = REPORTS_DIR / "Computer_Project_Topic_1_Slides.pdf"
-
-            if slide_pptx.exists():
-                st.download_button(
-                    label="🖥️ Slide PowerPoint (.pptx)",
-                    data=slide_pptx.read_bytes(),
-                    file_name="Computer_Project_Topic_1_Slides.pptx",
-                    mime="application/vnd.openxmlformats-officedocument.presentationml.presentation",
-                    use_container_width=True,
-                )
-            if slide_pdf.exists():
-                st.download_button(
-                    label="📑 Slide Thuyết trình (.pdf)",
-                    data=slide_pdf.read_bytes(),
-                    file_name="Computer_Project_Topic_1_Slides.pdf",
-                    mime="application/pdf",
-                    use_container_width=True,
-                )
-
-            cleaned_csv_path = PROCESSED_DATA_DIR / "cleaned_data.csv"
-            if cleaned_csv_path.exists():
-                st.download_button(
-                    label="✅ Dữ liệu sạch chuẩn hóa (cleaned_data.csv)",
-                    data=cleaned_csv_path.read_bytes(),
-                    file_name="cleaned_data.csv",
-                    mime="text/csv",
-                    use_container_width=True,
-                )
-
-        with col_xlsx:
-            st.markdown("#### 📊 3. Bảng tính Excel Kết quả")
-            for name, fname in [
-                ("Từ điển dữ liệu (data_dictionary.xlsx)", "data_dictionary.xlsx"),
-                ("Thống kê mô tả (descriptive_statistics.xlsx)", "descriptive_statistics.xlsx"),
-                ("Kết quả hồi quy (regression_results.xlsx)", "regression_results.xlsx"),
-                ("Kiểm định giả thuyết (hypothesis_tests.xlsx)", "hypothesis_tests.xlsx"),
-            ]:
-                fpath = TABLES_DIR / fname
-                if fpath.exists():
+                if docx_path.exists():
                     st.download_button(
-                        label=f"📊 {name}",
-                        data=fpath.read_bytes(),
-                        file_name=fname,
-                        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                        label="📘 Báo cáo Chính thức (.docx)",
+                        data=docx_path.read_bytes(),
+                        file_name="Computer_Project_Topic_1_Report.docx",
+                        mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                        use_container_width=True,
+                    )
+                if pdf_path.exists():
+                    st.download_button(
+                        label="📕 Báo cáo Chính thức (.pdf)",
+                        data=pdf_path.read_bytes(),
+                        file_name="Computer_Project_Topic_1_Report.pdf",
+                        mime="application/pdf",
+                        use_container_width=True,
+                    )
+                if script_docx.exists():
+                    st.download_button(
+                        label="🎤 Kịch bản 6 Thành viên (.docx)",
+                        data=script_docx.read_bytes(),
+                        file_name="Kich_Ban_Thuyet_Trinh_6_Thanh_Vien.docx",
+                        mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                        use_container_width=True,
+                    )
+                if script_pdf.exists():
+                    st.download_button(
+                        label="📄 Kịch bản 6 Thành viên (.pdf)",
+                        data=script_pdf.read_bytes(),
+                        file_name="Kich_Ban_Thuyet_Trinh_6_Thanh_Vien.pdf",
+                        mime="application/pdf",
                         use_container_width=True,
                     )
 
-        st.markdown('</div>', unsafe_allow_html=True)
+            with col_slide:
+                st.markdown("#### 🖥️ 2. Bộ Slide Thuyết trình (16:9)")
+                slide_pptx = REPORTS_DIR / "Computer_Project_Topic_1_Slides.pptx"
+                slide_pdf = REPORTS_DIR / "Computer_Project_Topic_1_Slides.pdf"
+
+                if slide_pptx.exists():
+                    st.download_button(
+                        label="🖥️ Slide PowerPoint (.pptx)",
+                        data=slide_pptx.read_bytes(),
+                        file_name="Computer_Project_Topic_1_Slides.pptx",
+                        mime="application/vnd.openxmlformats-officedocument.presentationml.presentation",
+                        use_container_width=True,
+                    )
+                if slide_pdf.exists():
+                    st.download_button(
+                        label="📑 Slide Thuyết trình (.pdf)",
+                        data=slide_pdf.read_bytes(),
+                        file_name="Computer_Project_Topic_1_Slides.pdf",
+                        mime="application/pdf",
+                        use_container_width=True,
+                    )
+
+                cleaned_csv_path = PROCESSED_DATA_DIR / "cleaned_data.csv"
+                if cleaned_csv_path.exists():
+                    st.download_button(
+                        label="✅ Dữ liệu sạch chuẩn hóa (cleaned_data.csv)",
+                        data=cleaned_csv_path.read_bytes(),
+                        file_name="cleaned_data.csv",
+                        mime="text/csv",
+                        use_container_width=True,
+                    )
+
+            with col_xlsx:
+                st.markdown("#### 📊 3. Bảng tính Excel Kết quả")
+                for name, fname in [
+                    ("Từ điển dữ liệu (data_dictionary.xlsx)", "data_dictionary.xlsx"),
+                    ("Thống kê mô tả (descriptive_statistics.xlsx)", "descriptive_statistics.xlsx"),
+                    ("Kết quả hồi quy (regression_results.xlsx)", "regression_results.xlsx"),
+                    ("Kiểm định giả thuyết (hypothesis_tests.xlsx)", "hypothesis_tests.xlsx"),
+                ]:
+                    fpath = TABLES_DIR / fname
+                    if fpath.exists():
+                        st.download_button(
+                            label=f"📊 {name}",
+                            data=fpath.read_bytes(),
+                            file_name=fname,
+                            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                            use_container_width=True,
+                        )
 
 
 if __name__ == "__main__":
