@@ -220,7 +220,7 @@ def run_pipeline(
             "slope_test": slope_test,
         },
         is_synthetic=is_synthetic,
-        generate_pdf=True,
+        generate_pdf=False,
     )
 
     # Build Slide Deck

@@ -800,9 +800,9 @@ def main():
             with st.container(border=True):
                 st.markdown('<div class="section-header-title">🗺️ Bản đồ Phân công Thuyết trình 6 Thành viên Nhóm 1 & 12 Câu hỏi Học thuật</div>', unsafe_allow_html=True)
                 roadmap_df = pd.DataFrame([
-                    {"Họ và Tên": "Mai Xuân Hiếu", "MSSV": "DE200199", "Vai trò": "Nhóm trưởng (Mở đầu & Làm sạch)", "Câu hỏi": "Câu 1, 2", "Slide": "Slide 1, 2", "Tab Streamlit": "Mục 1, 2, 3"},
+                    {"Họ và Tên": "Mai Xuân Hiếu", "MSSV": "DE200199", "Vai trò": "Thành viên (Mở đầu & Làm sạch)", "Câu hỏi": "Câu 1, 2", "Slide": "Slide 1, 2", "Tab Streamlit": "Mục 1, 2, 3"},
                     {"Họ và Tên": "Phan Dương Sinh", "MSSV": "DE200235", "Vai trò": "Chuyên viên Thống kê mô tả", "Câu hỏi": "Câu 3, 4", "Slide": "Slide 3, 4", "Tab Streamlit": "Mục 4, 5"},
-                    {"Họ và Tên": "Võ Ngọc Minh Quân", "MSSV": "DE200080", "Vai trò": "Chuyên viên Mô hình hóa OLS", "Câu hỏi": "Câu 5, 6, 7", "Slide": "Slide 5, 6", "Tab Streamlit": "Mục 6, 7"},
+                    {"Họ và Tên": "Võ Ngọc Minh Quân", "MSSV": "DE200080", "Vai trò": "Nhóm trưởng (Mô hình hóa OLS)", "Câu hỏi": "Câu 5, 6, 7", "Slide": "Slide 5, 6", "Tab Streamlit": "Mục 6, 7"},
                     {"Họ và Tên": "Vũ Hữu Thái", "MSSV": "DE200132", "Vai trò": "Chuyên viên Chẩn đoán giả định", "Câu hỏi": "Câu 8", "Slide": "Slide 7", "Tab Streamlit": "Mục 8"},
                     {"Họ và Tên": "Nguyễn Hữu Hoàng Thắng", "MSSV": "DE200281", "Vai trò": "Chuyên viên Suy luận Thống kê", "Câu hỏi": "Câu 9, 10, 11, 12", "Slide": "Slide 8, 9", "Tab Streamlit": "Mục 9, 10"},
                     {"Họ và Tên": "Trần Đức Duy", "MSSV": "DE180206", "Vai trò": "Chuyên viên Dự đoán & Tổng kết", "Câu hỏi": "Câu 1A, 1B, Phần 5", "Slide": "Slide 10, 11, 12", "Tab Streamlit": "Mục 11, 12"},
@@ -1037,7 +1037,7 @@ def main():
     elif menu == "6. Tương quan Pearson (Câu 5)":
         render_presenter_ribbon(
             "Võ Ngọc Minh Quân (DE200080)",
-            "Phân tích Tương quan Tuyến tính Pearson (Câu 5)",
+            "Nhóm trưởng - Phân tích Tương quan Pearson (Câu 5)",
             "Slide 5",
             "Trỏ vào hệ số r = 0.4954, p-value = 0.0039 và nhấn mạnh Tương quan KHÔNG đồng nghĩa với Nhân quả.",
             show_presenter_guide,
@@ -1085,7 +1085,7 @@ def main():
     elif menu == "7. Hồi quy tuyến tính (Câu 6 & 7)":
         render_presenter_ribbon(
             "Võ Ngọc Minh Quân (DE200080)",
-            "Mô hình Hồi quy Tuyến tính OLS & Độ phù hợp (Câu 6 & 7)",
+            "Nhóm trưởng - Mô hình Hồi quy Tuyến tính OLS (Câu 6 & 7)",
             "Slide 6",
             "Trỏ vào phương trình Ŷ = 3.6676 + 0.4999X, bảng hệ số b₀, b₁, hệ số xác định R² = 24.5% và sai số chuẩn s = 1.0868.",
             show_presenter_guide,

@@ -66,9 +66,9 @@ THÔNG TIN NHÓM VÀ ĐỀ TÀI:
 - Đề tài 1: Phân tích mối liên hệ giữa Điểm thi giữa kỳ (X) và Điểm bài thi cuối kỳ (Y)
 - Lớp: MAS291 | Nhóm: Nhóm 1 | Giảng viên hướng dẫn: Thầy nhannxv
 - Danh sách 6 thành viên thực hiện (Đóng góp 100%):
-  1. Mai Xuân Hiếu        - DE200199 (Nhóm trưởng)
+  1. Mai Xuân Hiếu        - DE200199 (Thành viên)
   2. Phan Dương Sinh      - DE200235 (Thành viên)
-  3. Võ Ngọc Minh Quân    - DE200080 (Thành viên)
+  3. Võ Ngọc Minh Quân    - DE200080 (Nhóm trưởng)
   4. Vũ Hữu Thái          - DE200132 (Thành viên)
   5. Nguyễn Hữu Hoàng Thắng - DE200281 (Thành viên)
   6. Trần Đức Duy         - DE180206 (Thành viên)

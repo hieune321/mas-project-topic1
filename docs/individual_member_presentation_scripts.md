@@ -10,7 +10,7 @@
 ---
 
 ## THÀNH VIÊN 1 — MAI XUÂN HIẾU (DE200199): MỞ ĐẦU, THIẾT KẾ MẪU & LÀM SẠCH DỮ LIỆU (CÂU 1, 2)
-- **Vai trò**: Nhóm trưởng / Người mở màn
+- **Vai trò**: Người mở màn & Chuyên viên Dữ liệu
 - **Thời lượng**: 2.5 phút
 - **Thao tác trên máy tính**:
   1. Chiếu Slide 1 (Trang bìa): Giới thiệu tên nhóm, giảng viên, môn học.

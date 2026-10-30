@@ -101,17 +101,17 @@ def create_master_excel(output_path: Path = TABLES_DIR / "MAS291_DeTai1_BangTinh
 
     members = REPORT_METADATA["members"]
     roles = [
+        "Thành viên",
+        "Thành viên",
         "Nhóm trưởng",
-        "Thành viên",
-        "Thành viên",
         "Thành viên",
         "Thành viên",
         "Thành viên",
     ]
     tasks = [
-        "Quản lý tiến độ dự án, tổ chức phân công, xây dựng kiến trúc mã nguồn Python & Streamlit, tổng hợp báo cáo (Câu 1, 2)",
-        "Thu thập dữ liệu khảo sát ẩn danh, kiểm tra tính hợp lệ, viết module làm sạch dữ liệu và thống kê mô tả (Câu 1, 2, 3, 4)",
-        "Vẽ đồ thị phân phối Histogram, Boxplot, phân tích ngoại lệ 1.5 IQR, tính tương quan Pearson và vẽ Scatterplot (Câu 4, 5, 6, 7)",
+        "Thu thập dữ liệu khảo sát ẩn danh, kiểm tra tính hợp lệ, thiết kế quy chuẩn làm sạch dữ liệu và định dạng báo cáo (Câu 1, 2)",
+        "Xử lý thống kê mô tả, tính toán độ tập trung, độ phân tán và vẽ biểu đồ phân phối Histogram & Boxplot (Câu 3, 4)",
+        "Nhóm trưởng: Quản lý tiến độ dự án, tổ chức phân công, xây dựng kiến trúc mã nguồn Python & Streamlit, ước lượng tương quan Pearson & OLS (Câu 5, 6, 7)",
         "Ước lượng mô hình hồi quy OLS, đánh giá R², sai số chuẩn s, thực hiện chẩn đoán giả định mô hình phần dư (Câu 6, 7, 8)",
         "Xây dựng khoảng tin cậy 95% cho trung bình và hệ số góc, kiểm định giả thuyết t một mẫu và hai phía (Câu 9, 10, 11, 12)",
         "Thực hiện câu hỏi riêng 1A (dự đoán tại X=6, X=8) và 1B (phân tích giới hạn mô hình, biến số bị bỏ sót), tổng kết báo cáo",
