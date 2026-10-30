@@ -1504,9 +1504,54 @@ def main():
         with st.container(border=True):
             st.markdown('<div class="section-header-title">📦 Trung tâm Tải xuống Toàn bộ Hồ sơ Dự án (Deliverables Hub)</div>', unsafe_allow_html=True)
             st.markdown(
-                '<div class="section-header-desc">Toàn bộ báo cáo, slide thuyết trình, kịch bản phân vai 6 thành viên và bộ bảng tính Excel đã được đồng bộ 100% với số liệu thực nghiệm n = 32.</div>',
+                '<div class="section-header-desc">Toàn bộ 5 sản phẩm nộp theo yêu cầu của Giảng viên đã được đóng gói đồng bộ 100% với số liệu thực nghiệm n = 32.</div>',
                 unsafe_allow_html=True,
             )
+
+            # Master Submission Package (1 File ZIP Duy Nhat Nop Giang Vien)
+            master_zip_path = REPORTS_DIR / "MAS291_Nhom1_ComputerProject_DeTai1.zip"
+            if not master_zip_path.exists():
+                master_zip_path = BASE_DIR / "MAS291_Nhom1_ComputerProject_DeTai1.zip"
+
+            st.markdown(
+                """
+                <div style="background: linear-gradient(135deg, #1E3A8A 0%, #2563EB 100%); padding: 1.1rem 1.4rem; border-radius: 10px; color: white; margin-bottom: 1.2rem;">
+                    <h3 style="margin: 0; color: white; font-weight: 700; font-size: 1.25rem;">🎁 GÓI NỘP BÀI TỔNG HỢP (1 FILE ZIP DUY NHẤT CHO GIẢNG VIÊN)</h3>
+                    <p style="margin: 0.4rem 0 0 0; opacity: 0.95; font-size: 0.95rem; line-height: 1.5;">
+                        Gom trọn vẹn <b>5 Sản phẩm nộp & Tiêu chí đánh giá</b> của Giảng viên: Báo cáo Word/PDF 5-7 trang, Dữ liệu gốc & sạch (No PII), Từ điển dữ liệu, File Excel có công thức động, Toàn bộ Mã nguồn Python chạy lại được, Slide 16:9 và Kịch bản thuyết trình 6 thành viên.
+                    </p>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
+            col_zip1, col_zip2 = st.columns([2, 1])
+            with col_zip1:
+                st.markdown(
+                    """
+                    **Cấu trúc 1 file ZIP nộp bài (`MAS291_Nhom1_ComputerProject_DeTai1.zip`):**
+                    - 📄 `00_HUONG_DAN_NOP_BAI_VA_CHAM_DIEM.txt`: Bảng đối chiếu 5 tiêu chí chấm điểm
+                    - 📁 `01_Bao_Cao_Chinh_Thuc/`: Báo cáo Word .docx & PDF .pdf (5-7 trang + Phụ lục)
+                    - 📁 `02_Du_Lieu_Goc_Va_Lam_Sach/`: CSV Raw 35 SV, CSV Cleaned 32 SV, Cleaning Log
+                    - 📁 `03_Tu_Dien_Du_Lieu/`: Data Dictionary Excel .xlsx & Markdown .md
+                    - 📁 `04_File_Excel_Cong_Thuc_Va_Ma_Nguon/`: `MAS291_DeTai1_BangTinh_Va_DuLieu_TongHop.xlsx` (100% công thức Excel sống) + Python Code
+                    - 📁 `05_Slide_Va_Kich_Ban_Thuyet_Trinh/`: PowerPoint .pptx, Slide .pdf, Kịch bản .docx & .pdf
+                    """
+                )
+            with col_zip2:
+                if master_zip_path.exists():
+                    zip_data = master_zip_path.read_bytes()
+                    st.download_button(
+                        label="📦 TẢI VỀ 1 FILE ZIP NỘP BÀI (8.1 MB)",
+                        data=zip_data,
+                        file_name="MAS291_Nhom1_ComputerProject_DeTai1.zip",
+                        mime="application/zip",
+                        type="primary",
+                        use_container_width=True,
+                    )
+                    st.caption("✅ Đáp ứng đầy đủ quy định nộp 1 file duy nhất lên hệ thống đào tạo FPTU.")
+
+            st.divider()
+            st.markdown("#### 📂 Hoặc Tải Từng Sản Phẩm Riêng Lẻ Dưới Đây:")
 
             col_doc, col_slide, col_xlsx = st.columns(3)
 
@@ -1585,6 +1630,7 @@ def main():
             with col_xlsx:
                 st.markdown("#### 📊 3. Bảng tính Excel Kết quả")
                 for name, fname in [
+                    ("⭐ BẢNG TÍNH TỔNG HỢP (100% CÔNG THỨC EXCEL ĐỘNG)", "MAS291_DeTai1_BangTinh_Va_DuLieu_TongHop.xlsx"),
                     ("Từ điển dữ liệu (data_dictionary.xlsx)", "data_dictionary.xlsx"),
                     ("Thống kê mô tả (descriptive_statistics.xlsx)", "descriptive_statistics.xlsx"),
                     ("Kết quả hồi quy (regression_results.xlsx)", "regression_results.xlsx"),

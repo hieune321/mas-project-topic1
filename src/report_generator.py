@@ -561,3 +561,83 @@ class ReportGenerator:
             duty_text = duties[r_idx] if r_idx < len(duties) else "Phối hợp phân tích và hoàn thiện tài liệu"
             team_tbl.rows[r_idx + 1].cells[3].paragraphs[0].text = duty_text
         style_table(team_tbl, [Inches(1.8), Inches(1.2), Inches(1.2), Inches(2.8)])
+
+        # Phụ lục C: Tập dữ liệu 32 quan sát đã làm sạch (ẩn danh, no PII)
+        doc.add_heading("\nPhụ lục C. Tập dữ liệu nghiên cứu chính thức (n = 32 quan sát đã làm sạch, ẩn danh)", level=2)
+        doc.add_paragraph(
+            "Tập dữ liệu bao gồm 32 cặp điểm thi của cùng một sinh viên độc lập, đã loại bỏ toàn bộ thông tin nhận diện cá nhân (PII), "
+            "tuân thủ nghiêm ngặt chuẩn đạo đức nghiên cứu khoa học:"
+        )
+
+        clean_csv = Path(__file__).resolve().parent.parent / "data" / "processed" / "cleaned_data.csv"
+        if clean_csv.exists():
+            import pandas as pd
+            df_c = pd.read_csv(clean_csv)
+            n_rows = len(df_c)
+            half = (n_rows + 1) // 2  # 16 rows
+
+            data_tbl = doc.add_table(rows=half + 1, cols=8)
+            h_data = ["STT", "Mã ẩn danh", "Điểm GK (X)", "Điểm CK (Y)", "STT", "Mã ẩn danh", "Điểm GK (X)", "Điểm CK (Y)"]
+            for c_idx, h in enumerate(h_data):
+                data_tbl.rows[0].cells[c_idx].paragraphs[0].text = h
+
+            for r in range(half):
+                row_cells = data_tbl.rows[r + 1].cells
+                # Left half (0 to 15)
+                row_cells[0].paragraphs[0].text = str(r + 1)
+                row_cells[1].paragraphs[0].text = str(df_c.iloc[r]["student_id"])
+                row_cells[2].paragraphs[0].text = f"{float(df_c.iloc[r]['midterm_score']):.1f}"
+                row_cells[3].paragraphs[0].text = f"{float(df_c.iloc[r]['final_score']):.1f}"
+
+                # Right half (16 to 31)
+                r2 = r + half
+                if r2 < n_rows:
+                    row_cells[4].paragraphs[0].text = str(r2 + 1)
+                    row_cells[5].paragraphs[0].text = str(df_c.iloc[r2]["student_id"])
+                    row_cells[6].paragraphs[0].text = f"{float(df_c.iloc[r2]['midterm_score']):.1f}"
+                    row_cells[7].paragraphs[0].text = f"{float(df_c.iloc[r2]['final_score']):.1f}"
+                else:
+                    for c in range(4, 8):
+                        row_cells[c].paragraphs[0].text = ""
+
+            style_table(data_tbl, [Inches(0.6), Inches(1.1), Inches(1.0), Inches(1.0), Inches(0.6), Inches(1.1), Inches(1.0), Inches(1.0)])
+
+        # Phụ lục D: Bảng công thức Excel & Hướng dẫn chạy mã nguồn Python có thể tái lập
+        doc.add_heading("\nPhụ lục D. Bảng công thức tính toán Excel và Mã nguồn Python có thể tái lập (Reproducible)", level=2)
+        doc.add_paragraph(
+            "Toàn bộ các phép tính toán thống kê trong đề tài đều có thể tái lập 100% bằng cả hai công cụ: "
+            "Bảng tính Microsoft Excel (sử dụng công thức nguyên bản) và Ngôn ngữ lập trình Python (sử dụng thư viện scipy/statsmodels):\n\n"
+            "1. Bảng đối chiếu công thức Excel và hàm Python tương ứng:"
+        )
+
+        formula_tbl = doc.add_table(rows=9, cols=4)
+        h_form = ["Nội dung thống kê", "Ký hiệu", "Công thức hàm Microsoft Excel", "Mã nguồn Python (scipy/statsmodels)"]
+        for c_idx, h in enumerate(h_form):
+            formula_tbl.rows[0].cells[c_idx].paragraphs[0].text = h
+
+        form_rows = [
+            ("Trung bình mẫu", "X_bar, Y_bar", "=AVERAGE(range)", "np.mean(x), np.mean(y)"),
+            ("Độ lệch chuẩn mẫu", "s_X, s_Y", "=STDEV.S(range)", "np.std(x, ddof=1), np.std(y, ddof=1)"),
+            ("Trung vị & Tứ phân vị", "Median, Q1, Q3", "=MEDIAN(), =QUARTILE.INC(..., 1/3)", "np.median(), np.percentile(..., [25, 75])"),
+            ("Hệ số tương quan Pearson", "r", "=CORREL(X_range, Y_range)", "scipy.stats.pearsonr(x, y)[0]"),
+            ("Hệ số góc hồi quy", "b1", "=SLOPE(Y_range, X_range)", "ols_res.params['midterm_score']"),
+            ("Hệ số chặn hồi quy", "b0", "=INTERCEPT(Y_range, X_range)", "ols_res.params['const']"),
+            ("Hệ số xác định", "R²", "=RSQ(Y_range, X_range)", "ols_res.rsquared"),
+            ("Kiểm định giả thuyết t", "t, p-value", "=T.DIST.2T(ABS(t), df)", "ols_res.pvalues['midterm_score']"),
+        ]
+        for r_idx, (m_name, m_sym, m_xl, m_py) in enumerate(form_rows):
+            formula_tbl.rows[r_idx + 1].cells[0].paragraphs[0].text = m_name
+            formula_tbl.rows[r_idx + 1].cells[1].paragraphs[0].text = m_sym
+            formula_tbl.rows[r_idx + 1].cells[2].paragraphs[0].text = m_xl
+            formula_tbl.rows[r_idx + 1].cells[3].paragraphs[0].text = m_py
+
+        style_table(formula_tbl, [Inches(1.8), Inches(1.1), Inches(2.1), Inches(2.2)])
+
+        doc.add_paragraph(
+            "\n2. Đường dẫn trực tiếp đến sản phẩm mã nguồn và ứng dụng tương tác:\n"
+            "• Ứng dụng Web tương tác Streamlit Cloud: https://masproject.streamlit.app\n"
+            "• Kho lưu trữ toàn bộ mã nguồn trên GitHub: https://github.com/hieune321/mas-project-topic1\n"
+            "• File Excel có công thức động: outputs/tables/MAS291_DeTai1_BangTinh_Va_DuLieu_TongHop.xlsx\n"
+            "• Lệnh chạy tự động toàn bộ phân tích chỉ với 1 cú nhấp: run_pipeline.bat (hoặc python main.py)\n"
+            "• Lệnh khởi động ứng dụng Web phân tích cục bộ: run_app.bat (hoặc streamlit run app.py)"
+        )
