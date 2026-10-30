@@ -1,13 +1,15 @@
 # Kịch Bản Thuyết Trình và Thao Tác Máy Tính Chi Tiết Cho 6 Thành Viên
 
-**Học phần**: Xác suất & Thống kê ứng dụng  
+**Trường**: Đại học FPT
+**Học phần**: MAS291 (Xác suất & Thống kê ứng dụng)
+**Lớp**: MAS291 | **Nhóm**: Nhóm 1 | **GVHD**: nhannxv  
 **Đề tài 1**: Điểm Giữa Kỳ và Điểm Cuối Kỳ  
 **Thời lượng**: 12–15 phút tổng thể (trung bình 2–2.5 phút/người) + 5 phút Q&A.  
 **Cỡ mẫu thực tế**: $n = 32$ (khảo sát thực nghiệm qua Google Forms).
 
 ---
 
-## THÀNH VIÊN 1: MỞ ĐẦU, THIẾT KẾ MẪU & LÀM SẠCH DỮ LIỆU (CÂU 1, 2)
+## THÀNH VIÊN 1 — MAI XUÂN HIẾU (DE200199): MỞ ĐẦU, THIẾT KẾ MẪU & LÀM SẠCH DỮ LIỆU (CÂU 1, 2)
 - **Vai trò**: Nhóm trưởng / Người mở màn
 - **Thời lượng**: 2.5 phút
 - **Thao tác trên máy tính**:
@@ -25,14 +27,14 @@
   > Thứ nhất, loại bỏ 2 bản ghi người tham gia chọn ‘Không đồng ý’ chia sẻ dữ liệu nghiên cứu.  
   > Thứ hai, loại bỏ 1 bản ghi nộp trùng lặp mã sinh viên (mã de200125).  
   > Thứ ba, kiểm tra dữ liệu thiếu và thang điểm: Toàn bộ 32 bản ghi còn lại đều có đầy đủ cặp điểm X và Y, nằm hợp lệ trong đoạn [0, 10].  
-  > Như vậy, mẫu nghiên cứu chính thức đạt n = 32 cặp quan sát, hoàn toàn thỏa mãn yêu cầu tối thiểu n >= 30 của đề bài. Sau đây, xin mời bạn [Tên Thành viên 2] tiếp tục với phần Thống kê mô tả và Phân tích phân phối.”
+  > Như vậy, mẫu nghiên cứu chính thức đạt n = 32 cặp quan sát, hoàn toàn thỏa mãn yêu cầu tối thiểu n >= 30 của đề bài. Sau đây, xin mời bạn Nguyễn Hữu Hoàng Thắng tiếp tục với phần Thống kê mô tả và Phân tích phân phối.”
 - **Câu hỏi phản biện Thầy/Cô hay hỏi**:  
   *Hỏi: “Tại sao thu về 35 phiếu mà lại tự ý bỏ đi 3 phiếu?”*  
   *Đáp: “Dạ thưa Thầy/Cô, nhóm không tự ý loại bỏ số liệu để làm đẹp kết quả mà tuân thủ đúng đạo đức nghiên cứu học thuật. 2 phiếu bị loại do sinh viên tích chọn không đồng ý sử dụng điểm số cho nghiên cứu; 1 phiếu bị loại do bạn sinh viên gửi form 2 lần trùng lặp cùng một mã. Quy trình xử lý này được ghi nhận minh bạch 100% trong nhật ký cleaning_log.csv đính kèm ạ.”*
 
 ---
 
-## THÀNH VIÊN 2: THỐNG KÊ MÔ TẢ VÀ PHÂN TÍCH NGOẠI LỆ (CÂU 3, 4)
+## THÀNH VIÊN 2 — NGUYỄN HỮU HOÀNG THẮNG (DE200281): THỐNG KÊ MÔ TẢ VÀ PHÂN TÍCH NGOẠI LỆ (CÂU 3, 4)
 - **Vai trò**: Chuyên viên Thống kê mô tả
 - **Thời lượng**: 2.0 phút
 - **Thao tác trên máy tính**:
@@ -49,14 +51,14 @@
   > Quan sát Hình 1 (Histogram) và Hình 2 (Boxplot), phân phối điểm của sinh viên có dạng đơn đỉnh và khá cân đối. Áp dụng quy tắc học thuật 1.5 lần khoảng tứ phân vị (IQR):  
   > - Ngưỡng dưới cho X là 5.438, ngưỡng trên là 10.938.  
   > - Mẫu dữ liệu thực tế không có quan sát nào rơi ngoài ngưỡng bất thường.  
-  > Nhóm cũng quán triệt nguyên tắc: Nếu có ngoại lệ thực tế trong thang 0-10 thì tuyệt đối không được xóa bỏ vì đó là phản ánh năng lực thật của người học. Tiếp theo, xin mời bạn [Tên Thành viên 3] trình bày về Mô hình hồi quy tuyến tính.”
+  > Nhóm cũng quán triệt nguyên tắc: Nếu có ngoại lệ thực tế trong thang 0-10 thì tuyệt đối không được xóa bỏ vì đó là phản ánh năng lực thật của người học. Tiếp theo, xin mời bạn Trần Đức Duy trình bày về Mô hình hồi quy tuyến tính.”
 - **Câu hỏi phản biện Thầy/Cô hay hỏi**:  
   *Hỏi: “Tại sao trong mẫu này Mean và Median của nhóm lại gần bằng nhau như vậy?”*  
   *Đáp: “Dạ thưa Thầy/Cô, vì dữ liệu điểm thi của nhóm phân bố tương đối đối xứng quanh mức 7.4 - 7.5 điểm (Skewness chỉ khoảng -0.2), đề thi không quá dễ cũng không quá khó và không có sinh viên nào bị 0 hay 1 điểm kéo lệch phân phối nên Mean và Median hội tụ rất sát nhau ạ.”*
 
 ---
 
-## THÀNH VIÊN 3: TƯƠNG QUAN PEARSON VÀ HỒI QUY TUYẾN TÍNH OLS (CÂU 5, 6, 7)
+## THÀNH VIÊN 3 — TRẦN ĐỨC DUY (DE180206): TƯƠNG QUAN PEARSON VÀ HỒI QUY TUYẾN TÍNH OLS (CÂU 5, 6, 7)
 - **Vai trò**: Chuyên viên Xây dựng Mô hình
 - **Thời lượng**: 2.5 phút
 - **Thao tác trên máy tính**:
@@ -76,14 +78,14 @@
   > Về độ phù hợp của mô hình (Câu 7):  
   > - Hệ số xác định R² = 0.2454: Cho biết điểm thi giữa kỳ giải thích được 24.5% sự biến thiên của điểm thi cuối kỳ. Còn lại 75.5% sự biến thiên phụ thuộc vào các yếu tố ngoài mô hình.  
   > - Sai số chuẩn của hồi quy s = 1.0868 điểm: Cho thấy độ lệch điển hình của điểm số thực tế quanh đường thẳng dự đoán là khoảng 1.09 điểm.  
-  > Tiếp theo, xin mời bạn [Tên Thành viên 4] trình bày về Chẩn đoán phần dư của mô hình.”
+  > Tiếp theo, xin mời bạn Phan Dương Sinh trình bày về Chẩn đoán phần dư của mô hình.”
 - **Câu hỏi phản biện Thầy/Cô hay hỏi**:  
   *Hỏi: “Hệ số R² chỉ đạt 24.5% có phải là mô hình này bị thất bại không?”*  
   *Đáp: “Dạ thưa Thầy/Cô, hoàn toàn không ạ. Trong dữ liệu giáo dục và kết quả học tập của con người, R² đạt khoảng 25% là mức rất phổ biến. Điểm thi cuối kỳ phụ thuộc vào nhiều yếu tố như thời gian ôn thi, độ khó đề thi, sức khỏe. Quan trọng nhất là hệ số góc b1 có ý nghĩa thống kê rất cao (p = 0.0039), chứng minh điểm giữa kỳ vẫn là chỉ báo cảnh báo sớm rất có giá trị ạ.”*
 
 ---
 
-## THÀNH VIÊN 4: CHẨN ĐOÁN CÁC GIẢ ĐỊNH MÔ HÌNH HỒI QUY (CÂU 8)
+## THÀNH VIÊN 4 — PHAN DƯƠNG SINH (DE200235): CHẨN ĐOÁN CÁC GIẢ ĐỊNH MÔ HÌNH HỒI QUY (CÂU 8)
 - **Vai trò**: Chuyên viên Chẩn đoán & Thẩm định Giả định
 - **Thời lượng**: 2.0 phút
 - **Thao tác trên máy tính**:
@@ -97,14 +99,14 @@
   > 3. Giả định phân phối chuẩn của phần dư (Normality): Biểu đồ Normal Q-Q Plot cho thấy các điểm phần dư bám sát đường thẳng chuẩn lý thuyết. Kiểm định Shapiro-Wilk đạt thống kê W = 0.957 với p-value = 0.216 (> 0.05), xác nhận phần dư tuân theo phân phối chuẩn.  
   > 4. Giả định tính độc lập (Independence): Thống kê Durbin-Watson đạt giá trị DW = 1.942, rất gần mức 2.0 lý tưởng, cho thấy không có hiện tượng tự tương quan chuỗi.  
   > Đặc biệt, nhóm xin nhấn mạnh giới hạn bản chất: Điểm thi của sinh viên bị chặn cứng trong đoạn [0, 10]. Mô hình OLS là hàm tuyến tính vô hạn, nên nếu dùng để ngoại suy ở các mức điểm quá thấp hoặc quá cao thì có thể dự đoán điểm < 0 hoặc > 10. Do đó, mô hình này chỉ có độ tin cậy cao trong phạm vi điểm số thực tế quan sát được.  
-  > Tiếp theo, xin mời bạn [Tên Thành viên 5] trình bày phần Ước lượng khoảng tin cậy và Kiểm định giả thuyết.”
+  > Tiếp theo, xin mời bạn Võ Ngọc Minh Quân trình bày phần Ước lượng khoảng tin cậy và Kiểm định giả thuyết.”
 - **Câu hỏi phản biện Thầy/Cô hay hỏi**:  
   *Hỏi: “Giả định phân phối chuẩn trong hồi quy OLS là đòi hỏi bản thân X, Y phải chuẩn hay phần dư e phải chuẩn?”*  
   *Đáp: “Dạ thưa Thầy/Cô, đây là điểm rất nhiều bạn nhầm lẫn. Hồi quy OLS không hề bắt buộc biến X hay Y riêng lẻ phải có phân phối chuẩn. Giả định chuẩn chỉ áp dụng đối với phần sai số ngẫu nhiên epsilon (thể hiện qua phần dư e) để đảm bảo các kiểm định t và F có phân phối chính xác trong mẫu hữu hạn ạ.”*
 
 ---
 
-## THÀNH VIÊN 5: KHOẢNG TIN CẬY VÀ KIỂM ĐỊNH GIẢ THUYẾT (CÂU 9, 10, 11, 12)
+## THÀNH VIÊN 5 — VÕ NGỌC MINH QUÂN (DE200080): KHOẢNG TIN CẬY VÀ KIỂM ĐỊNH GIẢ THUYẾT (CÂU 9, 10, 11, 12)
 - **Vai trò**: Chuyên viên Suy luận Thống kê
 - **Thời lượng**: 2.5 phút
 - **Thao tác trên máy tính**:
@@ -129,14 +131,14 @@
   > Thứ tư, Kiểm định hai phía về hệ số góc (Câu 12):  
   > H0: beta1 = 0   so với   H1: beta1 != 0  
   > Thống kê kiểm định t = 3.123, p-value hai phía = 0.0039 (< 0.01).  
-  > Quyết định: BÁC BỎ H0. Kết luận này nhất quán tuyệt đối 100% với khoảng tin cậy ở Câu 11 (bác bỏ H0 tương đương với KTC không chứa 0). Sau đây, xin mời bạn [Tên Thành viên 6] trình bày phần Dự đoán điểm, Giới hạn mô hình và Kết luận chung.”
+  > Quyết định: BÁC BỎ H0. Kết luận này nhất quán tuyệt đối 100% với khoảng tin cậy ở Câu 11 (bác bỏ H0 tương đương với KTC không chứa 0). Sau đây, xin mời bạn Vũ Hữu Thái trình bày phần Dự đoán điểm, Giới hạn mô hình và Kết luận chung.”
 - **Câu hỏi phản biện Thầy/Cô hay hỏi**:  
   *Hỏi: “Tại sao ở Câu 10 p-value = 0.0423 khá sát với 0.05, nếu ta đổi sang kiểm định hai phía thì kết luận có đổi không?”*  
   *Đáp: “Dạ thưa Thầy/Cô, nếu chuyển sang kiểm định hai phía thì p-value sẽ nhân đôi lên thành 0.0846 (> 0.05), khi đó ta sẽ không bác bỏ H0. Tuy nhiên, theo đúng yêu cầu đề tài trong đề cương: Giảng viên yêu cầu kiểm tra điểm cuối kỳ có LỚN HƠN 7 hay không, và quy ước đã chốt chiều giả thuyết đối trước khi phân tích là một phía, nên việc dùng kiểm định một phía là hoàn toàn chuẩn xác theo thiết kế nghiên cứu ban đầu ạ.”*
 
 ---
 
-## THÀNH VIÊN 6: DỰ ĐOÁN ĐIỂM, GIỚI HẠN MÔ HÌNH VÀ KẾT LUẬN (CÂU 1A, 1B & PHẦN 5)
+## THÀNH VIÊN 6 — VŨ HỮU THÁI (DE200132): DỰ ĐOÁN ĐIỂM, GIỚI HẠN MÔ HÌNH VÀ KẾT LUẬN (CÂU 1A, 1B & PHẦN 5)
 - **Vai trò**: Chuyên viên Ứng dụng & Tổng kết
 - **Thời lượng**: 2.5 phút
 - **Thao tác trên máy tính (Mục gây ấn tượng mạnh nhất)**:

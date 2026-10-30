@@ -77,41 +77,64 @@ def create_deck():
     bg1.line.fill.background()
 
     # Title Container Box
-    t_box = slide1.shapes.add_textbox(Inches(1.0), Inches(1.2), Inches(11.333), Inches(4.5))
+    t_box = slide1.shapes.add_textbox(Inches(0.8), Inches(0.8), Inches(11.733), Inches(6.0))
     tf1 = t_box.text_frame
     tf1.word_wrap = True
 
     p0 = tf1.paragraphs[0]
-    p0.text = "BÀI TẬP LỚN MÁY TÍNH — XÁC SUẤT & THỐNG KÊ ỨNG DỤNG"
-    p0.font.size = Pt(14)
+    p0.text = "TRƯỜNG ĐẠI HỌC FPT — BÀI TẬP LỚN MÁY TÍNH (COMPUTER PROJECT)"
+    p0.font.size = Pt(13)
     p0.font.bold = True
     p0.font.color.rgb = RGBColor(200, 225, 255)
 
     p1 = tf1.add_paragraph()
-    p1.space_before = Pt(16)
+    p1.space_before = Pt(8)
     p1.text = "ĐỀ TÀI 1: ĐIỂM GIỮA KỲ VÀ ĐIỂM CUỐI KỲ"
-    p1.font.size = Pt(32)
+    p1.font.size = Pt(28)
     p1.font.bold = True
     p1.font.color.rgb = WHITE
 
     p2 = tf1.add_paragraph()
-    p2.space_before = Pt(12)
+    p2.space_before = Pt(6)
     p2.text = "Câu hỏi nghiên cứu: “Điểm giữa kỳ có giúp dự đoán điểm cuối kỳ của sinh viên trong cùng học phần không?”"
-    p2.font.size = Pt(18)
+    p2.font.size = Pt(14)
     p2.font.italic = True
     p2.font.color.rgb = RGBColor(230, 240, 255)
 
+    p_meta = tf1.add_paragraph()
+    p_meta.space_before = Pt(10)
+    p_meta.text = "Học phần: MAS291 (Xác suất & Thống kê ứng dụng)  |  Lớp: MAS291  |  Nhóm: Nhóm 1  |  GVHD: nhannxv"
+    p_meta.font.size = Pt(13)
+    p_meta.font.bold = True
+    p_meta.font.color.rgb = RGBColor(255, 215, 0)
+
     p3 = tf1.add_paragraph()
-    p3.space_before = Pt(36)
-    p3.text = "Nhóm thực hiện: 6 thành viên  |  Dữ liệu khảo sát thực tế: n = 32  |  Học kỳ: 2025–2026"
-    p3.font.size = Pt(14)
-    p3.font.color.rgb = RGBColor(180, 210, 240)
+    p3.space_before = Pt(14)
+    p3.text = "DANH SÁCH THÀNH VIÊN NHÓM 1 THỰC HIỆN:"
+    p3.font.size = Pt(12)
+    p3.font.bold = True
+    p3.font.color.rgb = WHITE
+
+    team_members = [
+        "1. Mai Xuân Hiếu — MSSV: DE200199 (Nhóm trưởng / Mở đầu & Làm sạch)",
+        "2. Nguyễn Hữu Hoàng Thắng — MSSV: DE200281 (Thống kê mô tả & Phân phối)",
+        "3. Trần Đức Duy — MSSV: DE180206 (Tương quan Pearson & Hồi quy OLS)",
+        "4. Phan Dương Sinh — MSSV: DE200235 (Chẩn đoán giả định Gauss-Markov)",
+        "5. Võ Ngọc Minh Quân — MSSV: DE200080 (Khoảng tin cậy & Kiểm định giả thuyết)",
+        "6. Vũ Hữu Thái — MSSV: DE200132 (Dự đoán điểm, Giới hạn thực nghiệm & Tổng kết)",
+    ]
+    for tm in team_members:
+        p_tm = tf1.add_paragraph()
+        p_tm.space_before = Pt(3)
+        p_tm.text = f"• {tm}"
+        p_tm.font.size = Pt(11.5)
+        p_tm.font.color.rgb = RGBColor(215, 235, 255)
 
     # =========================================================================
     # SLIDE 2: THIẾT KẾ NGHIÊN CỨU & LÀM SẠCH (CÂU 1 & 2 - MEMBER 1)
     # =========================================================================
     slide2 = prs.slides.add_slide(blank_layout)
-    add_header(slide2, "1. Thiết Kế Nghiên Cứu & Quy Trình Làm Sạch Dữ Liệu", "Câu 1 & 2 — Mục tiêu và Dữ liệu", "Thành viên 1")
+    add_header(slide2, "1. Thiết Kế Nghiên Cứu & Quy Trình Làm Sạch Dữ Liệu", "Câu 1 & 2 — Mục tiêu và Dữ liệu", "Mai Xuân Hiếu (DE200199)")
 
     # Card Left: Thiết kế nghiên cứu
     c_left = slide2.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), Inches(1.5), Inches(5.6), Inches(5.4))
@@ -188,7 +211,7 @@ def create_deck():
     # SLIDE 3: THỐNG KÊ MÔ TẢ (CÂU 3 - MEMBER 2)
     # =========================================================================
     slide3 = prs.slides.add_slide(blank_layout)
-    add_header(slide3, "2. Bảng Thống Kê Mô Tả Điểm Giữa Kỳ và Cuối Kỳ", "Câu 3 — Thống kê mô tả", "Thành viên 2")
+    add_header(slide3, "2. Bảng Thống Kê Mô Tả Điểm Giữa Kỳ và Cuối Kỳ", "Câu 3 — Thống kê mô tả", "Nguyễn Hữu Hoàng Thắng (DE200281)")
 
     # Table of 10 metrics
     rows = 11
@@ -266,7 +289,7 @@ def create_deck():
     # SLIDE 4: PHÂN PHỐI & NGOẠI LỆ (CÂU 4 - MEMBER 2)
     # =========================================================================
     slide4 = prs.slides.add_slide(blank_layout)
-    add_header(slide4, "3. Phân Phối Dữ Liệu và Phân Tích Ngoại Lệ 1.5 IQR", "Câu 4 — Phân phối & Ngoại lệ", "Thành viên 2")
+    add_header(slide4, "3. Phân Phối Dữ Liệu và Phân Tích Ngoại Lệ 1.5 IQR", "Câu 4 — Phân phối & Ngoại lệ", "Nguyễn Hữu Hoàng Thắng (DE200281)")
 
     # Add Figure 1 (Histograms)
     fig1_path = Path("outputs/figures/fig1_histograms.png")
@@ -304,7 +327,7 @@ def create_deck():
     # SLIDE 5: TƯƠNG QUAN PEARSON (CÂU 5 - MEMBER 3)
     # =========================================================================
     slide5 = prs.slides.add_slide(blank_layout)
-    add_header(slide5, "4. Tương Quan Tuyến Tính Pearson & Biểu Đồ Phân Tán", "Câu 5 — Mối liên hệ ban đầu", "Thành viên 3")
+    add_header(slide5, "4. Tương Quan Tuyến Tính Pearson & Biểu Đồ Phân Tán", "Câu 5 — Mối liên hệ ban đầu", "Trần Đức Duy (DE180206)")
 
     # Add Figure 3 (Scatterplot)
     fig3_path = Path("outputs/figures/fig3_scatterplot.png")
@@ -350,7 +373,7 @@ def create_deck():
     # SLIDE 6: HỒI QUY TUYẾN TÍNH OLS (CÂU 6 & 7 - MEMBER 3)
     # =========================================================================
     slide6 = prs.slides.add_slide(blank_layout)
-    add_header(slide6, "5. Mô Hình Hồi Quy Tuyến Tính Đơn OLS & Độ Phù Hợp", "Câu 6 & 7 — Ước lượng OLS", "Thành viên 3")
+    add_header(slide6, "5. Mô Hình Hồi Quy Tuyến Tính Đơn OLS & Độ Phù Hợp", "Câu 6 & 7 — Ước lượng OLS", "Trần Đức Duy (DE180206)")
 
     # Left: Regression Fit Figure
     fig4_path = Path("outputs/figures/fig4_regression_fit.png")
@@ -401,7 +424,7 @@ def create_deck():
     # SLIDE 7: CHẨN ĐOÁN MÔ HÌNH (CÂU 8 - MEMBER 4)
     # =========================================================================
     slide7 = prs.slides.add_slide(blank_layout)
-    add_header(slide7, "6. Chẩn Đoán Giả Định Gauss-Markov Trên Phần Dư", "Câu 8 — Chẩn đoán phần dư", "Thành viên 4")
+    add_header(slide7, "6. Chẩn Đoán Giả Định Gauss-Markov Trên Phần Dư", "Câu 8 — Chẩn đoán phần dư", "Phan Dương Sinh (DE200235)")
 
     # Center: Diagnostics Figure
     fig5_path = Path("outputs/figures/fig5_diagnostics.png")
@@ -445,7 +468,7 @@ def create_deck():
     # SLIDE 8: KTC & KIỂM ĐỊNH TRUNG BÌNH (CÂU 9 & 10 - MEMBER 5)
     # =========================================================================
     slide8 = prs.slides.add_slide(blank_layout)
-    add_header(slide8, "7. Khoảng Tin Cậy 95% & Kiểm Định Điểm Cuối Kỳ Trung Bình", "Câu 9 & 10 — Suy luận trung bình", "Thành viên 5")
+    add_header(slide8, "7. Khoảng Tin Cậy 95% & Kiểm Định Điểm Cuối Kỳ Trung Bình", "Câu 9 & 10 — Suy luận trung bình", "Võ Ngọc Minh Quân (DE200080)")
 
     # Card Left: Câu 9 (KTC Trung bình)
     c_c9 = slide8.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), Inches(1.5), Inches(5.6), Inches(5.4))
@@ -525,7 +548,7 @@ def create_deck():
     # SLIDE 9: KTC & KIỂM ĐỊNH HỆ SỐ GÓC (CÂU 11 & 12 - MEMBER 5)
     # =========================================================================
     slide9 = prs.slides.add_slide(blank_layout)
-    add_header(slide9, "8. Khoảng Tin Cậy 95% & Kiểm Định Hệ Số Góc Hồi Quy", "Câu 11 & 12 — Suy luận hệ số góc", "Thành viên 5")
+    add_header(slide9, "8. Khoảng Tin Cậy 95% & Kiểm Định Hệ Số Góc Hồi Quy", "Câu 11 & 12 — Suy luận hệ số góc", "Võ Ngọc Minh Quân (DE200080)")
 
     # Card Left: Câu 11 (KTC Hệ số góc)
     c_c11 = slide9.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), Inches(1.5), Inches(5.6), Inches(5.4))
@@ -604,7 +627,7 @@ def create_deck():
     # SLIDE 10: DỰ ĐOÁN ĐIỂM (CÂU 1A - MEMBER 6)
     # =========================================================================
     slide10 = prs.slides.add_slide(blank_layout)
-    add_header(slide10, "9. Dự Đoán Điểm Cuối Kỳ Theo Bối Cảnh Thực Tế", "Câu 1A — Dự đoán chuyên sâu Đề tài 1", "Thành viên 6")
+    add_header(slide10, "9. Dự Đoán Điểm Cuối Kỳ Theo Bối Cảnh Thực Tế", "Câu 1A — Dự đoán chuyên sâu Đề tài 1", "Vũ Hữu Thái (DE200132)")
 
     # Table of Predictions
     rows = 3
@@ -675,7 +698,7 @@ def create_deck():
     # SLIDE 11: GIỚI HẠN MÔ HÌNH TỪ DỮ LIỆU THỰC NGHIỆM (CÂU 1B - MEMBER 6)
     # =========================================================================
     slide11 = prs.slides.add_slide(blank_layout)
-    add_header(slide11, "10. Giới Hạn Của Mô Hình & Bằng Chứng Thực Nghiệm", "Câu 1B — Giới hạn mô hình", "Thành viên 6")
+    add_header(slide11, "10. Giới Hạn Của Mô Hình & Bằng Chứng Thực Nghiệm", "Câu 1B — Giới hạn mô hình", "Vũ Hữu Thái (DE200132)")
 
     # 3 Column Cards
     col_w = Inches(3.7)
@@ -751,7 +774,7 @@ def create_deck():
     # SLIDE 12: TỔNG KẾT & HỎI ĐÁP (PHẦN 5 - MEMBER 6)
     # =========================================================================
     slide12 = prs.slides.add_slide(blank_layout)
-    add_header(slide12, "11. Kết Luận Học Thuật & Phiên Hỏi Đáp (Q&A)", "Phần 5 — Kết luận & Hạn chế", "Thành viên 6")
+    add_header(slide12, "11. Kết Luận Học Thuật & Phiên Hỏi Đáp (Q&A)", "Phần 5 — Kết luận & Hạn chế", "Vũ Hữu Thái (DE200132)")
 
     # Card Left: 3 Phát hiện & 2 Hạn chế
     c_fin = slide12.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), Inches(1.5), Inches(7.5), Inches(5.4))

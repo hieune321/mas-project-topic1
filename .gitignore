@@ -33,6 +33,7 @@ htmlcov/
 
 # Temporary files
 doc_extracted.txt
+~$*
 
 # OS / Editor
 .DS_Store

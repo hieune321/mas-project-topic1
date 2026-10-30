@@ -61,17 +61,19 @@ REPORT_METADATA = {
     "topic_id": "Đề tài 1",
     "topic_title": "Điểm giữa kỳ và điểm cuối kỳ",
     "research_question": "Điểm giữa kỳ có giúp dự đoán điểm cuối kỳ của sinh viên trong cùng học phần không?",
-    "institution": "Trường Đại học [Cần bổ sung]",
-    "course_name": "Xác suất & Thống kê ứng dụng",
-    "class_name": "[Cần bổ sung]",
-    "group_name": "Nhóm [Cần bổ sung]",
-    "instructor": "[Cần bổ sung]",
+    "institution": "Trường Đại học FPT",
+    "course_name": "Xác suất & Thống kê ứng dụng (MAS291)",
+    "class_name": "MAS291",
+    "group_name": "Nhóm 1",
+    "instructor": "nhannxv",
     "academic_year": "2025–2026",
     "members": [
-        {"name": "[Họ và tên SV 1]", "id": "[MSSV 1]", "role": "Nhóm trưởng"},
-        {"name": "[Họ và tên SV 2]", "id": "[MSSV 2]", "role": "Thành viên"},
-        {"name": "[Họ và tên SV 3]", "id": "[MSSV 3]", "role": "Thành viên"},
-        {"name": "[Họ và tên SV 4]", "id": "[MSSV 4]", "role": "Thành viên"},
+        {"name": "Mai Xuân Hiếu", "id": "DE200199", "role": "Nhóm trưởng"},
+        {"name": "Nguyễn Hữu Hoàng Thắng", "id": "DE200281", "role": "Thành viên"},
+        {"name": "Trần Đức Duy", "id": "DE180206", "role": "Thành viên"},
+        {"name": "Phan Dương Sinh", "id": "DE200235", "role": "Thành viên"},
+        {"name": "Võ Ngọc Minh Quân", "id": "DE200080", "role": "Thành viên"},
+        {"name": "Vũ Hữu Thái", "id": "DE200132", "role": "Thành viên"},
     ]
 }
 

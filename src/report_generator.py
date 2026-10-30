@@ -143,7 +143,7 @@ class ReportGenerator:
     def _add_cover_page(self, doc: docx.Document, is_synthetic: bool):
         p_inst = doc.add_paragraph()
         p_inst.alignment = WD_ALIGN_PARAGRAPH.CENTER
-        r_inst = p_inst.add_run(f"{self.metadata.get('institution', 'TRƯỜNG ĐẠI HỌC BÁCH KHOA - ĐHQG-HCM')}\nKHOA KHOA HỌC ỨNG DỤNG\nBỘ MÔN TOÁN ỨNG DỤNG")
+        r_inst = p_inst.add_run(f"{self.metadata.get('institution', 'TRƯỜNG ĐẠI HỌC FPT')}\nBỘ MÔN TOÁN — HỌC PHẦN MAS291")
         r_inst.font.bold = True
         r_inst.font.size = Pt(13)
         r_inst.font.color.rgb = RGBColor(31, 73, 125)
@@ -182,16 +182,18 @@ class ReportGenerator:
             doc.add_paragraph()
 
         # Meta Table
-        table = doc.add_table(rows=6, cols=2)
-        table.alignment = WD_TABLE_ALIGNMENT.CENTER
+        members_str = "\n".join([f"{m['name']} — {m['id']} ({m['role']})" for m in self.metadata.get("members", [])])
         meta_items = [
-            ("Môn học:", self.metadata.get("course_name", "Xác suất & Thống kê ứng dụng")),
-            ("Lớp học phần:", self.metadata.get("class_name", "[Cần bổ sung Lớp]")),
-            ("Nhóm thực hiện:", self.metadata.get("group_name", "Nhóm [Cần bổ sung]")),
-            ("Giảng viên hướng dẫn:", self.metadata.get("instructor", "[Cần bổ sung Thầy/Cô]")),
+            ("Môn học:", self.metadata.get("course_name", "Xác suất & Thống kê ứng dụng (MAS291)")),
+            ("Lớp học phần:", self.metadata.get("class_name", "MAS291")),
+            ("Nhóm thực hiện:", self.metadata.get("group_name", "Nhóm 1")),
+            ("Giảng viên hướng dẫn:", self.metadata.get("instructor", "nhannxv")),
+            ("Danh sách sinh viên:", members_str),
             ("Năm học / Học kỳ:", self.metadata.get("academic_year", "2025–2026")),
             ("Ngày hoàn thành:", "Tháng 10/2026"),
         ]
+        table = doc.add_table(rows=len(meta_items), cols=2)
+        table.alignment = WD_TABLE_ALIGNMENT.CENTER
         for idx, (k, v) in enumerate(meta_items):
             row = table.rows[idx]
             p0 = row.cells[0].paragraphs[0]
@@ -545,10 +547,12 @@ class ReportGenerator:
         for c_idx, h in enumerate(h_team):
             team_tbl.rows[0].cells[c_idx].paragraphs[0].text = h
         duties = [
-            "Nhóm trưởng, quản trị code, tổng hợp báo cáo và kiểm tra tính toán",
-            "Thu thập dữ liệu, làm sạch, viết phần thống kê mô tả (Câu 1 - 4)",
-            "Thực hiện mô hình hồi quy OLS, chẩn đoán phần dư (Câu 5 - 8)",
-            "Thực hiện ước lượng khoảng tin cậy, kiểm định giả thuyết (Câu 9 - 12, 1A, 1B)",
+            "Quản lý tiến độ dự án, tổ chức phân công, xây dựng kiến trúc mã nguồn Python & Streamlit, tổng hợp và định dạng báo cáo Word/PDF (Câu 1, 2).",
+            "Thu thập dữ liệu khảo sát ẩn danh, kiểm tra tính hợp lệ, viết module làm sạch dữ liệu và thống kê mô tả (Câu 1, 2, 3).",
+            "Vẽ đồ thị phân phối Histogram, Boxplot, phân tích ngoại lệ 1.5 IQR, tính tương quan Pearson và vẽ Scatterplot (Câu 4, 5).",
+            "Ước lượng mô hình hồi quy OLS, đánh giá R², sai số chuẩn s, thực hiện chẩn đoán giả định mô hình phần dư (Câu 6, 7, 8).",
+            "Xây dựng khoảng tin cậy 95% cho trung bình và hệ số góc, kiểm định giả thuyết t một mẫu và hai phía (Câu 9, 10, 11, 12).",
+            "Thực hiện câu hỏi riêng 1A (dự đoán tại X=6, X=8) và 1B (phân tích giới hạn mô hình, biến số bị bỏ sót), kiểm thử phần mềm.",
         ]
         for r_idx, member in enumerate(self.metadata.get("members", [])):
             team_tbl.rows[r_idx + 1].cells[0].paragraphs[0].text = member.get("name", "")
