@@ -801,11 +801,11 @@ def main():
                 st.markdown('<div class="section-header-title">🗺️ Bản đồ Phân công Thuyết trình 6 Thành viên Nhóm 1 & 12 Câu hỏi Học thuật</div>', unsafe_allow_html=True)
                 roadmap_df = pd.DataFrame([
                     {"Họ và Tên": "Mai Xuân Hiếu", "MSSV": "DE200199", "Vai trò": "Nhóm trưởng (Mở đầu & Làm sạch)", "Câu hỏi": "Câu 1, 2", "Slide": "Slide 1, 2", "Tab Streamlit": "Mục 1, 2, 3"},
-                    {"Họ và Tên": "Nguyễn Hữu Hoàng Thắng", "MSSV": "DE200281", "Vai trò": "Chuyên viên Thống kê mô tả", "Câu hỏi": "Câu 3, 4", "Slide": "Slide 3, 4", "Tab Streamlit": "Mục 4, 5"},
-                    {"Họ và Tên": "Trần Đức Duy", "MSSV": "DE180206", "Vai trò": "Chuyên viên Mô hình hóa OLS", "Câu hỏi": "Câu 5, 6, 7", "Slide": "Slide 5, 6", "Tab Streamlit": "Mục 6, 7"},
-                    {"Họ và Tên": "Phan Dương Sinh", "MSSV": "DE200235", "Vai trò": "Chuyên viên Chẩn đoán giả định", "Câu hỏi": "Câu 8", "Slide": "Slide 7", "Tab Streamlit": "Mục 8"},
-                    {"Họ và Tên": "Võ Ngọc Minh Quân", "MSSV": "DE200080", "Vai trò": "Chuyên viên Suy luận Thống kê", "Câu hỏi": "Câu 9, 10, 11, 12", "Slide": "Slide 8, 9", "Tab Streamlit": "Mục 9, 10"},
-                    {"Họ và Tên": "Vũ Hữu Thái", "MSSV": "DE200132", "Vai trò": "Chuyên viên Dự đoán & Tổng kết", "Câu hỏi": "Câu 1A, 1B, Phần 5", "Slide": "Slide 10, 11, 12", "Tab Streamlit": "Mục 11, 12"},
+                    {"Họ và Tên": "Phan Dương Sinh", "MSSV": "DE200235", "Vai trò": "Chuyên viên Thống kê mô tả", "Câu hỏi": "Câu 3, 4", "Slide": "Slide 3, 4", "Tab Streamlit": "Mục 4, 5"},
+                    {"Họ và Tên": "Võ Ngọc Minh Quân", "MSSV": "DE200080", "Vai trò": "Chuyên viên Mô hình hóa OLS", "Câu hỏi": "Câu 5, 6, 7", "Slide": "Slide 5, 6", "Tab Streamlit": "Mục 6, 7"},
+                    {"Họ và Tên": "Vũ Hữu Thái", "MSSV": "DE200132", "Vai trò": "Chuyên viên Chẩn đoán giả định", "Câu hỏi": "Câu 8", "Slide": "Slide 7", "Tab Streamlit": "Mục 8"},
+                    {"Họ và Tên": "Nguyễn Hữu Hoàng Thắng", "MSSV": "DE200281", "Vai trò": "Chuyên viên Suy luận Thống kê", "Câu hỏi": "Câu 9, 10, 11, 12", "Slide": "Slide 8, 9", "Tab Streamlit": "Mục 9, 10"},
+                    {"Họ và Tên": "Trần Đức Duy", "MSSV": "DE180206", "Vai trò": "Chuyên viên Dự đoán & Tổng kết", "Câu hỏi": "Câu 1A, 1B, Phần 5", "Slide": "Slide 10, 11, 12", "Tab Streamlit": "Mục 11, 12"},
                 ])
                 st.dataframe(roadmap_df, hide_index=True, use_container_width=True)
 
@@ -934,7 +934,7 @@ def main():
     # =========================================================================
     elif menu == "4. Thống kê mô tả (Câu 3)":
         render_presenter_ribbon(
-            "Nguyễn Hữu Hoàng Thắng (DE200281)",
+            "Phan Dương Sinh (DE200235)",
             "Chuyên viên Thống kê mô tả (Câu 3)",
             "Slide 3",
             "Trỏ vào Mean X (7.441) vs Mean Y (7.388), Median X (7.500) vs Median Y (7.450), và giải thích khi nào Median tốt hơn Mean.",
@@ -986,7 +986,7 @@ def main():
     # =========================================================================
     elif menu == "5. Phân phối & Ngoại lệ (Câu 4)":
         render_presenter_ribbon(
-            "Nguyễn Hữu Hoàng Thắng (DE200281)",
+            "Phan Dương Sinh (DE200235)",
             "Phân phối & Kiểm tra ngoại lệ 1.5×IQR (Câu 4)",
             "Slide 4",
             "Trỏ vào đường Mean (nét đứt đỏ) và Median (chấm xanh) sát nhau trên Histogram; chỉ vào bảng kiểm tra ngoại lệ 1.5×IQR = 0 ngoại lệ.",
@@ -1036,7 +1036,7 @@ def main():
     # =========================================================================
     elif menu == "6. Tương quan Pearson (Câu 5)":
         render_presenter_ribbon(
-            "Trần Đức Duy (DE180206)",
+            "Võ Ngọc Minh Quân (DE200080)",
             "Phân tích Tương quan Tuyến tính Pearson (Câu 5)",
             "Slide 5",
             "Trỏ vào hệ số r = 0.4954, p-value = 0.0039 và nhấn mạnh Tương quan KHÔNG đồng nghĩa với Nhân quả.",
@@ -1084,7 +1084,7 @@ def main():
     # =========================================================================
     elif menu == "7. Hồi quy tuyến tính (Câu 6 & 7)":
         render_presenter_ribbon(
-            "Trần Đức Duy (DE180206)",
+            "Võ Ngọc Minh Quân (DE200080)",
             "Mô hình Hồi quy Tuyến tính OLS & Độ phù hợp (Câu 6 & 7)",
             "Slide 6",
             "Trỏ vào phương trình Ŷ = 3.6676 + 0.4999X, bảng hệ số b₀, b₁, hệ số xác định R² = 24.5% và sai số chuẩn s = 1.0868.",
@@ -1158,7 +1158,7 @@ def main():
     # =========================================================================
     elif menu == "8. Chẩn đoán mô hình (Câu 8)":
         render_presenter_ribbon(
-            "Phan Dương Sinh (DE200235)",
+            "Vũ Hữu Thái (DE200132)",
             "Chuyên viên Thẩm định & Chẩn đoán Phần dư (Câu 8)",
             "Slide 7",
             "Trỏ vào bộ 3 biểu đồ phần dư và bảng 4 kiểm định: Shapiro-Wilk (p=0.216), Breusch-Pagan (p=0.835), Durbin-Watson (1.942).",
@@ -1240,7 +1240,7 @@ def main():
     # =========================================================================
     elif menu == "9. Khoảng tin cậy (Câu 9 & 11)":
         render_presenter_ribbon(
-            "Võ Ngọc Minh Quân (DE200080)",
+            "Nguyễn Hữu Hoàng Thắng (DE200281)",
             "Ước lượng Khoảng tin cậy 95% (Câu 9 & Câu 11)",
             "Slide 8 & Slide 9",
             "Trỏ vào KTC 95% của μ_Y: [6.9438, 7.8312] (df=31) và KTC 95% của β₁: [0.1730, 0.8269] (df=30, hoàn toàn không chứa 0).",
@@ -1296,7 +1296,7 @@ def main():
     # =========================================================================
     elif menu == "10. Kiểm định giả thuyết (Câu 10 & 12)":
         render_presenter_ribbon(
-            "Võ Ngọc Minh Quân (DE200080)",
+            "Nguyễn Hữu Hoàng Thắng (DE200281)",
             "Kiểm định Giả thuyết Thống kê (Câu 10 & Câu 12)",
             "Slide 8 & Slide 9",
             "Trỏ vào Câu 10: t = 1.781, p một phía = 0.0423 < 0.05 (Bác bỏ H₀) và Câu 12: t = 3.123, p hai phía = 0.0039 < 0.01 (Bác bỏ H₀).",
@@ -1358,7 +1358,7 @@ def main():
     # =========================================================================
     elif menu == "11. Dự đoán điểm (Câu 1A & 1B)":
         render_presenter_ribbon(
-            "Vũ Hữu Thái (DE200132)",
+            "Trần Đức Duy (DE180206)",
             "Dự đoán Điểm (Câu 1A), Giới hạn Thực nghiệm (Câu 1B) & Tổng kết",
             "Slide 10, Slide 11 & Slide 12",
             "Kéo thanh trượt Interactive Predictor từ X = 6.0 (Ŷ = 6.67) sang X = 8.0 (Ŷ = 7.67) và chỉ vào bảng khảo sát Độ khó đề (40.6%) & Nỗ lực ôn tập (84.4%).",
@@ -1494,7 +1494,7 @@ def main():
     # =========================================================================
     elif menu == "12. Báo cáo & Xuất dữ liệu":
         render_presenter_ribbon(
-            "Vũ Hữu Thái (DE200132)",
+            "Trần Đức Duy (DE180206)",
             "Tổng kết Báo cáo & Bàn giao Hồ sơ Nộp (Phần 5)",
             "Slide 12",
             "Trình diễn kho tài liệu xuất bản tự động gồm Báo cáo Word/PDF, Slide PowerPoint/PDF, Kịch bản 6 thành viên và 4 file Excel.",

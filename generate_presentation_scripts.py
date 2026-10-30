@@ -139,7 +139,7 @@ def build_script_document():
         "Thứ hai, loại bỏ 1 bản ghi nộp trùng lặp mã sinh viên (mã de200125).\n"
         "Thứ ba, kiểm tra dữ liệu thiếu và thang điểm: Toàn bộ 32 bản ghi còn lại đều có đầy đủ cặp điểm X và Y, nằm hợp lệ trong đoạn [0, 10].\n"
         "Như vậy, mẫu nghiên cứu chính thức đạt n = 32 cặp quan sát, hoàn toàn thỏa mãn yêu cầu tối thiểu n >= 30 của đề bài. "
-        "Sau đây, xin mời bạn Nguyễn Hữu Hoàng Thắng tiếp tục với phần Thống kê mô tả và Phân tích phân phối.”"
+        "Sau đây, xin mời bạn Phan Dương Sinh tiếp tục với phần Thống kê mô tả và Phân tích phân phối.”"
     )
 
     doc.add_heading("Câu hỏi phản biện Thầy/Cô hay hỏi & Cách trả lời (Member 1):", level=2)
@@ -155,7 +155,7 @@ def build_script_document():
     # =========================================================================
     # THÀNH VIÊN 2
     # =========================================================================
-    h2 = doc.add_heading("THÀNH VIÊN 2 — NGUYỄN HỮU HOÀNG THẮNG (DE200281): THỐNG KÊ MÔ TẢ & PHÂN PHỐI (CÂU 3, 4)", level=1)
+    h2 = doc.add_heading("THÀNH VIÊN 2 — PHAN DƯƠNG SINH (DE200235): THỐNG KÊ MÔ TẢ & PHÂN PHỐI (CÂU 3, 4)", level=1)
     doc.add_paragraph("• Vai trò: Chuyên viên Thống kê mô tả | Thời lượng đề xuất: 2.0 phút\n• Trọng tâm: 10 chỉ số mô tả, so sánh phân phối X vs Y, phương pháp tứ phân vị và quy tắc 1.5 IQR.")
 
     add_callout_box(
@@ -185,7 +185,7 @@ def build_script_document():
         "- Ngưỡng dưới cho X là 5.438, ngưỡng trên là 10.938.\n"
         "- Mẫu dữ liệu thực tế không có quan sát nào rơi ngoài ngưỡng bất thường. "
         "Nhóm cũng quán triệt nguyên tắc: Nếu có ngoại lệ thực tế trong thang 0-10 thì tuyệt đối không được xóa bỏ vì đó là phản ánh năng lực thật của người học. "
-        "Tiếp theo, xin mời bạn Trần Đức Duy trình bày về Mô hình hồi quy tuyến tính.”"
+        "Tiếp theo, xin mời bạn Võ Ngọc Minh Quân trình bày về Mô hình hồi quy tuyến tính.”"
     )
 
     doc.add_heading("Câu hỏi phản biện Thầy/Cô hay hỏi & Cách trả lời (Member 2):", level=2)
@@ -200,7 +200,7 @@ def build_script_document():
     # =========================================================================
     # THÀNH VIÊN 3
     # =========================================================================
-    h3 = doc.add_heading("THÀNH VIÊN 3: TƯƠNG QUAN PEARSON VÀ HỒI QUY TUYẾN TÍNH OLS (CÂU 5, 6, 7)", level=1)
+    h3 = doc.add_heading("THÀNH VIÊN 3 — VÕ NGỌC MINH QUÂN (DE200080): TƯƠNG QUAN PEARSON VÀ HỒI QUY TUYẾN TÍNH OLS (CÂU 5, 6, 7)", level=1)
     doc.add_paragraph("• Vai trò: Chuyên viên Xây dựng Mô hình | Thời lượng đề xuất: 2.5 phút\n• Trọng tâm: Pearson r, phương trình OLS, ý nghĩa thực tế của b1 và b0, hệ số xác định R² và sai số s.")
 
     add_callout_box(
@@ -234,7 +234,7 @@ def build_script_document():
         "Về độ phù hợp của mô hình (Câu 7):\n"
         "- Hệ số xác định R² = 0.2454: Cho biết điểm thi giữa kỳ giải thích được 24.5% sự biến thiên của điểm thi cuối kỳ. Còn lại 75.5% sự biến thiên phụ thuộc vào các yếu tố ngoài mô hình.\n"
         "- Sai số chuẩn của hồi quy s = 1.0868 điểm: Cho thấy độ lệch điển hình của điểm số thực tế quanh đường thẳng dự đoán là khoảng 1.09 điểm.\n"
-        "Tiếp theo, xin mời bạn Phan Dương Sinh trình bày về Chẩn đoán phần dư của mô hình.”"
+        "Tiếp theo, xin mời bạn Vũ Hữu Thái trình bày về Chẩn đoán phần dư của mô hình.”"
     )
 
     doc.add_heading("Câu hỏi phản biện Thầy/Cô hay hỏi & Cách trả lời (Member 3):", level=2)
@@ -250,7 +250,7 @@ def build_script_document():
     # =========================================================================
     # THÀNH VIÊN 4
     # =========================================================================
-    h4 = doc.add_heading("THÀNH VIÊN 4 — PHAN DƯƠNG SINH (DE200235): CHẨN ĐOÁN CÁC GIẢ ĐỊNH MÔ HÌNH (CÂU 8)", level=1)
+    h4 = doc.add_heading("THÀNH VIÊN 4 — VŨ HỮU THÁI (DE200132): CHẨN ĐOÁN CÁC GIẢ ĐỊNH MÔ HÌNH (CÂU 8)", level=1)
     doc.add_paragraph("• Vai trò: Chuyên viên Chẩn đoán & Thẩm định Giả định | Thời lượng đề xuất: 2.0 phút\n• Trọng tâm: Kiểm tra 4 giả định Gauss-Markov trên phần dư và thảo luận giới hạn chặn của thang điểm 0-10.")
 
     add_callout_box(
@@ -278,7 +278,7 @@ def build_script_document():
         "4. Giả định tính độc lập (Independence): Thống kê Durbin-Watson đạt giá trị DW = 1.942, rất gần mức 2.0 lý tưởng, cho thấy không có hiện tượng tự tương quan chuỗi.\n\n"
         "Đặc biệt, nhóm xin nhấn mạnh giới hạn bản chất: Điểm thi của sinh viên bị chặn cứng trong đoạn [0, 10]. Mô hình OLS là hàm tuyến tính vô hạn, nên nếu dùng để ngoại suy "
         "ở các mức điểm quá thấp hoặc quá cao thì có thể dự đoán điểm < 0 hoặc > 10. Do đó, mô hình này chỉ có độ tin cậy cao trong phạm vi điểm số thực tế quan sát được.\n"
-        "Tiếp theo, xin mời bạn Võ Ngọc Minh Quân trình bày phần Ước lượng khoảng tin cậy và Kiểm định giả thuyết.”"
+        "Tiếp theo, xin mời bạn Nguyễn Hữu Hoàng Thắng trình bày phần Ước lượng khoảng tin cậy và Kiểm định giả thuyết.”"
     )
 
     doc.add_heading("Câu hỏi phản biện Thầy/Cô hay hỏi & Cách trả lời (Member 4):", level=2)
@@ -293,7 +293,7 @@ def build_script_document():
     # =========================================================================
     # THÀNH VIÊN 5
     # =========================================================================
-    h5 = doc.add_heading("THÀNH VIÊN 5 — VÕ NGỌC MINH QUÂN (DE200080): KHOẢNG TIN CẬY & KIỂM ĐỊNH GIẢ THUYẾT (CÂU 9-12)", level=1)
+    h5 = doc.add_heading("THÀNH VIÊN 5 — NGUYỄN HỮU HOÀNG THẮNG (DE200281): KHOẢNG TIN CẬY & KIỂM ĐỊNH GIẢ THUYẾT (CÂU 9-12)", level=1)
     doc.add_paragraph("• Vai trò: Chuyên viên Suy luận Thống kê | Thời lượng đề xuất: 2.5 phút\n• Trọng tâm: KTC 95% cho trung bình Y, kiểm định một phía mu > 7.0, KTC hệ số góc và kiểm định beta1 != 0, tính đối ngẫu.")
 
     add_callout_box(
@@ -332,7 +332,7 @@ def build_script_document():
         "       H0: beta1 = 0   so với   H1: beta1 != 0\n"
         "Thống kê kiểm định t = 3.123, p-value hai phía = 0.0039 (< 0.01). "
         "Quyết định: BÁC BỎ H0. Kết luận này nhất quán tuyệt đối 100% với khoảng tin cậy ở Câu 11 (bác bỏ H0 tương đương với KTC không chứa 0). "
-        "Sau đây, xin mời bạn Vũ Hữu Thái trình bày phần Dự đoán điểm, Giới hạn mô hình và Kết luận chung.”"
+        "Sau đây, xin mời bạn Trần Đức Duy trình bày phần Dự đoán điểm, Giới hạn mô hình và Kết luận chung.”"
     )
 
     doc.add_heading("Câu hỏi phản biện Thầy/Cô hay hỏi & Cách trả lời (Member 5):", level=2)
@@ -348,7 +348,7 @@ def build_script_document():
     # =========================================================================
     # THÀNH VIÊN 6
     # =========================================================================
-    h6 = doc.add_heading("THÀNH VIÊN 6 — VŨ HỮU THÁI (DE200132): DỰ ĐOÁN ĐIỂM, GIỚI HẠN MÔ HÌNH & TỔNG KẾT (CÂU 1A, 1B, PHẦN 5)", level=1)
+    h6 = doc.add_heading("THÀNH VIÊN 6 — TRẦN ĐỨC DUY (DE180206): DỰ ĐOÁN ĐIỂM, GIỚI HẠN MÔ HÌNH & TỔNG KẾT (CÂU 1A, 1B, PHẦN 5)", level=1)
     doc.add_paragraph("• Vai trò: Chuyên viên Ứng dụng & Tổng kết | Thời lượng đề xuất: 2.5 phút\n• Trọng tâm: Dự đoán tại X=6 và 8 (1A), dữ liệu thực nghiệm về độ khó đề & tự học (1B), 3 phát hiện, 2 hạn chế.")
 
     add_callout_box(

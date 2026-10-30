@@ -65,8 +65,11 @@ def export_data_dictionary(save_path: Optional[Path] = None) -> Path:
     ]
 
     df_dict = pd.DataFrame(data_dict)
-    with pd.ExcelWriter(out_path, engine="openpyxl") as writer:
-        df_dict.to_excel(writer, sheet_name="Data_Dictionary", index=False)
+    try:
+        with pd.ExcelWriter(out_path, engine="openpyxl") as writer:
+            df_dict.to_excel(writer, sheet_name="Data_Dictionary", index=False)
+    except PermissionError:
+        print(f"Warning: {out_path} is currently locked by another program. Skipped overwrite.")
 
     return out_path
 
@@ -93,11 +96,14 @@ def export_descriptive_statistics(
     out_path = save_path or (TABLES_DIR / "descriptive_statistics.xlsx")
     out_path.parent.mkdir(parents=True, exist_ok=True)
 
-    with pd.ExcelWriter(out_path, engine="openpyxl") as writer:
-        stats_df.to_excel(writer, sheet_name="Thong_Ke_Mo_Ta", index=False)
-        comparison_df.to_excel(writer, sheet_name="So_Sanh_X_Y", index=False)
-        outliers_x.to_excel(writer, sheet_name="Ngoai_Le_Giua_Ky", index=False)
-        outliers_y.to_excel(writer, sheet_name="Ngoai_Le_Cuoi_Ky", index=False)
+    try:
+        with pd.ExcelWriter(out_path, engine="openpyxl") as writer:
+            stats_df.to_excel(writer, sheet_name="Thong_Ke_Mo_Ta", index=False)
+            comparison_df.to_excel(writer, sheet_name="So_Sanh_X_Y", index=False)
+            outliers_x.to_excel(writer, sheet_name="Ngoai_Le_Giua_Ky", index=False)
+            outliers_y.to_excel(writer, sheet_name="Ngoai_Le_Cuoi_Ky", index=False)
+    except PermissionError:
+        print(f"Warning: {out_path} is currently locked by another program. Skipped overwrite.")
 
     return out_path
 
@@ -164,11 +170,14 @@ def export_regression_results(
     ]
     df_diag = pd.DataFrame(diag_data)
 
-    with pd.ExcelWriter(out_path, engine="openpyxl") as writer:
-        df_summary.to_excel(writer, sheet_name="Tom_Tat_Mo_Hinh", index=False)
-        df_coeff.to_excel(writer, sheet_name="He_So_Hoi_Quy", index=False)
-        df_diag.to_excel(writer, sheet_name="Chan_Doan_Gia_Dinh", index=False)
-        pred_1a.predictions_table.to_excel(writer, sheet_name="Du_Doan_Cau_1A", index=False)
+    try:
+        with pd.ExcelWriter(out_path, engine="openpyxl") as writer:
+            df_summary.to_excel(writer, sheet_name="Tom_Tat_Mo_Hinh", index=False)
+            df_coeff.to_excel(writer, sheet_name="He_So_Hoi_Quy", index=False)
+            df_diag.to_excel(writer, sheet_name="Chan_Doan_Gia_Dinh", index=False)
+            pred_1a.predictions_table.to_excel(writer, sheet_name="Du_Doan_Cau_1A", index=False)
+    except PermissionError:
+        print(f"Warning: {out_path} is currently locked by another program. Skipped overwrite.")
 
     return out_path
 
@@ -230,9 +239,12 @@ def export_hypothesis_tests(
     ]
     df_slope = pd.DataFrame(slope_data)
 
-    with pd.ExcelWriter(out_path, engine="openpyxl") as writer:
-        df_mean.to_excel(writer, sheet_name="Kiem_Dinh_Trung_Binh", index=False)
-        df_slope.to_excel(writer, sheet_name="Kiem_Dinh_He_So_Goc", index=False)
+    try:
+        with pd.ExcelWriter(out_path, engine="openpyxl") as writer:
+            df_mean.to_excel(writer, sheet_name="Kiem_Dinh_Trung_Binh", index=False)
+            df_slope.to_excel(writer, sheet_name="Kiem_Dinh_He_So_Goc", index=False)
+    except PermissionError:
+        print(f"Warning: {out_path} is currently locked by another program. Skipped overwrite.")
 
     return out_path
 

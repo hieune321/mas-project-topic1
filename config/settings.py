@@ -69,11 +69,11 @@ REPORT_METADATA = {
     "academic_year": "2025–2026",
     "members": [
         {"name": "Mai Xuân Hiếu", "id": "DE200199", "role": "Nhóm trưởng"},
-        {"name": "Nguyễn Hữu Hoàng Thắng", "id": "DE200281", "role": "Thành viên"},
-        {"name": "Trần Đức Duy", "id": "DE180206", "role": "Thành viên"},
         {"name": "Phan Dương Sinh", "id": "DE200235", "role": "Thành viên"},
         {"name": "Võ Ngọc Minh Quân", "id": "DE200080", "role": "Thành viên"},
         {"name": "Vũ Hữu Thái", "id": "DE200132", "role": "Thành viên"},
+        {"name": "Nguyễn Hữu Hoàng Thắng", "id": "DE200281", "role": "Thành viên"},
+        {"name": "Trần Đức Duy", "id": "DE180206", "role": "Thành viên"},
     ]
 }
 

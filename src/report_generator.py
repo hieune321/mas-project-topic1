@@ -548,11 +548,11 @@ class ReportGenerator:
             team_tbl.rows[0].cells[c_idx].paragraphs[0].text = h
         duties = [
             "Quản lý tiến độ dự án, tổ chức phân công, xây dựng kiến trúc mã nguồn Python & Streamlit, tổng hợp và định dạng báo cáo Word/PDF (Câu 1, 2).",
-            "Thu thập dữ liệu khảo sát ẩn danh, kiểm tra tính hợp lệ, viết module làm sạch dữ liệu và thống kê mô tả (Câu 1, 2, 3).",
-            "Vẽ đồ thị phân phối Histogram, Boxplot, phân tích ngoại lệ 1.5 IQR, tính tương quan Pearson và vẽ Scatterplot (Câu 4, 5).",
+            "Thu thập dữ liệu khảo sát ẩn danh, kiểm tra tính hợp lệ, viết module làm sạch dữ liệu và thống kê mô tả (Câu 1, 2, 3, 4).",
+            "Vẽ đồ thị phân phối Histogram, Boxplot, phân tích ngoại lệ 1.5 IQR, tính tương quan Pearson và vẽ Scatterplot, hồi quy OLS (Câu 4, 5, 6, 7).",
             "Ước lượng mô hình hồi quy OLS, đánh giá R², sai số chuẩn s, thực hiện chẩn đoán giả định mô hình phần dư (Câu 6, 7, 8).",
             "Xây dựng khoảng tin cậy 95% cho trung bình và hệ số góc, kiểm định giả thuyết t một mẫu và hai phía (Câu 9, 10, 11, 12).",
-            "Thực hiện câu hỏi riêng 1A (dự đoán tại X=6, X=8) và 1B (phân tích giới hạn mô hình, biến số bị bỏ sót), kiểm thử phần mềm.",
+            "Thực hiện câu hỏi riêng 1A (dự đoán tại X=6, X=8) và 1B (phân tích giới hạn mô hình, biến số bị bỏ sót), tổng kết báo cáo.",
         ]
         for r_idx, member in enumerate(self.metadata.get("members", [])):
             team_tbl.rows[r_idx + 1].cells[0].paragraphs[0].text = member.get("name", "")
