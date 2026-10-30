@@ -133,10 +133,20 @@ class ReportGenerator:
         if generate_pdf:
             pdf_path = out_path.with_suffix(".pdf")
             try:
-                from docx2pdf import convert
-                convert(str(out_path), str(pdf_path))
+                import win32com.client
+                word = win32com.client.Dispatch("Word.Application")
+                word.Visible = False
+                word.DisplayAlerts = False
+                doc_obj = word.Documents.Open(str(out_path.resolve()))
+                doc_obj.SaveAs(str(pdf_path.resolve()), FileFormat=17)  # 17 = wdFormatPDF
+                doc_obj.Close(False)
+                word.Quit()
             except Exception:
-                pass
+                try:
+                    from docx2pdf import convert
+                    convert(str(out_path), str(pdf_path))
+                except Exception:
+                    pass
 
         return out_path
 
@@ -189,6 +199,8 @@ class ReportGenerator:
             ("Nhóm thực hiện:", self.metadata.get("group_name", "Nhóm 1")),
             ("Giảng viên hướng dẫn:", self.metadata.get("instructor", "nhannxv")),
             ("Danh sách sinh viên:", members_str),
+            ("Ứng dụng trực tuyến:", "https://masproject.streamlit.app"),
+            ("Kho mã nguồn GitHub:", "https://github.com/hieune321/mas-project-topic1"),
             ("Năm học / Học kỳ:", self.metadata.get("academic_year", "2025–2026")),
             ("Ngày hoàn thành:", "Tháng 10/2026"),
         ]
