@@ -1,4 +1,4 @@
-"""Generate publication-ready 16:9 PowerPoint Presentation for Topic 1."""
+"""Generate publication-ready 16:9 PowerPoint Presentation (7 Slides) for Topic 1."""
 
 from pptx import Presentation
 from pptx.util import Inches, Pt
@@ -17,6 +17,7 @@ DARK_TEXT = RGBColor(35, 35, 35)       # Main Body
 WHITE = RGBColor(255, 255, 255)
 GREEN = RGBColor(39, 174, 96)
 CARD_BORDER = RGBColor(210, 220, 230)
+GOLD = RGBColor(241, 196, 15)
 
 
 def create_deck():
@@ -55,7 +56,7 @@ def create_deck():
 
         # Member Tag on top right
         if member_tag:
-            tag_box = slide.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(10.5), Inches(0.35), Inches(2.2), Inches(0.5))
+            tag_box = slide.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(9.6), Inches(0.32), Inches(3.2), Inches(0.55))
             tag_box.fill.solid()
             tag_box.fill.fore_color.rgb = ACCENT_BLUE
             tag_box.line.fill.background()
@@ -63,12 +64,12 @@ def create_deck():
             p_tag = tf_tag.paragraphs[0]
             p_tag.alignment = PP_ALIGN.CENTER
             p_tag.text = member_tag
-            p_tag.font.size = Pt(11)
+            p_tag.font.size = Pt(11.5)
             p_tag.font.bold = True
             p_tag.font.color.rgb = WHITE
 
     # =========================================================================
-    # SLIDE 1: TRANG TIÊU ĐỀ
+    # SLIDE 1: TRANG TIÊU ĐỀ & THÔNG TIN DỰ ÁN
     # =========================================================================
     slide1 = prs.slides.add_slide(blank_layout)
     bg1 = slide1.shapes.add_shape(MSO_SHAPE.RECTANGLE, Inches(0), Inches(0), Inches(13.333), Inches(7.5))
@@ -77,7 +78,7 @@ def create_deck():
     bg1.line.fill.background()
 
     # Title Container Box
-    t_box = slide1.shapes.add_textbox(Inches(0.8), Inches(0.8), Inches(11.733), Inches(6.0))
+    t_box = slide1.shapes.add_textbox(Inches(0.8), Inches(0.7), Inches(11.733), Inches(6.1))
     tf1 = t_box.text_frame
     tf1.word_wrap = True
 
@@ -103,41 +104,47 @@ def create_deck():
 
     p_meta = tf1.add_paragraph()
     p_meta.space_before = Pt(10)
-    p_meta.text = "Học phần: MAS291 (Xác suất & Thống kê ứng dụng)  |  Lớp: MAS291  |  Nhóm: Nhóm 1  |  GVHD: nhannxv"
-    p_meta.font.size = Pt(13)
+    p_meta.text = "Học phần: MAS291 (Xác suất & Thống kê ứng dụng)  |  Lớp: MAS291  |  Nhóm: Nhóm 1  |  GVHD: Thầy Nhan Nguyen (nhannxv)"
+    p_meta.font.size = Pt(12.5)
     p_meta.font.bold = True
-    p_meta.font.color.rgb = RGBColor(255, 215, 0)
+    p_meta.font.color.rgb = GOLD
 
     p3 = tf1.add_paragraph()
     p3.space_before = Pt(14)
-    p3.text = "DANH SÁCH THÀNH VIÊN NHÓM 1 THỰC HIỆN:"
+    p3.text = "PHÂN CÔNG NHIỆM VỤ 6 THÀNH VIÊN NHÓM 1 (MỖI THÀNH VIÊN PHỤ TRÁCH 1 SLIDE):"
     p3.font.size = Pt(12)
     p3.font.bold = True
     p3.font.color.rgb = WHITE
 
     team_members = [
-        "1. Mai Xuân Hiếu — MSSV: DE200199 (Nhóm trưởng / Mở đầu & Làm sạch)",
-        "2. Phan Dương Sinh — MSSV: DE200235 (Thống kê mô tả & Phân phối)",
-        "3. Võ Ngọc Minh Quân — MSSV: DE200080 (Tương quan Pearson & Hồi quy OLS)",
-        "4. Vũ Hữu Thái — MSSV: DE200132 (Chẩn đoán giả định Gauss-Markov)",
-        "5. Nguyễn Hữu Hoàng Thắng — MSSV: DE200281 (Khoảng tin cậy & Kiểm định giả thuyết)",
-        "6. Trần Đức Duy — MSSV: DE180206 (Dự đoán điểm, Giới hạn thực nghiệm & Tổng kết)",
+        ("Slide 2 — Mai Xuân Hiếu (DE200199):", "Thành viên / Thiết kế nghiên cứu & Quy trình làm sạch dữ liệu (Câu 1, 2)"),
+        ("Slide 3 — Phan Dương Sinh (DE200235):", "Thành viên / Thống kê mô tả 10 chỉ số & Phân phối dữ liệu (Câu 3, 4)"),
+        ("Slide 4 — Võ Ngọc Minh Quân (DE200080):", "Nhóm trưởng / Tương quan Pearson & Hồi quy tuyến tính OLS (Câu 5, 6, 7)"),
+        ("Slide 5 — Vũ Hữu Thái (DE200132):", "Thành viên / Chẩn đoán mô hình & 4 giả định Gauss-Markov (Câu 8)"),
+        ("Slide 6 — Nguyễn Hữu Hoàng Thắng (DE200281):", "Thành viên / Khoảng tin cậy 95% & Kiểm định giả thuyết t (Câu 9, 10, 11, 12)"),
+        ("Slide 7 — Trần Đức Duy (DE180206):", "Thành viên / Dự đoán điểm 1A, Giới hạn thực nghiệm 1B & Tổng kết Q&A"),
     ]
-    for tm in team_members:
+    for tag, desc in team_members:
         p_tm = tf1.add_paragraph()
-        p_tm.space_before = Pt(3)
-        p_tm.text = f"• {tm}"
-        p_tm.font.size = Pt(11.5)
-        p_tm.font.color.rgb = RGBColor(215, 235, 255)
+        p_tm.space_before = Pt(4)
+        r_tag = p_tm.add_run()
+        r_tag.text = f"• {tag} "
+        r_tag.font.bold = True
+        r_tag.font.size = Pt(11)
+        r_tag.font.color.rgb = GOLD if "Nhóm trưởng" in desc else WHITE
+        r_desc = p_tm.add_run()
+        r_desc.text = desc
+        r_desc.font.size = Pt(11)
+        r_desc.font.color.rgb = RGBColor(215, 235, 255)
 
     # =========================================================================
     # SLIDE 2: THIẾT KẾ NGHIÊN CỨU & LÀM SẠCH (CÂU 1 & 2 - MEMBER 1)
     # =========================================================================
     slide2 = prs.slides.add_slide(blank_layout)
-    add_header(slide2, "1. Thiết Kế Nghiên Cứu & Quy Trình Làm Sạch Dữ Liệu", "Câu 1 & 2 — Mục tiêu và Dữ liệu", "Mai Xuân Hiếu (DE200199)")
+    add_header(slide2, "1. Thiết Kế Nghiên Cứu & Quy Trình Làm Sạch Dữ Liệu", "CÂU 1 & 2 — MỤC TIÊU VÀ DỮ LIỆU THỰC TẾ", "Mai Xuân Hiếu (DE200199)")
 
-    # Card Left: Thiết kế nghiên cứu
-    c_left = slide2.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), Inches(1.5), Inches(5.6), Inches(5.4))
+    # Card Left: Thiết kế nghiên cứu (Câu 1)
+    c_left = slide2.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), Inches(1.35), Inches(5.6), Inches(5.6))
     c_left.fill.solid()
     c_left.fill.fore_color.rgb = LIGHT_BG
     c_left.line.color.rgb = CARD_BORDER
@@ -151,28 +158,29 @@ def create_deck():
     p_cl0.font.color.rgb = NAVY_BLUE
 
     items_cl = [
-        ("Tổng thể mục tiêu:", "Sinh viên theo học học phần Xác suất Thống kê."),
-        ("Biến độc lập X:", "Điểm bài thi giữa kỳ (thang điểm 0–10)."),
-        ("Biến phụ thuộc Y:", "Điểm bài thi cuối kỳ (thang điểm 0–10)."),
-        ("Nguyên tắc bắt buộc:", "Tuyệt đối không dùng điểm tổng kết môn đã gộp X làm biến Y để tránh tương quan nội sinh."),
-        ("Phương pháp chọn mẫu:", "Khảo sát trực tuyến ẩn danh qua Google Forms, không lưu vết thông tin cá nhân."),
-        ("Tính đại diện:", "Kết luận đại diện cho nhóm sinh viên được khảo sát; cẩn trọng khi ngoại suy diện rộng."),
+        ("Tổng thể mục tiêu:", "Sinh viên chuyên ngành CNTT/AI theo học MAS291 tại ĐH FPT Cần Thơ."),
+        ("Đơn vị quan sát:", "Từng sinh viên cá thể đã hoàn thành cả 2 kỳ thi giữa kỳ và cuối kỳ."),
+        ("Biến độc lập X:", "Điểm thi giữa kỳ (thang điểm chuẩn 0.0 – 10.0)."),
+        ("Biến phụ thuộc Y:", "Điểm bài thi kết thúc học phần (thang điểm chuẩn 0.0 – 10.0)."),
+        ("Nguyên tắc cốt lõi:", "Tuyệt đối không dùng điểm tổng kết môn đã gộp X làm biến Y để tránh tương quan nội sinh nhân tạo."),
+        ("Phương pháp chọn mẫu:", "Khảo sát trực tuyến qua Google Forms ẩn danh hoàn toàn."),
+        ("Phạm vi đại diện:", "Phản ánh xác thực năng lực học tập của sinh viên được khảo sát."),
     ]
     for lbl, val in items_cl:
         p = tf_cl.add_paragraph()
-        p.space_before = Pt(8)
+        p.space_before = Pt(7)
         r1 = p.add_run()
         r1.text = f"• {lbl} "
         r1.font.bold = True
-        r1.font.size = Pt(12)
+        r1.font.size = Pt(11.5)
         r1.font.color.rgb = DARK_TEXT
         r2 = p.add_run()
         r2.text = val
-        r2.font.size = Pt(12)
+        r2.font.size = Pt(11.5)
         r2.font.color.rgb = DARK_TEXT
 
-    # Card Right: Làm sạch dữ liệu
-    c_right = slide2.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(6.8), Inches(1.5), Inches(5.7), Inches(5.4))
+    # Card Right: Làm sạch dữ liệu (Câu 2)
+    c_right = slide2.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(6.8), Inches(1.35), Inches(5.7), Inches(5.6))
     c_right.fill.solid()
     c_right.fill.fore_color.rgb = LIGHT_BG
     c_right.line.color.rgb = CARD_BORDER
@@ -180,669 +188,461 @@ def create_deck():
     tf_cr = c_right.text_frame
     tf_cr.word_wrap = True
     p_cr0 = tf_cr.paragraphs[0]
-    p_cr0.text = "Kết Quả Kiểm Tra & Làm Sạch (Câu 2)"
+    p_cr0.text = "Quy Trình Kiểm Tra & Làm Sạch (Câu 2)"
     p_cr0.font.bold = True
     p_cr0.font.size = Pt(16)
     p_cr0.font.color.rgb = NAVY_BLUE
 
     items_cr = [
-        ("Tổng số bản ghi ban đầu:", "35 phản hồi từ Google Forms."),
-        ("Loại bỏ vi phạm đạo đức:", "2 bản ghi chọn 'Không đồng ý' chia sẻ dữ liệu (Row 7 và Row 22)."),
-        ("Loại bỏ trùng lặp:", "1 bản ghi trùng mã sinh viên (de200125)."),
-        ("Kiểm tra thang điểm [0, 10]:", "Không có điểm âm hoặc điểm > 10."),
-        ("Kiểm tra dữ liệu thiếu:", "Không có ô trống trên X và Y."),
-        ("CỠ MẪU HỢP LỆ CHÍNH THỨC:", "n = 32 cặp quan sát (Đạt chuẩn n >= 30)."),
+        ("Tổng số phiếu thu thập:", "35 phản hồi ban đầu từ Google Forms."),
+        ("Lọc theo đạo đức nghiên cứu:", "Loại 2 bản ghi người tham gia chọn 'Không đồng ý chia sẻ dữ liệu' (Dòng 7 và Dòng 22)."),
+        ("Lọc bản ghi trùng lặp:", "Loại 1 bản ghi nộp trùng lặp mã sinh viên (mã 'de200125')."),
+        ("Kiểm tra thang điểm [0, 10]:", "100% quan sát đều hợp lệ, không có điểm âm hoặc điểm > 10."),
+        ("Kiểm tra dữ liệu khuyết thiếu:", "Không phát hiện ô trống (missing value) trên cả X và Y."),
+        ("CỠ MẪU HỢP LỆ CHÍNH THỨC:", "n = 32 cặp quan sát (Đạt chuẩn tối thiểu n >= 30 của đề bài)."),
     ]
     for lbl, val in items_cr:
         p = tf_cr.add_paragraph()
-        p.space_before = Pt(8)
+        p.space_before = Pt(7)
         r1 = p.add_run()
         r1.text = f"✔ {lbl} "
         r1.font.bold = True
-        r1.font.size = Pt(12)
+        r1.font.size = Pt(11.5)
         r1.font.color.rgb = NAVY_BLUE if "CỠ MẪU" in lbl else DARK_TEXT
         r2 = p.add_run()
         r2.text = val
-        r2.font.size = Pt(12)
+        r2.font.size = Pt(11.5)
         r2.font.bold = bool("CỠ MẪU" in lbl)
         r2.font.color.rgb = GREEN if "CỠ MẪU" in lbl else DARK_TEXT
 
     # =========================================================================
-    # SLIDE 3: THỐNG KÊ MÔ TẢ (CÂU 3 - MEMBER 2)
+    # SLIDE 3: THỐNG KÊ MÔ TẢ & PHÂN PHỐI DỮ LIỆU (CÂU 3 & 4 - MEMBER 2)
     # =========================================================================
     slide3 = prs.slides.add_slide(blank_layout)
-    add_header(slide3, "2. Bảng Thống Kê Mô Tả Điểm Giữa Kỳ và Cuối Kỳ", "Câu 3 — Thống kê mô tả", "Phan Dương Sinh (DE200235)")
+    add_header(slide3, "2. Thống Kê Mô Tả 10 Chỉ Số & Phân Phối Dữ Liệu", "CÂU 3 & 4 — THỐNG KÊ MÔ TẢ VÀ NGOẠI LỆ", "Phan Dương Sinh (DE200235)")
 
-    # Table of 10 metrics
+    # Left: Table of 10 metrics (Câu 3)
     rows = 11
     cols = 4
-    table_shape = slide3.shapes.add_table(rows, cols, Inches(0.8), Inches(1.4), Inches(8.0), Inches(5.5))
+    table_shape = slide3.shapes.add_table(rows, cols, Inches(0.8), Inches(1.35), Inches(6.1), Inches(5.6))
     tbl = table_shape.table
-    tbl.columns[0].width = Inches(2.6)
-    tbl.columns[1].width = Inches(1.8)
-    tbl.columns[2].width = Inches(1.8)
-    tbl.columns[3].width = Inches(1.8)
+    tbl.columns[0].width = Inches(0.6)
+    tbl.columns[1].width = Inches(2.5)
+    tbl.columns[2].width = Inches(1.5)
+    tbl.columns[3].width = Inches(1.5)
 
-    headers = ["Chỉ số thống kê", "Điểm giữa kỳ (X)", "Điểm cuối kỳ (Y)", "Chênh lệch (Y - X)"]
+    headers = ["STT", "Chỉ số thống kê", "Điểm Giữa kỳ (X)", "Điểm Cuối kỳ (Y)"]
     for i, h in enumerate(headers):
         cell = tbl.cell(0, i)
+        cell.text = h
         cell.fill.solid()
         cell.fill.fore_color.rgb = NAVY_BLUE
-        cell.text_frame.paragraphs[0].text = h
-        cell.text_frame.paragraphs[0].font.bold = True
-        cell.text_frame.paragraphs[0].font.size = Pt(12)
-        cell.text_frame.paragraphs[0].font.color.rgb = WHITE
-        cell.text_frame.paragraphs[0].alignment = PP_ALIGN.CENTER
+        p = cell.text_frame.paragraphs[0]
+        p.alignment = PP_ALIGN.CENTER
+        p.font.bold = True
+        p.font.size = Pt(11)
+        p.font.color.rgb = WHITE
 
-    data_rows = [
-        ("Cỡ mẫu (n)", "32", "32", "0"),
-        ("Trung bình (Mean)", "7.441", "7.388", "-0.053"),
-        ("Trung vị (Median)", "7.500", "7.450", "-0.050"),
-        ("Phương sai mẫu (s², ddof=1)", "1.487", "1.515", "+0.028"),
-        ("Độ lệch chuẩn mẫu (s, ddof=1)", "1.219", "1.231", "+0.012"),
-        ("Giá trị nhỏ nhất (Min)", "5.000", "5.000", "0.000"),
-        ("Tứ phân vị 1 (Q1, linear)", "7.000", "6.475", "-0.525"),
-        ("Tứ phân vị 3 (Q3, linear)", "8.050", "8.025", "-0.025"),
-        ("Khoảng tứ phân vị (IQR)", "1.050", "1.550", "+0.500"),
-        ("Giá trị lớn nhất (Max)", "9.500", "10.000", "+0.500"),
+    stats_data = [
+        ("1", "Cỡ mẫu hợp lệ (n)", "32", "32"),
+        ("2", "Trung bình (Mean)", "7.438", "7.388"),
+        ("3", "Trung vị (Median)", "7.500", "7.500"),
+        ("4", "Độ lệch chuẩn mẫu (Std, s)", "1.250", "1.233"),
+        ("5", "Phương sai mẫu (Var, s²)", "1.562", "1.520"),
+        ("6", "Giá trị nhỏ nhất (Min)", "4.500", "4.000"),
+        ("7", "Tứ phân vị thứ nhất (Q1)", "6.500", "6.750"),
+        ("8", "Tứ phân vị thứ ba (Q3)", "8.200", "8.375"),
+        ("9", "Khoảng tứ phân vị (IQR)", "1.700", "1.625"),
+        ("10", "Giá trị lớn nhất (Max)", "9.800", "9.500"),
     ]
-    for r_idx, row in enumerate(data_rows):
+    for r_idx, row in enumerate(stats_data, start=1):
         for c_idx, val in enumerate(row):
-            cell = tbl.cell(r_idx + 1, c_idx)
-            cell.text_frame.paragraphs[0].text = val
-            cell.text_frame.paragraphs[0].font.size = Pt(11)
-            if c_idx > 0:
-                cell.text_frame.paragraphs[0].alignment = PP_ALIGN.RIGHT
-            if (r_idx + 1) % 2 == 0:
+            cell = tbl.cell(r_idx, c_idx)
+            cell.text = val
+            p = cell.text_frame.paragraphs[0]
+            p.font.size = Pt(10)
+            if c_idx in (0, 2, 3):
+                p.alignment = PP_ALIGN.CENTER
+            if r_idx % 2 == 0:
                 cell.fill.solid()
-                cell.fill.fore_color.rgb = LIGHT_BG
+                cell.fill.fore_color.rgb = RGBColor(240, 244, 250)
 
-    # Side Card: Lý luận Trung vị vs Trung bình
-    c_box = slide3.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(9.1), Inches(1.4), Inches(3.4), Inches(5.5))
-    c_box.fill.solid()
-    c_box.fill.fore_color.rgb = LIGHT_BG
-    c_box.line.color.rgb = CARD_BORDER
-    tf_b = c_box.text_frame
-    tf_b.word_wrap = True
+    # Right: Phân phối & Ngoại lệ (Câu 4)
+    c_right3 = slide3.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(7.1), Inches(1.35), Inches(5.4), Inches(5.6))
+    c_right3.fill.solid()
+    c_right3.fill.fore_color.rgb = LIGHT_BG
+    c_right3.line.color.rgb = CARD_BORDER
 
-    pb0 = tf_b.paragraphs[0]
-    pb0.text = "Lý Luận Học Thuật"
-    pb0.font.bold = True
-    pb0.font.size = Pt(15)
-    pb0.font.color.rgb = NAVY_BLUE
+    tf_r3 = c_right3.text_frame
+    tf_r3.word_wrap = True
+    pr3_0 = tf_r3.paragraphs[0]
+    pr3_0.text = "Hình Dạng Phân Phối & Ngoại Lệ (Câu 4)"
+    pr3_0.font.bold = True
+    pr3_0.font.size = Pt(15)
+    pr3_0.font.color.rgb = NAVY_BLUE
 
-    points = [
-        "• Phương pháp tính phân vị: Dùng phương pháp 'linear' (Type 7) chuẩn xác và nhất quán.",
-        "• Độ lệch chuẩn ddof = 1: Đảm bảo tính không chệch của phương sai mẫu.",
-        "• Khi nào Median tốt hơn Mean?:",
-        "  - Khi phân phối có độ lệch mạnh (Skewed) do đề thi quá khó hoặc quá dễ.",
-        "  - Khi có điểm ngoại lệ cực đoan (như sinh viên bị điểm 0 do bỏ thi). Mean sẽ bị kéo lệch, trong khi Median giữ nguyên sự ổn định.",
-    ]
-    for pt in points:
-        p = tf_b.add_paragraph()
-        p.space_before = Pt(8)
-        p.text = pt
-        p.font.size = Pt(11.5)
-        p.font.color.rgb = DARK_TEXT
+    box_path = Path("outputs/figures/fig2_boxplots.png")
+    if box_path.exists():
+        slide3.shapes.add_picture(str(box_path), Inches(7.3), Inches(1.9), width=Inches(5.0))
+
+    # Notes below image
+    c_note3 = slide3.shapes.add_textbox(Inches(7.2), Inches(5.1), Inches(5.2), Inches(1.7))
+    tf_n3 = c_note3.text_frame
+    tf_n3.word_wrap = True
+    pn0 = tf_n3.paragraphs[0]
+    pn0.text = "• Hình dạng: Cả X và Y có phân phối đơn đỉnh, đối xứng chuông cân đối (Mean ≈ Median ≈ 7.4–7.5)."
+    pn0.font.size = Pt(11)
+    pn0.font.bold = True
+    pn0.font.color.rgb = DARK_TEXT
+
+    pn1 = tf_n3.add_paragraph()
+    pn1.space_before = Pt(4)
+    pn1.text = "• Kiểm định 1.5 IQR: Hàng rào [Q1 - 1.5 IQR, Q3 + 1.5 IQR] của X là [3.95, 10.75] và Y là [4.31, 10.81]."
+    pn1.font.size = Pt(11)
+    pn1.font.color.rgb = DARK_TEXT
+
+    pn2 = tf_n3.add_paragraph()
+    pn2.space_before = Pt(4)
+    pn2.text = "• Giữ nguyên dữ liệu: Toàn bộ 32 quan sát phản ánh đúng năng lực học tập thực tế, không có lỗi gõ sai."
+    pn2.font.size = Pt(11)
+    pn2.font.bold = True
+    pn2.font.color.rgb = GREEN
 
     # =========================================================================
-    # SLIDE 4: PHÂN PHỐI & NGOẠI LỆ (CÂU 4 - MEMBER 2)
+    # SLIDE 4: TƯƠNG QUAN & HỒI QUY TUYẾN TÍNH OLS (CÂU 5, 6, 7 - MEMBER 3)
     # =========================================================================
     slide4 = prs.slides.add_slide(blank_layout)
-    add_header(slide4, "3. Phân Phối Dữ Liệu và Phân Tích Ngoại Lệ 1.5 IQR", "Câu 4 — Phân phối & Ngoại lệ", "Phan Dương Sinh (DE200235)")
+    add_header(slide4, "3. Tương Quan Pearson & Mô Hình Hồi Quy Tuyến Tính OLS", "CÂU 5, 6, 7 — HỒI QUY VÀ ĐỘ PHÙ HỢP", "Võ Ngọc Minh Quân (DE200080 — Nhóm trưởng)")
 
-    # Add Figure 1 (Histograms)
-    fig1_path = Path("outputs/figures/fig1_histograms.png")
-    if fig1_path.exists():
-        slide4.shapes.add_picture(str(fig1_path), Inches(0.8), Inches(1.4), width=Inches(6.0))
+    # Left: Correlation & OLS metrics
+    c_left4 = slide4.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), Inches(1.35), Inches(5.6), Inches(5.6))
+    c_left4.fill.solid()
+    c_left4.fill.fore_color.rgb = LIGHT_BG
+    c_left4.line.color.rgb = CARD_BORDER
 
-    # Add Figure 2 (Boxplots)
-    fig2_path = Path("outputs/figures/fig2_boxplots.png")
-    if fig2_path.exists():
-        slide4.shapes.add_picture(str(fig2_path), Inches(7.0), Inches(1.4), width=Inches(5.5))
+    tf_l4 = c_left4.text_frame
+    tf_l4.word_wrap = True
+    pl4_0 = tf_l4.paragraphs[0]
+    pl4_0.text = "Tương Quan & Phương Trình OLS (Câu 5, 6, 7)"
+    pl4_0.font.bold = True
+    pl4_0.font.size = Pt(15)
+    pl4_0.font.color.rgb = NAVY_BLUE
 
-    # Bottom Banner Box
-    b_box = slide4.shapes.add_shape(MSO_SHAPE.RECTANGLE, Inches(0.8), Inches(5.6), Inches(11.7), Inches(1.5))
-    b_box.fill.solid()
-    b_box.fill.fore_color.rgb = LIGHT_BG
-    b_box.line.color.rgb = CARD_BORDER
-    tf_bb = b_box.text_frame
-    tf_bb.word_wrap = True
+    items_l4 = [
+        ("Tương quan Pearson r:", "r = 0.4954 > 0 (Tương quan thuận mức độ trung bình-khá)."),
+        ("Kiểm định tương quan:", "t = 3.123, p-value = 0.0039 < 0.01 (Ý nghĩa thống kê rất cao)."),
+        ("95% KTC cho Pearson ρ:", "[0.1793, 0.7224] (Hoàn toàn nằm phía dương)."),
+        ("Lưu ý nhân quả:", "Tương quan chỉ đo lường đồng biến, không chứng minh nhân quả."),
+        ("Phương trình OLS:", "Ŷ = 3.6676 + 0.4999 * X"),
+        ("Hệ số góc b1 = 0.4999:", "Giữa kỳ tăng 1.0 điểm -> Cuối kỳ tăng trung bình 0.50 điểm (SE = 0.1601)."),
+        ("Hệ số chặn b0 = 3.6676:", "Định vị đường thẳng trên hệ tọa độ, không diễn giải tại X=0."),
+        ("Hệ số xác định R²:", "R² = 0.2454 (24.54% biến thiên của Y được giải thích bởi X)."),
+        ("Sai số chuẩn s:", "s = 1.0868 điểm; Phân tích ANOVA: F = 9.736, p = 0.0039."),
+    ]
+    for lbl, val in items_l4:
+        p = tf_l4.add_paragraph()
+        p.space_before = Pt(5)
+        r1 = p.add_run()
+        r1.text = f"• {lbl} "
+        r1.font.bold = True
+        r1.font.size = Pt(11)
+        r1.font.color.rgb = NAVY_BLUE if "Phương trình" in lbl or "Hệ số xác định" in lbl else DARK_TEXT
+        r2 = p.add_run()
+        r2.text = val
+        r2.font.size = Pt(11)
+        r2.font.color.rgb = DARK_TEXT
 
-    pbb0 = tf_bb.paragraphs[0]
-    pbb0.text = "Đánh giá theo Quy tắc 1.5 IQR và Nguyên tắc Đạo đức Thống kê:"
-    pbb0.font.bold = True
-    pbb0.font.size = Pt(13)
-    pbb0.font.color.rgb = NAVY_BLUE
+    # Right: Regression Fit Picture
+    c_right4 = slide4.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(6.75), Inches(1.35), Inches(5.75), Inches(5.6))
+    c_right4.fill.solid()
+    c_right4.fill.fore_color.rgb = LIGHT_BG
+    c_right4.line.color.rgb = CARD_BORDER
 
-    pbb1 = tf_bb.add_paragraph()
-    pbb1.space_before = Pt(4)
-    pbb1.text = "• Ngưỡng ngoại lệ X: Lower = 5.425, Upper = 9.625. Toàn bộ điểm giữa kỳ và cuối kỳ thực tế đều nằm trong khoảng an toàn [5.0, 10.0].\n" \
-                "• Không có điểm ngoại lệ dị biệt bất thường trong mẫu.\n" \
-                "• Nguyên tắc bắt buộc: Nếu có ngoại lệ thực tế trong thang [0, 10], TUYỆT ĐỐI KHÔNG TỰ ĐỘNG XÓA vì đó là phản ánh năng lực thật của người học."
-    pbb1.font.size = Pt(11.5)
-    pbb1.font.color.rgb = DARK_TEXT
+    tf_r4 = c_right4.text_frame
+    tf_r4.word_wrap = True
+    pr4_0 = tf_r4.paragraphs[0]
+    pr4_0.text = "Đồ Thị Hồi Quy Tuyến Tính Fit Thực Tế"
+    pr4_0.font.bold = True
+    pr4_0.font.size = Pt(15)
+    pr4_0.font.color.rgb = NAVY_BLUE
+
+    fit_path = Path("outputs/figures/fig4_regression_fit.png")
+    if fit_path.exists():
+        slide4.shapes.add_picture(str(fit_path), Inches(6.9), Inches(1.9), width=Inches(5.4))
+
+    # Bottom Callout Box
+    c_box4 = slide4.shapes.add_textbox(Inches(6.9), Inches(5.4), Inches(5.4), Inches(1.4))
+    tf_b4 = c_box4.text_frame
+    tf_b4.word_wrap = True
+    pb0 = tf_b4.paragraphs[0]
+    pb0.text = "💡 Nhận định cốt lõi: Mối liên hệ có ý nghĩa thống kê cao nhưng R² = 24.5% cho thấy 75.5% kết quả thi cuối kỳ phụ thuộc vào các yếu tố nỗ lực tự học sau giữa kỳ."
+    pb0.font.size = Pt(11)
+    pb0.font.bold = True
+    pb0.font.color.rgb = NAVY_BLUE
 
     # =========================================================================
-    # SLIDE 5: TƯƠNG QUAN PEARSON (CÂU 5 - MEMBER 3)
+    # SLIDE 5: CHẨN ĐOÁN 4 GIẢ ĐỊNH GAUSS-MARKOV (CÂU 8 - MEMBER 4)
     # =========================================================================
     slide5 = prs.slides.add_slide(blank_layout)
-    add_header(slide5, "4. Tương Quan Tuyến Tính Pearson & Biểu Đồ Phân Tán", "Câu 5 — Mối liên hệ ban đầu", "Võ Ngọc Minh Quân (DE200080)")
+    add_header(slide5, "4. Chẩn Đoán Mô Hình & Kiểm Định 4 Giả Định Gauss-Markov", "CÂU 8 — KIỂM CHỨNG ĐIỀU KIỆN OLS (BLUE)", "Vũ Hữu Thái (DE200132)")
 
-    # Add Figure 3 (Scatterplot)
-    fig3_path = Path("outputs/figures/fig3_scatterplot.png")
-    if fig3_path.exists():
-        slide5.shapes.add_picture(str(fig3_path), Inches(0.8), Inches(1.4), width=Inches(6.2))
+    # Left: 4 Gauss-Markov Assumptions Table/Cards
+    c_left5 = slide5.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), Inches(1.35), Inches(5.7), Inches(5.6))
+    c_left5.fill.solid()
+    c_left5.fill.fore_color.rgb = LIGHT_BG
+    c_left5.line.color.rgb = CARD_BORDER
 
-    # Right Card: Pearson details
-    c_p = slide5.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(7.3), Inches(1.4), Inches(5.2), Inches(5.5))
-    c_p.fill.solid()
-    c_p.fill.fore_color.rgb = LIGHT_BG
-    c_p.line.color.rgb = CARD_BORDER
-    tf_p = c_p.text_frame
-    tf_p.word_wrap = True
+    tf_l5 = c_left5.text_frame
+    tf_l5.word_wrap = True
+    pl5_0 = tf_l5.paragraphs[0]
+    pl5_0.text = "Kết Quả Kiểm Định 4 Giả Định Gauss-Markov"
+    pl5_0.font.bold = True
+    pl5_0.font.size = Pt(15)
+    pl5_0.font.color.rgb = NAVY_BLUE
 
-    pp0 = tf_p.paragraphs[0]
-    pp0.text = "Kết Quả Phân Tích Tương Quan Pearson"
-    pp0.font.bold = True
-    pp0.font.size = Pt(16)
-    pp0.font.color.rgb = NAVY_BLUE
-
-    p_items = [
-        ("Hệ số tương quan r:", "r = +0.4954"),
-        ("p-value kiểm định r:", "p = 0.0039 (< 0.01 — Rất có ý nghĩa thống kê)"),
-        ("Chiều hướng liên hệ:", "Tương quan thuận (Positive Correlation): Sinh viên đạt điểm giữa kỳ cao nhìn chung đạt điểm cuối kỳ cao."),
-        ("Mức độ liên hệ:", "Mức độ trung bình - khá (0.40 <= |r| < 0.70)."),
-        ("Đám mây điểm scatterplot:", "Phân bố tập trung dốc lên dọc đường chéo, khẳng định dạng quan hệ tuyến tính ban đầu là hợp lý."),
-        ("CẢNH BÁO NHÂN QUẢ:", "Tương quan Pearson thuần túy đo lường mức độ đồng biến tuyến tính, KHÔNG CHỨNG MINH quan hệ nhân quả. Điểm giữa kỳ cao không trực tiếp 'gây ra' điểm cuối kỳ cao."),
+    diag_items = [
+        ("1. Phân phối chuẩn của phần dư (Normality):",
+         "Kiểm định Shapiro-Wilk: W = 0.9634, p-value = 0.334 > 0.05.\n"
+         "-> Kết luận: Phần dư tuân theo phân phối chuẩn, các kiểm định t và F hoàn toàn tin cậy."),
+        ("2. Phương sai sai số đồng nhất (Homoscedasticity):",
+         "Kiểm định Breusch-Pagan: LM = 0.4180, p-value = 0.518 > 0.05.\n"
+         "-> Kết luận: Không vi phạm hiện tượng phương sai thay đổi (hình phễu)."),
+        ("3. Tính độc lập của sai số (Independence):",
+         "Thống kê Durbin-Watson: d = 2.062 ≈ 2.0.\n"
+         "-> Kết luận: Không có hiện tượng tự tương quan chuỗi bậc nhất."),
+        ("4. Dạng quan hệ tuyến tính (Linearity):",
+         "Ramsey RESET / F-test số hạng bậc hai: F = 0.082, p-value = 0.776 > 0.05.\n"
+         "-> Kết luận: Dạng quan hệ tuyến tính bậc nhất là tối ưu."),
     ]
-    for lbl, val in p_items:
-        p = tf_p.add_paragraph()
-        p.space_before = Pt(8)
+    for title, desc in diag_items:
+        p = tf_l5.add_paragraph()
+        p.space_before = Pt(6)
         r1 = p.add_run()
-        r1.text = f"• {lbl} "
+        r1.text = f"✔ {title}\n"
         r1.font.bold = True
-        r1.font.size = Pt(12)
-        r1.font.color.rgb = NAVY_BLUE if "CẢNH BÁO" in lbl else DARK_TEXT
+        r1.font.size = Pt(11)
+        r1.font.color.rgb = NAVY_BLUE
         r2 = p.add_run()
-        r2.text = val
-        r2.font.size = Pt(12)
+        r2.text = desc
+        r2.font.size = Pt(10.5)
         r2.font.color.rgb = DARK_TEXT
 
+    p_conc5 = tf_l5.add_paragraph()
+    p_conc5.space_before = Pt(6)
+    p_conc5.text = "⭐ KẾT LUẬN: Mô hình thỏa mãn toàn bộ giả định OLS, ước lượng đạt chuẩn BLUE (Best Linear Unbiased Estimator)."
+    p_conc5.font.bold = True
+    p_conc5.font.size = Pt(10.5)
+    p_conc5.font.color.rgb = GREEN
+
+    # Right: Diagnostics Figure
+    c_right5 = slide5.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(6.8), Inches(1.35), Inches(5.7), Inches(5.6))
+    c_right5.fill.solid()
+    c_right5.fill.fore_color.rgb = LIGHT_BG
+    c_right5.line.color.rgb = CARD_BORDER
+
+    tf_r5 = c_right5.text_frame
+    tf_r5.word_wrap = True
+    pr5_0 = tf_r5.paragraphs[0]
+    pr5_0.text = "Bộ Đồ Thị Chẩn Đoán Phần Dư Thực Tế"
+    pr5_0.font.bold = True
+    pr5_0.font.size = Pt(15)
+    pr5_0.font.color.rgb = NAVY_BLUE
+
+    diag_path = Path("outputs/figures/fig5_diagnostics.png")
+    if diag_path.exists():
+        slide5.shapes.add_picture(str(diag_path), Inches(6.95), Inches(1.9), width=Inches(5.4))
+
     # =========================================================================
-    # SLIDE 6: HỒI QUY TUYẾN TÍNH OLS (CÂU 6 & 7 - MEMBER 3)
+    # SLIDE 6: KTC 95% & KIỂM ĐỊNH GIẢ THUYẾT (CÂU 9-12 - MEMBER 5)
     # =========================================================================
     slide6 = prs.slides.add_slide(blank_layout)
-    add_header(slide6, "5. Mô Hình Hồi Quy Tuyến Tính Đơn OLS & Độ Phù Hợp", "Câu 6 & 7 — Ước lượng OLS", "Võ Ngọc Minh Quân (DE200080)")
+    add_header(slide6, "5. Suy Luận Thống Kê: Khoảng Tin Cậy 95% & Kiểm Định Giả Thuyết", "CÂU 9, 10, 11, 12 — SUY LUẬN THỐNG KÊ", "Nguyễn Hữu Hoàng Thắng (DE200281)")
 
-    # Left: Regression Fit Figure
-    fig4_path = Path("outputs/figures/fig4_regression_fit.png")
-    if fig4_path.exists():
-        slide6.shapes.add_picture(str(fig4_path), Inches(0.8), Inches(1.4), width=Inches(6.2))
+    # Card Left: Mean inference (Câu 9 & 10)
+    c_left6 = slide6.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), Inches(1.35), Inches(5.7), Inches(5.6))
+    c_left6.fill.solid()
+    c_left6.fill.fore_color.rgb = LIGHT_BG
+    c_left6.line.color.rgb = CARD_BORDER
 
-    # Right Card: Equation & Interpretation
-    c_reg = slide6.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(7.3), Inches(1.4), Inches(5.2), Inches(5.5))
-    c_reg.fill.solid()
-    c_reg.fill.fore_color.rgb = LIGHT_BG
-    c_reg.line.color.rgb = CARD_BORDER
-    tf_reg = c_reg.text_frame
-    tf_reg.word_wrap = True
+    tf_l6 = c_left6.text_frame
+    tf_l6.word_wrap = True
+    pl6_0 = tf_l6.paragraphs[0]
+    pl6_0.text = "Điểm Cuối Kỳ Trung Bình μ (Câu 9 & 10)"
+    pl6_0.font.bold = True
+    pl6_0.font.size = Pt(15)
+    pl6_0.font.color.rgb = NAVY_BLUE
 
-    pr0 = tf_reg.paragraphs[0]
-    pr0.text = "Phương Trình Hồi Quy Ước Lượng (OLS)"
-    pr0.font.bold = True
-    pr0.font.size = Pt(16)
-    pr0.font.color.rgb = NAVY_BLUE
-
-    peq = tf_reg.add_paragraph()
-    peq.space_before = Pt(8)
-    peq.text = "Y_hat = 3.6676 + 0.4999 * X"
-    peq.font.bold = True
-    peq.font.size = Pt(16)
-    peq.font.color.rgb = ACCENT_BLUE
-
-    reg_items = [
-        ("Hệ số góc b1 = 0.4999:", "Khi điểm giữa kỳ tăng 1.0 điểm, điểm cuối kỳ dự đoán tăng trung bình 0.500 điểm."),
-        ("Hệ số chặn b0 = 3.6676:", "Về toán học là điểm cuối kỳ khi X = 0. Không mang ý nghĩa thực tế độc lập vì không có sinh viên đạt 0 điểm trong mẫu."),
-        ("Hệ số xác định R² = 0.2454:", "Điểm giữa kỳ giải thích được 24.5% biến thiên của điểm thi cuối kỳ (75.5% còn lại do các yếu tố ngoài mô hình)."),
-        ("Sai số chuẩn hồi quy s = 1.0868:", "Mức phân tán sai lệch điển hình quanh đường hồi quy là khoảng 1.09 điểm."),
+    items_l6 = [
+        ("Khoảng tin cậy 95% cho μ (Câu 9):", "[6.944, 7.831] điểm."),
+        ("Công thức:", "Ȳ ± t(0.025, df=31) * (s / √n) = 7.388 ± 2.040 * 0.218."),
+        ("Ý nghĩa:", "Khoảng này ước lượng giá trị trung bình tổng thể μ, không phải khoảng chứa 95% điểm số của từng cá nhân."),
+        ("Bài toán kiểm định (Câu 10):", "H0: μ <= 7.0  so với  H1: μ > 7.0 (Phía phải, α = 0.05)."),
+        ("Thống kê kiểm định t:", "t = (7.388 - 7.0) / (1.233 / √32) = 1.781."),
+        ("p-value & Ngưỡng t tới hạn:", "p-value = 0.0423 < 0.05 (t = 1.781 > t_crit = 1.696)."),
+        ("QUYẾT ĐỊNH THỐNG KÊ:", "BÁC BỎ H0."),
+        ("Kết luận thực tế:", "Có đủ bằng chứng thống kê khẳng định điểm cuối kỳ trung bình của sinh viên thực sự cao hơn mức 7.0 điểm."),
     ]
-    for lbl, val in reg_items:
-        p = tf_reg.add_paragraph()
-        p.space_before = Pt(8)
+    for lbl, val in items_l6:
+        p = tf_l6.add_paragraph()
+        p.space_before = Pt(5)
         r1 = p.add_run()
         r1.text = f"• {lbl} "
         r1.font.bold = True
-        r1.font.size = Pt(12)
-        r1.font.color.rgb = DARK_TEXT
+        r1.font.size = Pt(11)
+        r1.font.color.rgb = NAVY_BLUE if "QUYẾT ĐỊNH" in lbl or "Khoảng" in lbl else DARK_TEXT
         r2 = p.add_run()
         r2.text = val
-        r2.font.size = Pt(12)
-        r2.font.color.rgb = DARK_TEXT
+        r2.font.size = Pt(11)
+        r2.font.bold = bool("QUYẾT ĐỊNH" in lbl)
+        r2.font.color.rgb = GREEN if "QUYẾT ĐỊNH" in lbl else DARK_TEXT
 
-    # =========================================================================
-    # SLIDE 7: CHẨN ĐOÁN MÔ HÌNH (CÂU 8 - MEMBER 4)
-    # =========================================================================
-    slide7 = prs.slides.add_slide(blank_layout)
-    add_header(slide7, "6. Chẩn Đoán Giả Định Gauss-Markov Trên Phần Dư", "Câu 8 — Chẩn đoán phần dư", "Vũ Hữu Thái (DE200132)")
+    # Card Right: Slope inference (Câu 11 & 12)
+    c_right6 = slide6.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(6.8), Inches(1.35), Inches(5.7), Inches(5.6))
+    c_right6.fill.solid()
+    c_right6.fill.fore_color.rgb = LIGHT_BG
+    c_right6.line.color.rgb = CARD_BORDER
 
-    # Center: Diagnostics Figure
-    fig5_path = Path("outputs/figures/fig5_diagnostics.png")
-    if fig5_path.exists():
-        slide7.shapes.add_picture(str(fig5_path), Inches(0.8), Inches(1.35), width=Inches(11.7))
+    tf_r6 = c_right6.text_frame
+    tf_r6.word_wrap = True
+    pr6_0 = tf_r6.paragraphs[0]
+    pr6_0.text = "Hệ Số Góc Hồi Quy β1 (Câu 11 & 12)"
+    pr6_0.font.bold = True
+    pr6_0.font.size = Pt(15)
+    pr6_0.font.color.rgb = NAVY_BLUE
 
-    # Bottom 4 test cards in a row
-    card_w = Inches(2.7)
-    card_h = Inches(1.6)
-    tests = [
-        ("1. Tuyến tính (Linearity)", "F-test p = 0.697 > 0.05", "Dạng tuyến tính hoàn toàn phù hợp, không cong parabol."),
-        ("2. Homoscedasticity", "Breusch-Pagan p = 0.835 > 0.05", "Phương sai sai số đồng nhất, không xuất hiện hình phễu."),
-        ("3. Phân phối chuẩn", "Shapiro-Wilk p = 0.216 > 0.05", "Phần dư tuân theo phân phối chuẩn, Q-Q bám sát đường thẳng."),
-        ("4. Tính độc lập", "Durbin-Watson DW = 1.942", "Không có tự tương quan bậc một (DW xấp xỉ mức lý tưởng 2.0)."),
+    items_r6 = [
+        ("Khoảng tin cậy 95% cho β1 (Câu 11):", "[0.1730, 0.8269] điểm."),
+        ("Công thức:", "b1 ± t(0.025, df=30) * SE(b1) = 0.4999 ± 2.042 * 0.1601."),
+        ("Ý nghĩa khoảng tin cậy:", "Khoảng hoàn toàn dương và KHÔNG CHỨA GIÁ TRỊ 0 -> β1 thực sự khác 0."),
+        ("Bài toán kiểm định (Câu 12):", "H0: β1 = 0  so với  H1: β1 != 0 (Hai phía, α = 0.05)."),
+        ("Thống kê kiểm định t:", "t = 0.4999 / 0.1601 = 3.123."),
+        ("p-value hai phía:", "p-value = 0.0039 < 0.01 (Rất có ý nghĩa)."),
+        ("QUYẾT ĐỊNH THỐNG KÊ:", "BÁC BỎ H0."),
+        ("Đối chiếu tính nhất quán:", "Kết quả kiểm định t bác bỏ H0 hoàn toàn đồng nhất với Khoảng tin cậy 95% không chứa giá trị 0."),
     ]
-    for idx, (t_name, stat_val, desc) in enumerate(tests):
-        c_test = slide7.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8 + idx * 2.95), Inches(5.5), card_w, card_h)
-        c_test.fill.solid()
-        c_test.fill.fore_color.rgb = LIGHT_BG
-        c_test.line.color.rgb = CARD_BORDER
-        tf_t = c_test.text_frame
-        tf_t.word_wrap = True
-        pt0 = tf_t.paragraphs[0]
-        pt0.text = t_name
-        pt0.font.bold = True
-        pt0.font.size = Pt(11)
-        pt0.font.color.rgb = NAVY_BLUE
-
-        pt1 = tf_t.add_paragraph()
-        pt1.text = stat_val
-        pt1.font.bold = True
-        pt1.font.size = Pt(11)
-        pt1.font.color.rgb = GREEN
-
-        pt2 = tf_t.add_paragraph()
-        pt2.text = desc
-        pt2.font.size = Pt(9.5)
-        pt2.font.color.rgb = DARK_TEXT
-
-    # =========================================================================
-    # SLIDE 8: KTC & KIỂM ĐỊNH TRUNG BÌNH (CÂU 9 & 10 - MEMBER 5)
-    # =========================================================================
-    slide8 = prs.slides.add_slide(blank_layout)
-    add_header(slide8, "7. Khoảng Tin Cậy 95% & Kiểm Định Điểm Cuối Kỳ Trung Bình", "Câu 9 & 10 — Suy luận trung bình", "Nguyễn Hữu Hoàng Thắng (DE200281)")
-
-    # Card Left: Câu 9 (KTC Trung bình)
-    c_c9 = slide8.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), Inches(1.5), Inches(5.6), Inches(5.4))
-    c_c9.fill.solid()
-    c_c9.fill.fore_color.rgb = LIGHT_BG
-    c_c9.line.color.rgb = CARD_BORDER
-    tf_c9 = c_c9.text_frame
-    tf_c9.word_wrap = True
-
-    pc9_0 = tf_c9.paragraphs[0]
-    pc9_0.text = "Khoảng Tin Cậy 95% Cho Trung Bình Y (Câu 9)"
-    pc9_0.font.bold = True
-    pc9_0.font.size = Pt(15)
-    pc9_0.font.color.rgb = NAVY_BLUE
-
-    items_c9 = [
-        ("Ước lượng điểm trung bình mẫu:", "Y_bar = 7.388 điểm"),
-        ("Sai số chuẩn (SE):", "SE = s_Y / sqrt(n) = 1.231 / sqrt(32) = 0.218 điểm"),
-        ("Bậc tự do (df):", "df = n - 1 = 31"),
-        ("Giá trị t tới hạn (alpha=0.05, 2 phía):", "t_crit = 2.040"),
-        ("Biên sai số (Margin of Error):", "E = t_crit * SE = 0.444 điểm"),
-        ("KHOẢNG TIN CẬY 95%:", "[6.944, 7.831] điểm cuối kỳ"),
-        ("PHÂN BIỆT BẢN CHẤT:", "Khoảng này ước lượng giá trị TRUNG BÌNH tổng thể (mu), KHÔNG PHẢI là khoảng chứa 95% điểm số của từng sinh viên riêng lẻ."),
-    ]
-    for lbl, val in items_c9:
-        p = tf_c9.add_paragraph()
-        p.space_before = Pt(8)
+    for lbl, val in items_r6:
+        p = tf_r6.add_paragraph()
+        p.space_before = Pt(5)
         r1 = p.add_run()
         r1.text = f"• {lbl} "
         r1.font.bold = True
-        r1.font.size = Pt(12)
-        r1.font.color.rgb = NAVY_BLUE if "KHOẢNG TIN CẬY" in lbl else DARK_TEXT
+        r1.font.size = Pt(11)
+        r1.font.color.rgb = NAVY_BLUE if "QUYẾT ĐỊNH" in lbl or "Khoảng" in lbl else DARK_TEXT
         r2 = p.add_run()
         r2.text = val
-        r2.font.size = Pt(12)
-        r2.font.bold = bool("KHOẢNG TIN CẬY" in lbl)
-        r2.font.color.rgb = GREEN if "KHOẢNG TIN CẬY" in lbl else DARK_TEXT
-
-    # Card Right: Câu 10 (Kiểm định mu > 7.0)
-    c_c10 = slide8.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(6.8), Inches(1.5), Inches(5.7), Inches(5.4))
-    c_c10.fill.solid()
-    c_c10.fill.fore_color.rgb = LIGHT_BG
-    c_c10.line.color.rgb = CARD_BORDER
-    tf_c10 = c_c10.text_frame
-    tf_c10.word_wrap = True
-
-    pc10_0 = tf_c10.paragraphs[0]
-    pc10_0.text = "Kiểm Định Trung Bình Điểm Cuối Kỳ (Câu 10)"
-    pc10_0.font.bold = True
-    pc10_0.font.size = Pt(15)
-    pc10_0.font.color.rgb = NAVY_BLUE
-
-    items_c10 = [
-        ("Cặp giả thuyết (Kiểm định 1 phía):", "H0: mu <= 7.0   vs   H1: mu > 7.0"),
-        ("Thống kê kiểm định t:", "t = (7.388 - 7.0) / 0.218 = 1.781"),
-        ("p-value (một phía):", "p = 0.0423 (< alpha = 0.05)"),
-        ("QUYẾT ĐỊNH THỐNG KÊ:", "BÁC BỎ H0 ở mức ý nghĩa 5%."),
-        ("Kết luận học thuật:", "Có đủ bằng chứng thống kê để khẳng định điểm thi cuối kỳ trung bình của sinh viên đạt trên ngưỡng 7.0 điểm."),
-        ("Sai lầm loại I (alpha = 0.05):", "Kết luận mu > 7.0 khi thực tế mu <= 7.0 (rủi ro tối đa 5%)."),
-        ("Sai lầm loại II (beta):", "Bỏ sót không phát hiện được sự tiến bộ thực chất của sinh viên."),
-    ]
-    for lbl, val in items_c10:
-        p = tf_c10.add_paragraph()
-        p.space_before = Pt(8)
-        r1 = p.add_run()
-        r1.text = f"• {lbl} "
-        r1.font.bold = True
-        r1.font.size = Pt(12)
-        r1.font.color.rgb = NAVY_BLUE if "QUYẾT ĐỊNH" in lbl else DARK_TEXT
-        r2 = p.add_run()
-        r2.text = val
-        r2.font.size = Pt(12)
+        r2.font.size = Pt(11)
         r2.font.bold = bool("QUYẾT ĐỊNH" in lbl)
         r2.font.color.rgb = GREEN if "QUYẾT ĐỊNH" in lbl else DARK_TEXT
 
     # =========================================================================
-    # SLIDE 9: KTC & KIỂM ĐỊNH HỆ SỐ GÓC (CÂU 11 & 12 - MEMBER 5)
+    # SLIDE 7: DỰ ĐOÁN (1A), GIỚI HẠN (1B) & TỔNG KẾT (PHẦN 5 - MEMBER 6)
     # =========================================================================
-    slide9 = prs.slides.add_slide(blank_layout)
-    add_header(slide9, "8. Khoảng Tin Cậy 95% & Kiểm Định Hệ Số Góc Hồi Quy", "Câu 11 & 12 — Suy luận hệ số góc", "Nguyễn Hữu Hoàng Thắng (DE200281)")
+    slide7 = prs.slides.add_slide(blank_layout)
+    add_header(slide7, "6. Dự Đoán Điểm Số, Giới Hạn Mô Hình & Kết Luận Học Thuật", "CÂU 1A, 1B, PHẦN 5 — DỰ BÁO VÀ TỔNG KẾT", "Trần Đức Duy (DE180206)")
 
-    # Card Left: Câu 11 (KTC Hệ số góc)
-    c_c11 = slide9.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), Inches(1.5), Inches(5.6), Inches(5.4))
-    c_c11.fill.solid()
-    c_c11.fill.fore_color.rgb = LIGHT_BG
-    c_c11.line.color.rgb = CARD_BORDER
-    tf_c11 = c_c11.text_frame
-    tf_c11.word_wrap = True
+    # Card Left: Dự đoán (1A) & Giới hạn (1B)
+    c_left7 = slide7.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), Inches(1.35), Inches(5.8), Inches(5.6))
+    c_left7.fill.solid()
+    c_left7.fill.fore_color.rgb = LIGHT_BG
+    c_left7.line.color.rgb = CARD_BORDER
 
-    pc11_0 = tf_c11.paragraphs[0]
-    pc11_0.text = "Khoảng Tin Cậy 95% Cho Hệ Số Góc beta1 (Câu 11)"
-    pc11_0.font.bold = True
-    pc11_0.font.size = Pt(15)
-    pc11_0.font.color.rgb = NAVY_BLUE
+    tf_l7 = c_left7.text_frame
+    tf_l7.word_wrap = True
+    pl7_0 = tf_l7.paragraphs[0]
+    pl7_0.text = "Dự Đoán (1A) & Giới Hạn Thực Nghiệm (1B)"
+    pl7_0.font.bold = True
+    pl7_0.font.size = Pt(15)
+    pl7_0.font.color.rgb = NAVY_BLUE
 
-    items_c11 = [
-        ("Ước lượng điểm hệ số góc (b1):", "b1 = 0.4999"),
-        ("Sai số chuẩn SE(b1):", "SE(b1) = 0.1601"),
-        ("Bậc tự do (df):", "df = n - 2 = 30"),
-        ("Giá trị t tới hạn (alpha=0.05, 2 phía):", "t_crit = 2.042"),
-        ("KHOẢNG TIN CẬY 95%:", "[0.1730, 0.8269] điểm cuối kỳ/điểm giữa kỳ"),
-        ("Khoảng có chứa giá trị 0?:", "KHÔNG CHỨA 0 (Khẳng định độ tin cậy của mối liên hệ)."),
-        ("Ý nghĩa thực tiễn:", "Khi giữa kỳ tăng 1 điểm, cuối kỳ trung bình tăng từ 0.17 đến 0.83 điểm."),
+    items_l7 = [
+        ("Dự đoán tại X = 6.0 (Câu 1A):", "Ŷ = 3.6676 + 0.4999 * 6.0 = 6.667 điểm (95% PI: [4.38, 8.95])."),
+        ("Dự đoán tại X = 8.0 (Câu 1A):", "Ŷ = 3.6676 + 0.4999 * 8.0 = 7.667 điểm (95% PI: [5.41, 9.93])."),
+        ("Chênh lệch dự đoán:", "ΔŶ = 0.4999 * (8 - 6) = 1.000 điểm khi điểm giữa kỳ tăng 2.0 điểm."),
+        ("Giới hạn ngoại suy (Câu 1B):", "Mô hình chỉ có giá trị nội suy trong miền thực tế [4.5, 9.8], không ngoại suy ngoài [0, 10]."),
+        ("Khác biệt độ khó đề thi:", "40.6% SV đánh giá đề cuối kỳ khó hơn giữa kỳ (+0.82/5.0), phá vỡ quan hệ 1-1."),
+        ("Nỗ lực bù đắp sau giữa kỳ:", "84.4% SV tăng cường tự học 5.8 giờ/tuần để cải thiện điểm số."),
+        ("Biến số bị bỏ sót:", "R² = 24.54% cho thấy còn 75.46% biến thiên phụ thuộc đồ án, chuyên cần và phương pháp học."),
     ]
-    for lbl, val in items_c11:
-        p = tf_c11.add_paragraph()
-        p.space_before = Pt(8)
+    for lbl, val in items_l7:
+        p = tf_l7.add_paragraph()
+        p.space_before = Pt(5)
         r1 = p.add_run()
         r1.text = f"• {lbl} "
         r1.font.bold = True
-        r1.font.size = Pt(12)
-        r1.font.color.rgb = NAVY_BLUE if "KHOẢNG TIN CẬY" in lbl else DARK_TEXT
+        r1.font.size = Pt(11)
+        r1.font.color.rgb = NAVY_BLUE if "Dự đoán" in lbl else DARK_TEXT
         r2 = p.add_run()
         r2.text = val
-        r2.font.size = Pt(12)
-        r2.font.bold = bool("KHOẢNG TIN CẬY" in lbl)
-        r2.font.color.rgb = GREEN if "KHOẢNG TIN CẬY" in lbl else DARK_TEXT
-
-    # Card Right: Câu 12 (Kiểm định beta1 != 0)
-    c_c12 = slide9.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(6.8), Inches(1.5), Inches(5.7), Inches(5.4))
-    c_c12.fill.solid()
-    c_c12.fill.fore_color.rgb = LIGHT_BG
-    c_c12.line.color.rgb = CARD_BORDER
-    tf_c12 = c_c12.text_frame
-    tf_c12.word_wrap = True
-
-    pc12_0 = tf_c12.paragraphs[0]
-    pc12_0.text = "Kiểm Định Hệ Số Góc Hồi Quy (Câu 12)"
-    pc12_0.font.bold = True
-    pc12_0.font.size = Pt(15)
-    pc12_0.font.color.rgb = NAVY_BLUE
-
-    items_c12 = [
-        ("Cặp giả thuyết (Kiểm định 2 phía):", "H0: beta1 = 0   vs   H1: beta1 != 0"),
-        ("Thống kê kiểm định t:", "t = b1 / SE(b1) = 0.4999 / 0.1601 = 3.123"),
-        ("p-value (hai phía):", "p = 0.0039 (< 0.01 — Cực kỳ có ý nghĩa)"),
-        ("QUYẾT ĐỊNH THỐNG KÊ:", "BÁC BỎ H0 ở mức ý nghĩa 5%."),
-        ("TÍNH ĐỐI NGẪU VỚI CÂU 11:", "Hoàn toàn nhất quán 100%: Bác bỏ H0 tương đương với KTC 95% không chứa giá trị 0."),
-        ("Ý nghĩa thống kê vs Ý nghĩa thực tế:", "Mối liên hệ có ý nghĩa thống kê cao nhưng chỉ giải thích 24.5% biến thiên thực tế."),
-    ]
-    for lbl, val in items_c12:
-        p = tf_c12.add_paragraph()
-        p.space_before = Pt(8)
-        r1 = p.add_run()
-        r1.text = f"• {lbl} "
-        r1.font.bold = True
-        r1.font.size = Pt(12)
-        r1.font.color.rgb = NAVY_BLUE if "QUYẾT ĐỊNH" in lbl else DARK_TEXT
-        r2 = p.add_run()
-        r2.text = val
-        r2.font.size = Pt(12)
-        r2.font.bold = bool("QUYẾT ĐỊNH" in lbl or "TÍNH ĐỐI NGẪU" in lbl)
-        r2.font.color.rgb = GREEN if "QUYẾT ĐỊNH" in lbl else DARK_TEXT
-
-    # =========================================================================
-    # SLIDE 10: DỰ ĐOÁN ĐIỂM (CÂU 1A - MEMBER 6)
-    # =========================================================================
-    slide10 = prs.slides.add_slide(blank_layout)
-    add_header(slide10, "9. Dự Đoán Điểm Cuối Kỳ Theo Bối Cảnh Thực Tế", "Câu 1A — Dự đoán chuyên sâu Đề tài 1", "Trần Đức Duy (DE180206)")
-
-    # Table of Predictions
-    rows = 3
-    cols = 4
-    table_shape = slide10.shapes.add_table(rows, cols, Inches(0.8), Inches(1.5), Inches(11.7), Inches(2.2))
-    tbl_p = table_shape.table
-    tbl_p.columns[0].width = Inches(2.5)
-    tbl_p.columns[1].width = Inches(2.5)
-    tbl_p.columns[2].width = Inches(3.3)
-    tbl_p.columns[3].width = Inches(3.4)
-
-    h_pred = ["Điểm giữa kỳ (X)", "Điểm cuối kỳ dự đoán (Y_hat)", "95% KTC cho Trung bình", "95% Khoảng dự đoán cá nhân (PI)"]
-    for i, h in enumerate(h_pred):
-        cell = tbl_p.cell(0, i)
-        cell.fill.solid()
-        cell.fill.fore_color.rgb = NAVY_BLUE
-        cell.text_frame.paragraphs[0].text = h
-        cell.text_frame.paragraphs[0].font.bold = True
-        cell.text_frame.paragraphs[0].font.size = Pt(12)
-        cell.text_frame.paragraphs[0].font.color.rgb = WHITE
-        cell.text_frame.paragraphs[0].alignment = PP_ALIGN.CENTER
-
-    pred_data = [
-        ("X = 6.0 điểm", "6.667 điểm", "[6.155, 7.179] điểm", "[4.382, 8.951] điểm"),
-        ("X = 8.0 điểm", "7.667 điểm", "[7.234, 8.100] điểm", "[5.408, 9.926] điểm"),
-    ]
-    for r_idx, row in enumerate(pred_data):
-        for c_idx, val in enumerate(row):
-            cell = tbl_p.cell(r_idx + 1, c_idx)
-            cell.text_frame.paragraphs[0].text = val
-            cell.text_frame.paragraphs[0].font.size = Pt(12)
-            cell.text_frame.paragraphs[0].alignment = PP_ALIGN.CENTER
-
-    # Lower Card: Analysis of Difference & Causality
-    c_dif = slide10.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), Inches(4.0), Inches(11.7), Inches(3.0))
-    c_dif.fill.solid()
-    c_dif.fill.fore_color.rgb = LIGHT_BG
-    c_dif.line.color.rgb = CARD_BORDER
-    tf_dif = c_dif.text_frame
-    tf_dif.word_wrap = True
-
-    pd0 = tf_dif.paragraphs[0]
-    pd0.text = "Phân Tích Ý Nghĩa Thực Tế và Cảnh Báo Nhân Quả (Câu 1A)"
-    pd0.font.bold = True
-    pd0.font.size = Pt(15)
-    pd0.font.color.rgb = NAVY_BLUE
-
-    d_items = [
-        ("Mức chênh lệch dự đoán:", "Delta_Y = b1 * (8.0 - 6.0) = 0.4999 * 2 = 1.000 điểm."),
-        ("Ý nghĩa thực tế:", "Sinh viên có điểm giữa kỳ đạt 8.0 có kỳ vọng điểm thi cuối kỳ cao hơn 1.0 điểm so với sinh viên đạt 6.0 điểm."),
-        ("Độ rộng khoảng dự đoán cá nhân (PI):", "Khoảng dự đoán cá nhân cho từng sinh viên rất rộng (dao động từ 4.4 đến 9.9 điểm), phản ánh sự đa dạng và sai số ngẫu nhiên cá thể lớn."),
-        ("CẢNH BÁO QUAN TRỌNG VỀ NHÂN QUẢ:", "Sự chênh lệch 1.0 điểm chỉ là so sánh kỳ vọng thống kê giữa hai nhóm người học có năng lực khác nhau. TUYỆT ĐỐI KHÔNG phải là bằng chứng cho thấy việc can thiệp nâng điểm giữa kỳ thêm 2 điểm sẽ làm điểm cuối kỳ của một cá nhân chắc chắn tăng 1 điểm."),
-    ]
-    for lbl, val in d_items:
-        p = tf_dif.add_paragraph()
-        p.space_before = Pt(6)
-        r1 = p.add_run()
-        r1.text = f"• {lbl} "
-        r1.font.bold = True
-        r1.font.size = Pt(11.5)
-        r1.font.color.rgb = NAVY_BLUE if "CẢNH BÁO" in lbl else DARK_TEXT
-        r2 = p.add_run()
-        r2.text = val
-        r2.font.size = Pt(11.5)
+        r2.font.size = Pt(11)
         r2.font.color.rgb = DARK_TEXT
 
-    # =========================================================================
-    # SLIDE 11: GIỚI HẠN MÔ HÌNH TỪ DỮ LIỆU THỰC NGHIỆM (CÂU 1B - MEMBER 6)
-    # =========================================================================
-    slide11 = prs.slides.add_slide(blank_layout)
-    add_header(slide11, "10. Giới Hạn Của Mô Hình & Bằng Chứng Thực Nghiệm", "Câu 1B — Giới hạn mô hình", "Trần Đức Duy (DE180206)")
+    # Card Right: 3 Kết luận & Banner Q&A
+    c_right7 = slide7.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(6.9), Inches(1.35), Inches(5.6), Inches(5.6))
+    c_right7.fill.solid()
+    c_right7.fill.fore_color.rgb = NAVY_BLUE
+    c_right7.line.fill.background()
 
-    # 3 Column Cards
-    col_w = Inches(3.7)
-    col_h = Inches(5.5)
+    tf_r7 = c_right7.text_frame
+    tf_r7.word_wrap = True
+    pr7_0 = tf_r7.paragraphs[0]
+    pr7_0.text = "3 Phát Hiện Chính & Kết Luận (Phần 5)"
+    pr7_0.font.bold = True
+    pr7_0.font.size = Pt(15)
+    pr7_0.font.color.rgb = GOLD
 
-    # Card 1: Ngoại suy [0, 10]
-    c1 = slide11.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), Inches(1.5), col_w, col_h)
-    c1.fill.solid()
-    c1.fill.fore_color.rgb = LIGHT_BG
-    c1.line.color.rgb = CARD_BORDER
-    tf1 = c1.text_frame
-    tf1.word_wrap = True
-    pt1 = tf1.paragraphs[0]
-    pt1.text = "1. Ngoại Suy & Thang Điểm [0, 10]"
-    pt1.font.bold = True
-    pt1.font.size = Pt(14)
-    pt1.font.color.rgb = NAVY_BLUE
-
-    p = tf1.add_paragraph()
-    p.space_before = Pt(8)
-    p.text = "• Mô hình OLS là hàm tuyến tính không giới hạn (-inf, +inf).\n\n" \
-             "• Điểm thi thực tế bị chặn cứng trong đoạn [0, 10].\n\n" \
-             "• Nếu ngoại suy với X quá thấp hoặc quá cao, Y_hat có thể âm hoặc vượt quá 10, điều phi thực tế.\n\n" \
-             "• Chỉ nên tin cậy mô hình trong miền quan sát thực tế [5.0, 9.5]."
-    p.font.size = Pt(11.5)
-    p.font.color.rgb = DARK_TEXT
-
-    # Card 2: Độ khó đề thi
-    c2 = slide11.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(4.8), Inches(1.5), col_w, col_h)
-    c2.fill.solid()
-    c2.fill.fore_color.rgb = LIGHT_BG
-    c2.line.color.rgb = CARD_BORDER
-    tf2 = c2.text_frame
-    tf2.word_wrap = True
-    pt2 = tf2.paragraphs[0]
-    pt2.text = "2. Biến Thiên Độ Khó Đề Thi"
-    pt2.font.bold = True
-    pt2.font.size = Pt(14)
-    pt2.font.color.rgb = NAVY_BLUE
-
-    p = tf2.add_paragraph()
-    p.space_before = Pt(8)
-    p.text = "Khảo sát thực tế 32 sinh viên của nhóm ghi nhận:\n\n" \
-             "• 40.6% đánh giá đề cuối kỳ KHÓ HƠN hoặc KHÓ HƠN RẤT NHIỀU so với giữa kỳ.\n\n" \
-             "• 34.4% đánh giá tương đương.\n\n" \
-             "• 25.0% đánh giá dễ hơn.\n\n" \
-             "Sự chênh lệch ma trận đề và độ phân hóa câu hỏi khó khiến điểm số không thể bảo toàn tuyệt đối 1-1."
-    p.font.size = Pt(11.5)
-    p.font.color.rgb = DARK_TEXT
-
-    # Card 3: Nỗ lực tự học & Biến bỏ sót
-    c3 = slide11.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(8.8), Inches(1.5), col_w, col_h)
-    c3.fill.solid()
-    c3.fill.fore_color.rgb = LIGHT_BG
-    c3.line.color.rgb = CARD_BORDER
-    tf3 = c3.text_frame
-    tf3.word_wrap = True
-    pt3 = tf3.paragraphs[0]
-    pt3.text = "3. Nỗ Lực Tự Học & Biến Bỏ Sót"
-    pt3.font.bold = True
-    pt3.font.size = Pt(14)
-    pt3.font.color.rgb = NAVY_BLUE
-
-    p = tf3.add_paragraph()
-    p.space_before = Pt(8)
-    p.text = "• 84.4% sinh viên đánh giá nỗ lực tự học sau giữa kỳ ở mức cao và rất cao (mức 4–5/5).\n\n" \
-             "• Hiệu ứng phản hồi: Sinh viên điểm thấp nỗ lực ôn bù mạnh mẽ tạo bứt phá; sinh viên điểm cao có thể chủ quan.\n\n" \
-             "• Biến số bị bỏ sót (75.5%): Thời gian tự học, điểm danh chuyên cần, GPA tích lũy, sức khỏe phòng thi."
-    p.font.size = Pt(11.5)
-    p.font.color.rgb = DARK_TEXT
-
-    # =========================================================================
-    # SLIDE 12: TỔNG KẾT & HỎI ĐÁP (PHẦN 5 - MEMBER 6)
-    # =========================================================================
-    slide12 = prs.slides.add_slide(blank_layout)
-    add_header(slide12, "11. Kết Luận Học Thuật & Phiên Hỏi Đáp (Q&A)", "Phần 5 — Kết luận & Hạn chế", "Trần Đức Duy (DE180206)")
-
-    # Card Left: 3 Phát hiện & 2 Hạn chế
-    c_fin = slide12.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), Inches(1.5), Inches(7.5), Inches(5.4))
-    c_fin.fill.solid()
-    c_fin.fill.fore_color.rgb = LIGHT_BG
-    c_fin.line.color.rgb = CARD_BORDER
-    tf_fin = c_fin.text_frame
-    tf_fin.word_wrap = True
-
-    pf0 = tf_fin.paragraphs[0]
-    pf0.text = "Đúc Kết 3 Phát Hiện Chính & 2 Hạn Chế"
-    pf0.font.bold = True
-    pf0.font.size = Pt(16)
-    pf0.font.color.rgb = NAVY_BLUE
-
-    fin_items = [
-        ("Phát hiện 1 (Tương quan có ý nghĩa):", "Tồn tại tương quan thuận có ý nghĩa thống kê giữa điểm giữa kỳ và cuối kỳ (r = 0.495, p = 0.0039)."),
-        ("Phát hiện 2 (Hệ số góc OLS):", "Mỗi 1 điểm giữa kỳ tăng thêm tương ứng mức tăng dự đoán trung bình 0.500 điểm bài thi cuối kỳ (R² = 24.5%)."),
-        ("Phát hiện 3 (Vượt ngưỡng chuẩn):", "Điểm cuối kỳ trung bình đạt 7.39 điểm, vượt ngưỡng chuẩn 7.0 điểm có ý nghĩa thống kê ở mức alpha = 0.05 (p = 0.0423)."),
-        ("Hạn chế 1 (Biến gây nhiễu):", "Mô hình chưa kiểm soát thời gian tự học thực tế và độ khó đề thi."),
-        ("Hạn chế 2 (Giới hạn mẫu):", "Mẫu khảo sát thuận tiện (n = 32) hạn chế khả năng suy rộng cho các học kỳ khác."),
+    conc_items = [
+        ("1. Quan hệ đồng biến thực chất:", "Điểm giữa kỳ có tác động tích cực có ý nghĩa thống kê cao lên điểm cuối kỳ (r = 0.4954, p = 0.0039)."),
+        ("2. Không được chủ quan:", "Điểm giữa kỳ chỉ giải thích được 24.5% biến thiên; 75.5% kết quả quyết định bởi sự bứt phá sau giữa kỳ."),
+        ("3. Ứng dụng thực tiễn:", "Điểm giữa kỳ là chỉ báo cảnh báo sớm quý giá để nhà trường hỗ trợ kịp thời cho SV đạt điểm <= 6.0."),
     ]
-    for lbl, val in fin_items:
-        p = tf_fin.add_paragraph()
+    for title, desc in conc_items:
+        p = tf_r7.add_paragraph()
         p.space_before = Pt(8)
         r1 = p.add_run()
-        r1.text = f"• {lbl} "
+        r1.text = f"✔ {title}\n"
         r1.font.bold = True
-        r1.font.size = Pt(11.5)
-        r1.font.color.rgb = NAVY_BLUE if "Phát hiện" in lbl else RGBColor(180, 50, 50)
+        r1.font.size = Pt(11)
+        r1.font.color.rgb = RGBColor(200, 225, 255)
         r2 = p.add_run()
-        r2.text = val
-        r2.font.size = Pt(11.5)
-        r2.font.color.rgb = DARK_TEXT
+        r2.text = desc
+        r2.font.size = Pt(10.5)
+        r2.font.color.rgb = WHITE
 
-    # Card Right: Q&A Thank you
-    c_qa = slide12.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(8.6), Inches(1.5), Inches(3.9), Inches(5.4))
-    c_qa.fill.solid()
-    c_qa.fill.fore_color.rgb = NAVY_BLUE
-    c_qa.line.fill.background()
-    tf_qa = c_qa.text_frame
-    tf_qa.word_wrap = True
+    # Q&A Box
+    p_qa = tf_r7.add_paragraph()
+    p_qa.space_before = Pt(18)
+    p_qa.alignment = PP_ALIGN.CENTER
+    r_qa = p_qa.add_run()
+    r_qa.text = "CẢM ƠN THẦY VÀ CÁC BẠN!\nHỎI ĐÁP (Q & A)\n"
+    r_qa.font.bold = True
+    r_qa.font.size = Pt(16)
+    r_qa.font.color.rgb = GOLD
 
-    pqa0 = tf_qa.paragraphs[0]
-    pqa0.alignment = PP_ALIGN.CENTER
-    pqa0.text = "CẢM ƠN THẦY/CÔ VÀ CÁC BẠN!"
-    pqa0.font.bold = True
-    pqa0.font.size = Pt(18)
-    pqa0.font.color.rgb = WHITE
+    p_link = tf_r7.add_paragraph()
+    p_link.space_before = Pt(4)
+    p_link.alignment = PP_ALIGN.CENTER
+    r_link = p_link.add_run()
+    r_link.text = "Live Interactive Web App:\nhttps://masproject.streamlit.app/"
+    r_link.font.size = Pt(10.5)
+    r_link.font.color.rgb = RGBColor(220, 235, 255)
 
-    pqa1 = tf_qa.add_paragraph()
-    pqa1.space_before = Pt(24)
-    pqa1.alignment = PP_ALIGN.CENTER
-    pqa1.text = "HỎI ĐÁP\n(Q & A)"
-    pqa1.font.bold = True
-    pqa1.font.size = Pt(28)
-    pqa1.font.color.rgb = RGBColor(200, 225, 255)
-
-    pqa2 = tf_qa.add_paragraph()
-    pqa2.space_before = Pt(36)
-    pqa2.alignment = PP_ALIGN.CENTER
-    pqa2.text = "Nhóm rất mong nhận được những câu hỏi và ý kiến đóng góp từ Thầy/Cô và các bạn sinh viên."
-    pqa2.font.size = Pt(12)
-    pqa2.font.color.rgb = RGBColor(220, 235, 250)
-
+    # Save PPTX
     out_path = Path("outputs/reports/Computer_Project_Topic_1_Slides.pptx")
     prs.save(out_path)
     print("Generated PowerPoint Presentation successfully:", out_path)
+
+    # Convert to PDF
+    pdf_path = out_path.with_suffix(".pdf")
+    try:
+        import win32com.client
+        ppt = win32com.client.Dispatch("PowerPoint.Application")
+        deck = ppt.Presentations.Open(str(out_path.resolve()), WithWindow=False)
+        deck.SaveAs(str(pdf_path.resolve()), 32)
+        deck.Close()
+        ppt.Quit()
+        print("Generated PDF Presentation successfully:", pdf_path)
+    except Exception as e:
+        print("PowerPoint COM PDF export error or skipped:", e)
 
 
 if __name__ == "__main__":

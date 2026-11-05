@@ -110,14 +110,14 @@ def build_script_document():
     h1 = doc.add_heading("THÀNH VIÊN 1 — MAI XUÂN HIẾU (DE200199): MỞ ĐẦU, THIẾT KẾ MẪU & LÀM SẠCH (CÂU 1, 2)", level=1)
     h1.paragraph_format.space_before = Pt(12)
 
-    doc.add_paragraph("• Vai trò: Nhóm trưởng / Người mở màn | Thời lượng đề xuất: 2.5 phút\n• Trọng tâm: Giới thiệu đề tài, tính đại diện của mẫu, đạo đức nghiên cứu và kết quả làm sạch dữ liệu.")
+    doc.add_paragraph("• Vai trò: Thành viên / Người mở màn | Thời lượng đề xuất: 2.5 phút\n• Trọng tâm: Giới thiệu đề tài, tính đại diện của mẫu, đạo đức nghiên cứu và kết quả làm sạch dữ liệu.")
 
     add_callout_box(
         doc,
         "CÁC BƯỚC THAO TÁC TRÊN MÁY TÍNH (MEMBER 1):",
         [
             "1. Chiếu Slide 1 (Trang bìa) -> Giới thiệu tên nhóm, giảng viên hướng dẫn và học phần.",
-            "2. Chiếu Slide 2 (Câu hỏi nghiên cứu & Thiết kế lấy mẫu) -> Trỏ chuột vào định nghĩa 2 biến X và Y.",
+            "2. Chiếu Slide 2 (Thiết kế mẫu & Quy trình làm sạch) -> Trỏ chuột vào định nghĩa biến X, Y và quy trình lọc cỡ mẫu n = 32.",
             "3. Thao tác trên Live Demo Streamlit (nếu trình chiếu ứng dụng):",
             "   - Nhấp vào Sidebar: '1. Tổng quan nghiên cứu' -> Giới thiệu badge 'Dữ liệu thực tế n = 32'.",
             "   - Chuyển sang Tab: '3. Làm sạch & Kiểm tra (Câu 2)' -> Trỏ vào Bảng audit log kiểm tra lỗi.",
@@ -162,8 +162,7 @@ def build_script_document():
         doc,
         "CÁC BƯỚC THAO TÁC TRÊN MÁY TÍNH (MEMBER 2):",
         [
-            "1. Chiếu Slide 3 (Bảng 2: Thống kê mô tả chi tiết X và Y).",
-            "2. Chiếu Slide 4 (Hình 1: Histogram & KDE; Hình 2: Boxplot so sánh).",
+            "1. Chiếu Slide 3 (Bảng 10 chỉ số Thống kê mô tả & Biểu đồ Boxplot phân phối dữ liệu 1.5 IQR).",
             "3. Thao tác trên Live Demo Streamlit:",
             "   - Nhấp vào Tab '4. Thống kê mô tả (Câu 3)' -> Trỏ vào hàng Mean, Median, Độ lệch chuẩn.",
             "   - Nhấp vào Tab '5. Phân phối & Ngoại lệ (Câu 4)' -> Rê chuột vào Boxplot để giải thích tứ phân vị.",
@@ -201,14 +200,13 @@ def build_script_document():
     # THÀNH VIÊN 3
     # =========================================================================
     h3 = doc.add_heading("THÀNH VIÊN 3 — VÕ NGỌC MINH QUÂN (DE200080): TƯƠNG QUAN PEARSON VÀ HỒI QUY TUYẾN TÍNH OLS (CÂU 5, 6, 7)", level=1)
-    doc.add_paragraph("• Vai trò: Chuyên viên Xây dựng Mô hình | Thời lượng đề xuất: 2.5 phút\n• Trọng tâm: Pearson r, phương trình OLS, ý nghĩa thực tế của b1 và b0, hệ số xác định R² và sai số s.")
+    doc.add_paragraph("• Vai trò: Nhóm trưởng / Chuyên viên Xây dựng Mô hình | Thời lượng đề xuất: 2.5 phút\n• Trọng tâm: Pearson r, phương trình OLS, ý nghĩa thực tế của b1 và b0, hệ số xác định R² và sai số s.")
 
     add_callout_box(
         doc,
         "CÁC BƯỚC THAO TÁC TRÊN MÁY TÍNH (MEMBER 3):",
         [
-            "1. Chiếu Slide 5 (Hình 3: Biểu đồ phân tán Scatterplot X vs Y).",
-            "2. Chiếu Slide 6 (Hình 4: Đường hồi quy OLS fit trên tập dữ liệu quan sát).",
+            "1. Chiếu Slide 4 (Tương quan Pearson r = 0.4954, Phương trình OLS Ŷ = 3.6676 + 0.4999X và Đồ thị fit).",
             "3. Thao tác trên Live Demo Streamlit:",
             "   - Nhấp vào Tab '6. Tương quan Pearson (Câu 5)' -> Chỉ vào giá trị r = 0.4954, p = 0.0039.",
             "   - Nhấp vào Tab '7. Hồi quy tuyến tính (Câu 6 & 7)' -> Trỏ vào phương trình hồi quy và R² = 0.2454.",
@@ -257,7 +255,7 @@ def build_script_document():
         doc,
         "CÁC BƯỚC THAO TÁC TRÊN MÁY TÍNH (MEMBER 4):",
         [
-            "1. Chiếu Slide 7 (Hình 5: Bộ 3 biểu đồ chẩn đoán phần dư: Residuals vs Fitted, Residuals vs X, Normal Q-Q Plot).",
+            "1. Chiếu Slide 5 (Kiểm định 4 giả định Gauss-Markov BLUE & Bộ đồ thị chẩn đoán phần dư).",
             "2. Thao tác trên Live Demo Streamlit:",
             "   - Nhấp vào Tab '8. Chẩn đoán mô hình (Câu 8)'.",
             "   - Trỏ chuột vào Bảng kiểm định thống kê các giả định (Shapiro-Wilk, Breusch-Pagan, Durbin-Watson).",
@@ -300,8 +298,7 @@ def build_script_document():
         doc,
         "CÁC BƯỚC THAO TÁC TRÊN MÁY TÍNH (MEMBER 5):",
         [
-            "1. Chiếu Slide 8 (Bảng suy luận thống kê: KTC 95% và Kiểm định t cho trung bình Y).",
-            "2. Chiếu Slide 9 (Bảng suy luận thống kê: KTC 95% và Kiểm định t cho hệ số góc beta1).",
+            "1. Chiếu Slide 6 (Khoảng tin cậy 95% và Kiểm định t cho Điểm trung bình μ và Hệ số góc β1).",
             "3. Thao tác trên Live Demo Streamlit:",
             "   - Nhấp vào Tab '9. Khoảng tin cậy (Câu 9 & 11)' -> Trỏ vào 2 khoảng tin cậy.",
             "   - Nhấp vào Tab '10. Kiểm định giả thuyết (Câu 10 & 12)' -> Mở rộng phần giải thích Sai lầm loại I & II.",
@@ -355,7 +352,7 @@ def build_script_document():
         doc,
         "CÁC BƯỚC THAO TÁC TRÊN MÁY TÍNH (MEMBER 6 - RẤT QUAN TRỌNG ĐỂ GÂY ẤN TƯỢNG):",
         [
-            "1. Chiếu Slide 10 (Bảng dự đoán điểm khi X=6 và X=8 theo Câu 1A).",
+            "1. Chiếu Slide 7 (Dự đoán điểm Câu 1A, Giới hạn mô hình Câu 1B, 3 Phát hiện chính & Banner Q&A).",
             "2. Thao tác trên Live Demo Streamlit (Mục gây ấn tượng nhất):",
             "   - Mở Tab '11. Dự đoán điểm (Câu 1A & 1B)'.",
             "   - Kéo thanh trượt Interactive Predictor: Chọn X = 6.0 -> Đọc Y_hat = 6.67 điểm.",
