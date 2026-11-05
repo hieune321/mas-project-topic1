@@ -98,7 +98,7 @@ def build_script_document():
     r_h2.font.size = Pt(16)
     r_h2.font.color.rgb = RGBColor(31, 73, 125)
 
-    r_h3 = p_head.add_run("Trường Đại học FPT — Học phần: MAS291 | Nhóm: Nhóm 1 | GVHD: nhannxv\nĐề tài 1: Điểm Giữa Kỳ và Điểm Cuối Kỳ | Khảo sát thực tế: n = 32 | Thời lượng: 12-15 phút\n")
+    r_h3 = p_head.add_run("Trường Đại học FPT Đà Nẵng — Học phần: MAS291 | Nhóm: Nhóm 1 | GVHD: nhannxv\nĐề tài 1: Điểm Giữa Kỳ và Điểm Cuối Kỳ | Khảo sát thực tế: n = 32 | Thời lượng: 12-15 phút\n")
     r_h3.font.italic = True
     r_h3.font.size = Pt(11)
 

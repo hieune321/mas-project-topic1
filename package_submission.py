@@ -59,7 +59,7 @@ def build_submission_bundle():
     # -------------------------------------------------------------
     readme_content = """========================================================================================
 HỒ SƠ NỘP BÀI COMPUTER PROJECT — HỌC PHẦN XÁC SUẤT & THỐNG KÊ (MAS291)
-TRƯỜNG ĐẠI HỌC FPT — HỌC KỲ FALL 2026
+TRƯỜNG ĐẠI HỌC FPT ĐÀ NẴNG — HỌC KỲ FALL 2026
 ========================================================================================
 
 THÔNG TIN NHÓM VÀ ĐỀ TÀI:
@@ -83,7 +83,7 @@ BẢNG TRA CỨU ĐỐI CHIẾU 5 SẢN PHẨM NỘP BÀI VÀ TIÊU CHÍ ĐÁNH 
 
 [YÊU CẦU 1] BÁO CÁO HỌC THUẬT CHÍNH THỨC (5-7 trang nội dung chính, không tính phụ lục):
 -> Vị trí: Thư mục "01_Bao_Cao_Chinh_Thuc/"
-   + Computer_Project_Topic_1_Report.docx (File Word chính thức trình bày chuẩn ĐH FPT)
+   + Computer_Project_Topic_1_Report.docx (File Word chính thức trình bày chuẩn ĐH FPT Đà Nẵng)
    + Computer_Project_Topic_1_Report.pdf  (File PDF xuất chuẩn in ấn / nộp trực tuyến)
    Nội dung đáp ứng đầy đủ 5 phần theo đề bài:
    - Phần 1: Mục tiêu và mô tả tập dữ liệu khảo sát (n = 32).

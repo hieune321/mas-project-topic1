@@ -632,7 +632,7 @@ def main():
             is_synthetic = True
 
     st.sidebar.markdown("---")
-    st.sidebar.caption("🎓 **Trường**: Đại học FPT | **Học phần**: MAS291")
+    st.sidebar.caption("🎓 **Trường**: Đại học FPT Đà Nẵng | **Học phần**: MAS291")
     st.sidebar.caption("📌 **Đề tài 1**: Điểm giữa kỳ và Điểm cuối kỳ")
     st.sidebar.caption("👥 **Nhóm 1**: 6 Thành viên | **GVHD**: nhannxv")
 

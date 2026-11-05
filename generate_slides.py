@@ -83,7 +83,7 @@ def create_deck():
     tf1.word_wrap = True
 
     p0 = tf1.paragraphs[0]
-    p0.text = "TRƯỜNG ĐẠI HỌC FPT — BÀI TẬP LỚN MÁY TÍNH (COMPUTER PROJECT)"
+    p0.text = "TRƯỜNG ĐẠI HỌC FPT ĐÀ NẴNG — BÀI TẬP LỚN MÁY TÍNH (COMPUTER PROJECT)"
     p0.font.size = Pt(13)
     p0.font.bold = True
     p0.font.color.rgb = RGBColor(200, 225, 255)
@@ -158,7 +158,7 @@ def create_deck():
     p_cl0.font.color.rgb = NAVY_BLUE
 
     items_cl = [
-        ("Tổng thể mục tiêu:", "Sinh viên chuyên ngành CNTT/AI theo học MAS291 tại ĐH FPT Cần Thơ."),
+        ("Tổng thể mục tiêu:", "Sinh viên chuyên ngành CNTT/AI theo học MAS291 tại ĐH FPT Đà Nẵng."),
         ("Đơn vị quan sát:", "Từng sinh viên cá thể đã hoàn thành cả 2 kỳ thi giữa kỳ và cuối kỳ."),
         ("Biến độc lập X:", "Điểm thi giữa kỳ (thang điểm chuẩn 0.0 – 10.0)."),
         ("Biến phụ thuộc Y:", "Điểm bài thi kết thúc học phần (thang điểm chuẩn 0.0 – 10.0)."),

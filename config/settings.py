@@ -61,7 +61,7 @@ REPORT_METADATA = {
     "topic_id": "Đề tài 1",
     "topic_title": "Điểm giữa kỳ và điểm cuối kỳ",
     "research_question": "Điểm giữa kỳ có giúp dự đoán điểm cuối kỳ của sinh viên trong cùng học phần không?",
-    "institution": "Trường Đại học FPT",
+    "institution": "Trường Đại học FPT Đà Nẵng",
     "course_name": "Xác suất & Thống kê ứng dụng (MAS291)",
     "class_name": "MAS291",
     "group_name": "Nhóm 1",
