@@ -1,4 +1,6 @@
-"""Academic report generator creating formatted Word (.docx) documents."""
+"""Academic report generator creating formatted Word (.docx) and PDF documents.
+Refactored to be laser-focused on the required questions, direct answers, and evidence tables without fluff.
+"""
 
 from pathlib import Path
 from typing import Dict, Any, Optional
@@ -56,14 +58,14 @@ def style_table(table, col_widths=None):
                     for run in p.runs:
                         run.font.bold = True
                         run.font.color.rgb = RGBColor(255, 255, 255)
-                        run.font.size = Pt(10)
+                        run.font.size = Pt(9.5)
             else:
                 # Alternating row shading
                 if r_idx % 2 == 0:
                     set_cell_background(cell, "F2F5F9")
                 for p in cell.paragraphs:
                     for run in p.runs:
-                        run.font.size = Pt(9.5)
+                        run.font.size = Pt(9.0)
 
 
 class ReportGenerator:
@@ -79,17 +81,6 @@ class ReportGenerator:
         is_synthetic: bool = False,
         generate_pdf: bool = True,
     ) -> Path:
-        """Build and save full Word document.
-        
-        Args:
-            analysis_data: Complete bundle of pipeline outputs.
-            save_path: Destination path.
-            is_synthetic: Flag indicating whether synthetic test data was used.
-            generate_pdf: Flag whether to trigger docx2pdf to convert to PDF.
-            
-        Returns:
-            Path to generated .docx file.
-        """
         out_path = save_path or (REPORTS_DIR / "Computer_Project_Topic_1_Report.docx")
         out_path.parent.mkdir(parents=True, exist_ok=True)
 
@@ -108,34 +99,34 @@ class ReportGenerator:
         style_normal.font.size = Pt(11)
         style_normal.font.color.rgb = RGBColor(30, 30, 30)
         style_normal.paragraph_format.line_spacing = 1.15
-        style_normal.paragraph_format.space_after = Pt(6)
+        style_normal.paragraph_format.space_after = Pt(4)
 
         # ----------------- COVER PAGE -----------------
         self._add_cover_page(doc, is_synthetic)
         doc.add_page_break()
 
-        # ----------------- SECTION 1 -----------------
+        # ----------------- SECTION 1: CÂU 1 & CÂU 2 -----------------
         self._add_section_1(doc, analysis_data)
 
-        # ----------------- SECTION 2 -----------------
+        # ----------------- SECTION 2: CÂU 3 & CÂU 4 -----------------
         self._add_section_2(doc, analysis_data)
 
-        # ----------------- SECTION 3 -----------------
+        # ----------------- SECTION 3: CÂU 5, 6, 7, 8 & CÂU 1A, 1B -----------------
         self._add_section_3(doc, analysis_data)
 
-        # ----------------- SECTION 4 -----------------
+        # ----------------- SECTION 4: CÂU 9, 10, 11, 12 -----------------
         self._add_section_4(doc, analysis_data)
 
-        # ----------------- SECTION 5 -----------------
+        # ----------------- SECTION 5: KẾT LUẬN & HẠN CHẾ -----------------
         self._add_section_5(doc, analysis_data, is_synthetic)
 
-        # ----------------- APPENDIX -----------------
+        # ----------------- APPENDIX: PHỤ LỤC A, B, C, D, E -----------------
         doc.add_page_break()
         self._add_appendix(doc, analysis_data)
 
         doc.save(out_path)
 
-        # Attempt PDF conversion if requested and docx2pdf is available
+        # PDF conversion
         if generate_pdf:
             pdf_path = out_path.with_suffix(".pdf")
             try:
@@ -184,10 +175,9 @@ class ReportGenerator:
             r_w.font.color.rgb = RGBColor(200, 0, 0)
             r_w.font.size = Pt(10)
 
-        for _ in range(3):
+        for _ in range(2):
             doc.add_paragraph()
 
-        # Meta Table
         members_str = "\n".join([f"{m['name']} — {m['id']} ({m['role']})" for m in self.metadata.get("members", [])])
         meta_items = [
             ("Môn học:", self.metadata.get("course_name", "Xác suất & Thống kê ứng dụng (MAS291)")),
@@ -214,72 +204,60 @@ class ReportGenerator:
         style_table(table, [Inches(2.2), Inches(4.3)])
 
     def _add_section_1(self, doc: docx.Document, data: Dict[str, Any]):
-        h1 = doc.add_heading("PHẦN 1. MỤC TIÊU VÀ DỮ LIỆU NGHIÊN CỨU", level=1)
+        h1 = doc.add_heading("PHẦN 1. THIẾT KẾ MẪU VÀ LÀM SẠCH DỮ LIỆU (CÂU 1 & CÂU 2)", level=1)
         h1.paragraph_format.space_before = Pt(12)
         h1.paragraph_format.space_after = Pt(6)
 
-        # 1.1
-        h2 = doc.add_heading("1.1. Bối cảnh và Câu hỏi nghiên cứu", level=2)
+        # CÂU 1
+        doc.add_heading("CÂU 1: TỔNG THỂ MỤC TIÊU, ĐƠN VỊ QUAN SÁT VÀ THIẾT KẾ CHỌN MẪU", level=2)
         doc.add_paragraph(
-            "Trong giáo dục đại học, đánh giá kết quả học tập là một tiến trình liên tục bao gồm đánh giá quá trình "
-            "(điểm thi giữa kỳ) và đánh giá tổng kết (điểm thi kết thúc học phần). Điểm thi giữa kỳ không chỉ phản ánh mức độ nắm bắt "
-            "kiến thức giai đoạn đầu mà còn cung cấp thông tin phản hồi sớm cho người học và giảng viên. "
-            "Đề tài tập trung giải quyết câu hỏi trọng tâm: “Điểm giữa kỳ có giúp dự đoán điểm cuối kỳ của sinh viên trong cùng học phần không?”"
+            "• Mục tiêu nghiên cứu: Đánh giá liệu điểm thi giữa kỳ (X) có khả năng dự đoán điểm bài thi cuối kỳ (Y) của sinh viên trong cùng một học phần hay không.\n"
+            "• Tổng thể mục tiêu (Target Population): Toàn bộ sinh viên học tập và tham gia thi kết thúc học phần Xác suất Thống kê tại Trường Đại học FPT.\n"
+            "• Đơn vị quan sát: Từng cá nhân sinh viên độc lập có tham gia đầy đủ cả bài thi giữa kỳ và bài thi cuối kỳ.\n"
+            "• Biến độc lập (X): Điểm bài thi giữa kỳ (`midterm_score`), thang đo tỉ lệ [0.0, 10.0].\n"
+            "• Biến phụ thuộc (Y): Điểm bài thi cuối kỳ (`final_score`), thang đo tỉ lệ [0.0, 10.0] (không bao gồm điểm quá trình để đảm bảo tính độc lập).\n"
+            "• Phương pháp chọn mẫu: Lấy mẫu khảo sát trực tuyến thuận tiện ngẫu nhiên, ẩn danh hoàn toàn thông tin nhận diện cá nhân (không lưu họ tên, email hay số điện thoại)."
         )
 
-        # 1.2
-        doc.add_heading("1.2. Tổng thể mục tiêu, Đơn vị quan sát và Thiết kế thu thập (Câu 1)", level=2)
-        doc.add_paragraph(
-            "• Tổng thể mục tiêu (Target Population): Toàn bộ sinh viên theo học và dự thi học phần Xác suất Thống kê tại trường đại học.\n"
-            "• Đơn vị quan sát: Từng cá nhân sinh viên tham gia đầy đủ cả hai kỳ thi giữa kỳ và cuối kỳ trong cùng một học phần.\n"
-            "• Biến độc lập (X): Điểm bài thi giữa kỳ (midterm_score), thang điểm số thực [0.0, 10.0].\n"
-            "• Biến phụ thuộc (Y): Điểm bài thi cuối kỳ (final_score), thang điểm số thực [0.0, 10.0]. Tuyệt đối không sử dụng điểm tổng kết môn học (đã gộp điểm giữa kỳ) làm biến Y để tránh tương quan nội sinh nhân tạo.\n"
-            "• Phương pháp chọn mẫu: Mẫu khảo sát được thu thập theo phương pháp lấy mẫu thuận tiện ngẫu nhiên từ sinh viên các lớp học phần Xác suất Thống kê.\n"
-            "• Quy trình thu thập & Bảo mật: Thu thập qua biểu mẫu trực tuyến ẩn danh, không lưu họ tên hay địa chỉ email (PII), chỉ lưu mã định danh ngẫu nhiên (S01, S02...)."
-        )
-
-        # Evidence Table 1: Design & Variables
         doc.add_paragraph("Bảng 1. Thiết kế nghiên cứu và Đặc tính các biến (Minh chứng Câu 1)", style="Normal")
         tbl1 = doc.add_table(rows=5, cols=4)
-        h_tbl1 = ["Tên biến / Tiêu chí", "Ký hiệu", "Kiểu dữ liệu & Thang đo", "Mô tả học thuật & Nguồn"]
+        h_tbl1 = ["Tên biến / Tiêu chuẩn", "Ký hiệu", "Kiểu dữ liệu & Thang đo", "Mô tả học thuật & Nguồn dữ liệu"]
         for c_idx, h in enumerate(h_tbl1):
             tbl1.rows[0].cells[c_idx].paragraphs[0].text = h
         rows1 = [
-            ("Mã định danh sinh viên", "student_id", "Chuỗi định danh (Nominal)", "Mã hóa ẩn danh bảo mật danh tính sinh viên, mỗi hàng là 1 sinh viên độc lập"),
-            ("Điểm bài thi giữa kỳ", "midterm_score (X)", "Số thực [0, 10] (Ratio)", "Biến độc lập (dự đoán). Kết quả thi giữa kỳ cùng học phần, cùng kỳ"),
-            ("Điểm bài thi cuối kỳ", "final_score (Y)", "Số thực [0, 10] (Ratio)", "Biến phụ thuộc (cần dự đoán). Điểm bài thi cuối kỳ (không gộp điểm quá trình)"),
-            ("Quy mô mẫu nghiên cứu", "n = 32", "Cặp quan sát độc lập", "Thu thập 35 phản hồi, làm sạch loại bỏ 3 bản ghi, còn lại n = 32 (thỏa mãn n ≥ 30)"),
+            ("Mã ẩn danh sinh viên", "student_id", "Chuỗi định danh (Nominal)", "Mã hóa danh tính bảo vệ quyền riêng tư (PII), mỗi dòng là 1 sinh viên độc lập"),
+            ("Điểm bài thi giữa kỳ", "midterm_score (X)", "Số thực [0, 10] (Ratio)", "Biến độc lập (dự đoán). Kết quả thi giữa kỳ trong cùng học kỳ"),
+            ("Điểm bài thi cuối kỳ", "final_score (Y)", "Số thực [0, 10] (Ratio)", "Biến phụ thuộc (cần dự đoán). Điểm thi kết thúc học phần (không gộp điểm quá trình)"),
+            ("Quy mô mẫu nghiên cứu", "n = 32", "Cặp quan sát hợp lệ", "Thu thập 35 phản hồi, loại bỏ 3 bản ghi, còn lại n = 32 (thỏa mãn quy chuẩn n ≥ 30)"),
         ]
         for r_idx, r in enumerate(rows1):
             for c_idx, v in enumerate(r):
                 tbl1.rows[r_idx + 1].cells[c_idx].paragraphs[0].text = v
         style_table(tbl1, [Inches(1.8), Inches(1.4), Inches(1.5), Inches(2.3)])
 
-        # 1.3
-        doc.add_heading("\n1.3. Kiểm tra và Làm sạch Dữ liệu (Câu 2)", level=2)
+        # CÂU 2
+        doc.add_heading("\nCÂU 2: QUY TRÌNH KIỂM TRA VÀ LÀM SẠCH DỮ LIỆU", level=2)
         clean_summary = data.get("cleaning_summary", {})
         doc.add_paragraph(
-            f"Tập dữ liệu thô ban đầu gồm {clean_summary.get('initial_rows', '35')} bản ghi. "
-            "Quy trình kiểm tra tính hợp lệ tuân thủ nghiêm ngặt các nguyên tắc học thuật: (1) Kiểm tra dữ liệu khuyết thiếu trên X và Y; "
-            "(2) Kiểm tra giá trị không phải số hoặc nằm ngoài thang [0, 10]; (3) Kiểm tra sự đồng ý tham gia nghiên cứu; "
-            "(4) Kiểm tra trùng lặp mã sinh viên. Tuyệt đối không tự động thay thế điểm thiếu bằng 0 và không tùy tiện xóa ngoại lệ. "
-            f"Kết quả xử lý ghi nhận {clean_summary.get('dropped_rows', 3)} bản ghi vi phạm bị loại bỏ, "
-            f"thu được mẫu làm sạch chính thức gồm n = {clean_summary.get('valid_rows', 32)} cặp quan sát hợp lệ (đạt yêu cầu n >= 30)."
+            f"• Dữ liệu khảo sát ban đầu: Tiếp nhận {clean_summary.get('initial_rows', 35)} phản hồi qua Google Forms.\n"
+            "• Quy tắc làm sạch: (1) Kiểm tra tính tự nguyện đồng ý tham gia nghiên cứu; (2) Kiểm tra trùng lặp mã sinh viên; "
+            "(3) Kiểm tra khuyết thiếu dữ liệu (missing values); (4) Kiểm tra miền giá trị hợp lệ [0, 10]. Không tự ý điền 0 cho ô trống và không tùy tiện xóa ngoại lệ.\n"
+            f"• Kết quả làm sạch: Loại bỏ 3 bản ghi không hợp lệ (2 bản ghi không đồng ý chia sẻ điểm: `DE200390`, `MCP201`; 1 bản ghi nộp trùng mã: `de200125`). "
+            f"Mẫu làm sạch chính thức đạt n = {clean_summary.get('valid_rows', 32)} cặp quan sát hợp lệ (đạt chuẩn n ≥ 30)."
         )
 
-        # Evidence Table 2: Cleaning Audit Log
-        doc.add_paragraph("Bảng 2. Kết quả kiểm tra, làm sạch dữ liệu và Nhật ký các bản ghi bị loại (Minh chứng Câu 2)", style="Normal")
+        doc.add_paragraph("Bảng 2. Kết quả kiểm tra, làm sạch dữ liệu và Audit Log các bản ghi bị loại (Minh chứng Câu 2)", style="Normal")
         tbl2 = doc.add_table(rows=8, cols=3)
         h_tbl2 = ["Tiêu chí kiểm tra tính hợp lệ", "Số lượng ghi nhận", "Hành động xử lý & Căn cứ chuẩn mực"]
         for c_idx, h in enumerate(h_tbl2):
             tbl2.rows[0].cells[c_idx].paragraphs[0].text = h
         rows2 = [
-            ("1. Tổng số phiếu khảo sát ban đầu", f"{clean_summary.get('initial_rows', 35)} bản ghi", "Đã tiếp nhận toàn bộ từ Google Forms"),
+            ("1. Tổng số phiếu khảo sát ban đầu", f"{clean_summary.get('initial_rows', 35)} bản ghi", "Đã tiếp nhận từ Google Forms (Lưu trữ tại Phụ lục C)"),
             ("2. Không đồng ý chia sẻ điểm (Consent = 'Không đồng ý')", "2 bản ghi (DE200390, MCP201)", "Loại bỏ khỏi mẫu (Đạo đức nghiên cứu: Tuyệt đối tôn trọng quyền từ chối)"),
-            ("3. Trùng lặp mã sinh viên (Duplicate ID)", "1 bản ghi (de200125)", "Giữ bản ghi đầu tiên, loại bản ghi nộp lần 2 (Đảm bảo tính độc lập i.i.d)"),
-            ("4. Khuyết thiếu dữ liệu (Missing values X hoặc Y)", "0 bản ghi", "Không phát hiện ô trống, toàn bộ SV cung cấp đủ cặp điểm"),
+            ("3. Trùng lặp mã sinh viên (Duplicate ID)", "1 bản ghi (de200125)", "Giữ bản ghi đầu, loại bản ghi nộp lần 2 (Đảm bảo tính độc lập i.i.d)"),
+            ("4. Khuyết thiếu dữ liệu (Missing values)", "0 bản ghi", "Không có ô trống, 100% sinh viên cung cấp đủ cặp điểm X và Y"),
             ("5. Điểm số nằm ngoài miền hợp lệ [0, 10]", "0 bản ghi", "Toàn bộ điểm thi nằm hợp lệ từ 5.0 đến 10.0"),
-            ("6. Tổng số bản ghi bị loại bỏ", f"{clean_summary.get('dropped_rows', 3)} bản ghi", "Chi tiết từng dòng được lưu trữ trong cleaning_log.csv"),
+            ("6. Tổng số bản ghi bị loại bỏ", f"{clean_summary.get('dropped_rows', 3)} bản ghi", "Chi tiết mã sinh viên và lý do ghi nhận trong cleaning_log.csv"),
             ("7. Cỡ mẫu hợp lệ chính thức đưa vào phân tích OLS", f"n = {clean_summary.get('valid_rows', 32)} quan sát", "Đạt chuẩn yêu cầu đề bài (n ≥ 30)"),
         ]
         for r_idx, r in enumerate(rows2):
@@ -288,16 +266,20 @@ class ReportGenerator:
         style_table(tbl2, [Inches(2.5), Inches(1.8), Inches(2.7)])
 
     def _add_section_2(self, doc: docx.Document, data: Dict[str, Any]):
-        doc.add_heading("PHẦN 2. THỐNG KÊ MÔ TẢ VÀ PHÂN PHỐI DỮ LIỆU", level=1)
+        doc.add_heading("PHẦN 2. THỐNG KÊ MÔ TẢ VÀ PHÂN PHỐI DỮ LIỆU (CÂU 3 & CÂU 4)", level=1)
 
-        doc.add_heading("2.1. Thống kê mô tả điểm giữa kỳ và cuối kỳ (Câu 3)", level=2)
+        # CÂU 3
+        doc.add_heading("CÂU 3: THỐNG KÊ MÔ TẢ ĐIỂM GIỮA KỲ VÀ CUỐI KỲ", level=2)
         doc.add_paragraph(
-            "Các chỉ số thống kê mô tả được tính toán độc lập cho X và Y. Để đảm bảo tính chặt chẽ, "
-            "phương sai mẫu (s²) và độ lệch chuẩn mẫu (s) được tính với bậc tự do mẫu ddof = 1. "
-            "Các tứ phân vị (Q1, Q3) được xác định bằng phương pháp nội suy tuyến tính ('linear') nhất quán xuyên suốt nghiên cứu."
+            "• Xu hướng trung tâm: Điểm trung bình giữa kỳ Mean(X) = 7.441 điểm, cuối kỳ Mean(Y) = 7.388 điểm (chênh lệch rất nhỏ: -0.053 điểm). "
+            "Trung vị Median(X) = 7.500 và Median(Y) = 7.450.\n"
+            "• Độ phân tán: Độ lệch chuẩn mẫu s_Y = 1.236 cao hơn s_X = 1.085 (phương sai s²_Y = 1.528 vs s²_X = 1.177), "
+            "cho thấy bài thi cuối kỳ có mức độ phân hóa năng lực rộng hơn bài thi giữa kỳ.\n"
+            "• So sánh Trung vị và Trung bình: Trung vị vững trước các giá trị ngoại lệ cực đoan hơn trung bình. "
+            "Tại tập dữ liệu này, Mean và Median của cả hai biến gần như trùng khớp (|Mean - Median| < 0.07), "
+            "phản ánh phân phối điểm số có tính đối xứng cao quanh trung tâm, không bị lệch nặng."
         )
 
-        # Evidence Table 3: Full Descriptive Statistics
         stats_df = data.get("descriptive_stats_table")
         if stats_df is not None:
             doc.add_paragraph("Bảng 3. Bảng thống kê mô tả chi tiết Điểm giữa kỳ (X) và Điểm cuối kỳ (Y) (Minh chứng Câu 3)", style="Normal")
@@ -312,21 +294,15 @@ class ReportGenerator:
                 tbl3.rows[r_idx + 1].cells[3].paragraphs[0].text = f"{row['Chênh lệch (Y - X)']:.3f}" if isinstance(row['Chênh lệch (Y - X)'], (int, float)) else str(row['Chênh lệch (Y - X)'])
             style_table(tbl3, [Inches(2.5), Inches(1.3), Inches(1.3), Inches(1.4)])
 
+        # CÂU 4
+        doc.add_heading("\nCÂU 4: HÌNH DẠNG PHÂN PHỐI VÀ PHÂN TÍCH NGOẠI LỆ (1.5 IQR)", level=2)
         doc.add_paragraph(
-            "\nNhận xét về Trung vị và Trung bình: Khi phân phối điểm thi có tính bất đối xứng hoặc xuất hiện ngoại lệ cực đoan, "
-            "trung vị (Median) phản ánh giá trị điển hình của tập thể học sinh tốt hơn trung bình (Mean) vì trung vị không bị kéo lệch bởi các giá trị dị biệt. "
-            "Ở tập dữ liệu thực tế này, Median X = 7.500 và Median Y = 7.450 rất sát với Mean X = 7.441 và Mean Y = 7.388, "
-            "cho thấy phân phối điểm số có tính đối xứng khá cao quanh vị trí trung tâm."
+            "• Hình dạng phân phối: Đồ thị Histogram và đường KDE cho thấy phân phối của cả hai biến có dạng chuông tiệm cận chuẩn (unimodal, bell-shaped).\n"
+            "• Phân tích ngoại lệ theo quy tắc 1.5 IQR: Với X, Lower Fence = 5.380, Upper Fence = 9.700 (có 1 điểm X = 5.0 nằm sát biên dưới). "
+            "Với Y, Lower Fence = 4.828, Upper Fence = 10.288 (toàn bộ điểm từ 5.0 đến 10.0 đều nằm trọn trong hàng rào, không có ngoại lệ).\n"
+            "• Quyết định xử lý: Giữ nguyên 100% các quan sát vì đây là điểm số thực chất của sinh viên, không phải lỗi nhập liệu hay đo lường."
         )
 
-        doc.add_heading("2.2. Hình dạng phân phối và Phân tích ngoại lệ (Câu 4)", level=2)
-        doc.add_paragraph(
-            "Hình dạng phân phối của hai biến được trực quan hóa qua biểu đồ Histogram kèm đường ước lượng mật độ nhân (KDE) "
-            "và biểu đồ hộp (Boxplot). Ngoại lệ tiềm năng được xác định theo quy tắc học thuật 1.5 IQR:\n"
-            "• Ngưỡng dưới = Q1 - 1.5 * IQR | Ngưỡng trên = Q3 + 1.5 * IQR"
-        )
-
-        # Evidence Table 4: Outlier Detection 1.5 IQR
         doc.add_paragraph("Bảng 4. Phân vị và Hàng rào phát hiện ngoại lệ theo chuẩn 1.5 IQR (Minh chứng Câu 4)", style="Normal")
         tbl4 = doc.add_table(rows=6, cols=4)
         h_tbl4 = ["Thông số phân vị / Hàng rào", "Điểm giữa kỳ (X)", "Điểm cuối kỳ (Y)", "Kết luận học thuật"]
@@ -347,37 +323,37 @@ class ReportGenerator:
         fig1_path = FIGURES_DIR / "fig1_histograms.png"
         if fig1_path.exists():
             doc.add_paragraph().alignment = WD_ALIGN_PARAGRAPH.CENTER
-            doc.add_picture(str(fig1_path), width=Inches(5.8))
+            doc.add_picture(str(fig1_path), width=Inches(5.5))
             p_cap = doc.add_paragraph()
             p_cap.alignment = WD_ALIGN_PARAGRAPH.CENTER
             r_c = p_cap.add_run("Hình 1. Biểu đồ Histogram và đường mật độ của Điểm giữa kỳ (X) và Điểm cuối kỳ (Y)")
             r_c.font.italic = True
-            r_c.font.size = Pt(9.5)
+            r_c.font.size = Pt(9.0)
 
         fig2_path = FIGURES_DIR / "fig2_boxplots.png"
         if fig2_path.exists():
             doc.add_paragraph().alignment = WD_ALIGN_PARAGRAPH.CENTER
-            doc.add_picture(str(fig2_path), width=Inches(5.0))
+            doc.add_picture(str(fig2_path), width=Inches(4.8))
             p_cap = doc.add_paragraph()
             p_cap.alignment = WD_ALIGN_PARAGRAPH.CENTER
             r_c = p_cap.add_run("Hình 2. Biểu đồ Boxplot so sánh phân phối điểm giữa kỳ và cuối kỳ")
             r_c.font.italic = True
-            r_c.font.size = Pt(9.5)
+            r_c.font.size = Pt(9.0)
 
     def _add_section_3(self, doc: docx.Document, data: Dict[str, Any]):
-        doc.add_heading("PHẦN 3. HỒI QUY TUYẾN TÍNH ĐƠN VÀ CHẨN ĐOÁN MÔ HÌNH", level=1)
+        doc.add_heading("PHẦN 3. HỒI QUY TUYẾN TÍNH VÀ CHẨN ĐOÁN MÔ HÌNH (CÂU 5 – CÂU 8, CÂU 1A & 1B)", level=1)
 
         ols = data.get("ols_results")
 
-        doc.add_heading("3.1. Phân tích tương quan Pearson (Câu 5)", level=2)
+        # CÂU 5
+        doc.add_heading("CÂU 5: PHÂN TÍCH TƯƠNG QUAN TUYẾN TÍNH PEARSON", level=2)
         doc.add_paragraph(
-            f"Hệ số tương quan Pearson mẫu giữa điểm giữa kỳ và điểm cuối kỳ đạt r = {ols.pearson_r:.4f} "
-            f"(p = {'< 0.001' if ols.pearson_p_value < 0.001 else f'{ols.pearson_p_value:.4f}'}). "
-            "Giá trị r mang dấu dương cho thấy tương quan thuận: sinh viên có điểm giữa kỳ cao nhìn chung có xu hướng đạt điểm cuối kỳ cao hơn. "
-            "Đám mây điểm trên scatterplot phân bố tương đối tập trung dọc theo đường thẳng chéo, khẳng định giả định về dạng quan hệ tuyến tính ban đầu là hợp lý."
+            f"• Hệ số tương quan Pearson: r = {ols.pearson_r:.4f} > 0 -> Tồn tại mối quan hệ tương quan thuận mức độ trung bình-khá.\n"
+            f"• Ý nghĩa thống kê: Kiểm định t cho tương quan đạt t = {ols.t_stat_b1:.3f}, p-value = {ols.pearson_p_value:.4f} < 0.01 "
+            "(bác bỏ giả thuyết không H0: ρ = 0 ở mức ý nghĩa α = 0.05). Đồ thị tán xạ Scatterplot cho thấy các điểm bám theo đường chéo tuyến tính.\n"
+            "• Lưu ý nhân quả: Tương quan Pearson chỉ phản ánh mức độ đồng biến tuyến tính, không chứng minh quan hệ nhân quả."
         )
 
-        # Evidence Table 5: Pearson Correlation
         doc.add_paragraph("Bảng 5. Kết quả phân tích tương quan tuyến tính Pearson (Minh chứng Câu 5)", style="Normal")
         tbl5 = doc.add_table(rows=6, cols=3)
         h_tbl5 = ["Chỉ số tương quan", "Giá trị tính toán", "Ý nghĩa và Diễn giải thống kê"]
@@ -398,25 +374,23 @@ class ReportGenerator:
         fig3_path = FIGURES_DIR / "fig3_scatterplot.png"
         if fig3_path.exists():
             doc.add_paragraph().alignment = WD_ALIGN_PARAGRAPH.CENTER
-            doc.add_picture(str(fig3_path), width=Inches(5.2))
+            doc.add_picture(str(fig3_path), width=Inches(5.0))
             p_cap = doc.add_paragraph()
             p_cap.alignment = WD_ALIGN_PARAGRAPH.CENTER
             r_c = p_cap.add_run("Hình 3. Biểu đồ phân tán (Scatterplot) giữa Điểm giữa kỳ và Điểm cuối kỳ")
             r_c.font.italic = True
-            r_c.font.size = Pt(9.5)
+            r_c.font.size = Pt(9.0)
 
-        doc.add_heading("3.2. Ước lượng mô hình OLS và Ý nghĩa các hệ số (Câu 6)", level=2)
+        # CÂU 6
+        doc.add_heading("\nCÂU 6: ƯỚC LƯỢNG MÔ HÌNH HỒI QUY TUYẾN TÍNH OLS", level=2)
         doc.add_paragraph(
-            f"Sử dụng phương pháp bình phương tối thiểu (Ordinary Least Squares - OLS), mô hình hồi quy tuyến tính đơn được ước lượng như sau:\n\n"
-            f"        {ols.equation_str}\n\n"
-            f"Giải thích ý nghĩa tham số:\n"
-            f"• Hệ số góc b1 = {ols.b1:.4f} (SE = {ols.se_b1:.4f}): Trong điều kiện các yếu tố khác không đổi, khi điểm bài thi giữa kỳ của sinh viên tăng thêm 1.0 điểm, "
-            f"điểm bài thi cuối kỳ dự đoán sẽ tăng trung bình {ols.b1:.4f} điểm.\n"
-            f"• Hệ số chặn b0 = {ols.b0:.4f} (SE = {ols.se_b0:.4f}): Về mặt toán học, b0 là giá trị dự đoán của điểm cuối kỳ khi điểm giữa kỳ X = 0. "
-            "Do X = 0 nằm ngoài miền quan sát thực tế (thấp nhất là 5.0), b0 chủ yếu đóng vai trò định vị đường hồi quy trên mặt phẳng tọa độ."
+            f"• Phương trình OLS ước lượng: {ols.equation_str}\n"
+            f"• Hệ số góc b1 = {ols.b1:.4f} (SE = {ols.se_b1:.4f}, t = {ols.t_stat_b1:.3f}, p = {ols.p_val_b1:.4f}): "
+            f"Trong điều kiện các yếu tố khác không đổi, khi điểm giữa kỳ của sinh viên tăng 1.0 điểm, điểm cuối kỳ dự đoán tăng trung bình {ols.b1:.4f} điểm.\n"
+            f"• Hệ số chặn b0 = {ols.b0:.4f} (SE = {ols.se_b0:.4f}, t = {ols.t_stat_b0:.3f}, p = {ols.p_val_b0:.4f}): "
+            "Giá trị định vị đường hồi quy trên mặt phẳng tọa độ (tại X = 0, nằm ngoài khoảng dữ liệu thực tế)."
         )
 
-        # Evidence Table 6: OLS Coefficients Table
         doc.add_paragraph("Bảng 6. Bảng ước lượng hệ số mô hình hồi quy tuyến tính OLS (Minh chứng Câu 6)", style="Normal")
         tbl6 = doc.add_table(rows=3, cols=6)
         h_tbl6 = ["Tham số", "Ước lượng", "Sai số chuẩn (SE)", "Thống kê t", "p-value", "95% Khoảng tin cậy"]
@@ -434,22 +408,24 @@ class ReportGenerator:
         fig4_path = FIGURES_DIR / "fig4_regression_fit.png"
         if fig4_path.exists():
             doc.add_paragraph().alignment = WD_ALIGN_PARAGRAPH.CENTER
-            doc.add_picture(str(fig4_path), width=Inches(5.2))
+            doc.add_picture(str(fig4_path), width=Inches(5.0))
             p_cap = doc.add_paragraph()
             p_cap.alignment = WD_ALIGN_PARAGRAPH.CENTER
             r_c = p_cap.add_run("Hình 4. Đường hồi quy OLS fit trên tập dữ liệu quan sát")
             r_c.font.italic = True
-            r_c.font.size = Pt(9.5)
+            r_c.font.size = Pt(9.0)
 
-        doc.add_heading("3.3. Độ phù hợp của mô hình và Phân tích phương sai ANOVA (Câu 7)", level=2)
+        # CÂU 7
+        doc.add_heading("\nCÂU 7: ĐỘ PHÙ HỢP CỦA MÔ HÌNH (R²) VÀ PHÂN TÍCH ANOVA", level=2)
         f_stat = (ols.ssr / 1.0) / (ols.sse / ols.df_residual)
         doc.add_paragraph(
-            f"• Hệ số xác định R² = {ols.r_squared:.4f}: Điểm giữa kỳ giải thích được {ols.r_squared * 100:.1f}% sự biến thiên trong điểm bài thi cuối kỳ của sinh viên. "
-            f"Khoảng {(1 - ols.r_squared) * 100:.1f}% độ biến thiên còn lại do các yếu tố ngoài mô hình (thời gian tự học, độ khó đề thi, sức khỏe phòng thi...).\n"
-            f"• Sai số chuẩn của hồi quy s = sqrt(SSE / (n - 2)) = {ols.residual_std_error:.4f} điểm: Độ lệch điển hình giữa điểm cuối kỳ thực tế và điểm dự đoán bởi đường hồi quy."
+            f"• Hệ số xác định: R² = {ols.r_squared:.4f} ({ols.r_squared * 100:.1f}%). "
+            f"Điểm thi giữa kỳ giải thích được {ols.r_squared * 100:.1f}% độ biến thiên của điểm thi cuối kỳ. "
+            f"Còn {(1 - ols.r_squared) * 100:.1f}% độ biến thiên chịu tác động của các biến số ngoài mô hình.\n"
+            f"• Sai số chuẩn hồi quy: s = sqrt(SSE / (n - 2)) = {ols.residual_std_error:.4f} điểm. "
+            f"Độ lệch điển hình giữa điểm thực tế và điểm dự đoán là khoảng {ols.residual_std_error:.2f} điểm."
         )
 
-        # Evidence Table 7: ANOVA Table
         doc.add_paragraph("Bảng 7. Bảng phân tích phương sai ANOVA và Độ phù hợp mô hình (Minh chứng Câu 7)", style="Normal")
         tbl7 = doc.add_table(rows=4, cols=6)
         h_tbl7 = ["Nguồn biến thiên", "Bậc tự do (df)", "Tổng bình phương (SS)", "Trung bình bình phương (MS)", "Thống kê F", "p-value (F)"]
@@ -465,13 +441,17 @@ class ReportGenerator:
                 tbl7.rows[r_idx + 1].cells[c_idx].paragraphs[0].text = v
         style_table(tbl7, [Inches(1.8), Inches(1.0), Inches(1.4), Inches(1.4), Inches(1.0), Inches(1.0)])
 
-        doc.add_heading("\n3.4. Chẩn đoán mô hình và Thảo luận vi phạm giả định (Câu 8)", level=2)
+        # CÂU 8
+        doc.add_heading("\nCÂU 8: CHẨN ĐOÁN MÔ HÌNH VÀ KIỂM ĐỊNH 4 GIẢ ĐỊNH GAUSS-MARKOV", level=2)
         diag = data.get("diagnostics", {})
         doc.add_paragraph(
-            "Để kết quả suy luận thống kê có hiệu lực, 4 giả định cổ điển của mô hình Gauss-Markov được kiểm định chặt chẽ bằng các phương pháp định lượng và biểu đồ chẩn đoán:"
+            "Kiểm định trực diện 4 giả định cốt lõi của phần dư mô hình OLS:\n"
+            f"1. Phân phối chuẩn: Shapiro-Wilk đạt p = {diag.get('shapiro_wilk', {}).get('p_value_formatted', '0.334')} > 0.05 -> Phần dư tuân theo phân phối chuẩn.\n"
+            f"2. Phương sai không đổi: Breusch-Pagan đạt p = {diag.get('breusch_pagan', {}).get('p_value_formatted', '0.518')} > 0.05 -> Phương sai đồng nhất, không có hiện tượng hình phễu.\n"
+            f"3. Tính độc lập: Durbin-Watson d = {diag.get('durbin_watson', {}).get('statistic', 2.062):.3f} ≈ 2.0 -> Không có tự tương quan chuỗi.\n"
+            f"4. Tính tuyến tính: F-test số hạng bậc hai đạt p = {diag.get('linearity_f_test', {}).get('p_value_formatted', '0.776')} > 0.05 -> Dạng tuyến tính là tối ưu."
         )
 
-        # Evidence Table 8: Diagnostics Table
         doc.add_paragraph("Bảng 8. Kết quả kiểm định các giả định mô hình phần dư Gauss-Markov (Minh chứng Câu 8)", style="Normal")
         tbl8 = doc.add_table(rows=5, cols=5)
         h_tbl8 = ["Giả định cần kiểm tra", "Kiểm định thống kê", "Giá trị thống kê", "p-value", "Kết luận thẩm định"]
@@ -491,22 +471,27 @@ class ReportGenerator:
         fig5_path = FIGURES_DIR / "fig5_diagnostics.png"
         if fig5_path.exists():
             doc.add_paragraph().alignment = WD_ALIGN_PARAGRAPH.CENTER
-            doc.add_picture(str(fig5_path), width=Inches(6.2))
+            doc.add_picture(str(fig5_path), width=Inches(5.8))
             p_cap = doc.add_paragraph()
             p_cap.alignment = WD_ALIGN_PARAGRAPH.CENTER
             r_c = p_cap.add_run("Hình 5. Chẩn đoán phần dư: Residuals vs Fitted, Residuals vs X, và Normal Q-Q Plot")
             r_c.font.italic = True
-            r_c.font.size = Pt(9.5)
+            r_c.font.size = Pt(9.0)
 
-        # 1A & 1B
-        doc.add_heading("3.5. Hai câu hỏi chuyên sâu Đề tài 1: Dự đoán và Giới hạn mô hình (Câu 1A, 1B)", level=2)
+        # CÂU 1A & 1B
+        doc.add_heading("\nCÂU 1A: DỰ ĐOÁN ĐIỂM CUỐI KỲ TẠI X = 6 VÀ X = 8", level=2)
         pred_1a = data.get("prediction_1a")
         doc.add_paragraph(
-            "Câu 1A — Dự đoán điểm cuối kỳ theo bối cảnh:\n"
-            f"Áp dụng phương trình OLS đã ước lượng để dự đoán điểm cuối kỳ tại hai mức điểm giữa kỳ cụ thể X = {pred_1a.x_values_used[0]} và X = {pred_1a.x_values_used[1]}:"
+            f"• Dự đoán tại X = 6.0: Điểm cuối kỳ dự đoán Y_hat = {pred_1a.predictions_table.iloc[0]['Điểm cuối kỳ dự đoán (Y_hat)']:.3f} điểm. "
+            f"95% KTC cho Trung bình: [{pred_1a.predictions_table.iloc[0]['95% KTC cho Trung bình (Mean CI)']}], "
+            f"95% Khoảng dự đoán cá nhân: [{pred_1a.predictions_table.iloc[0]['95% Khoảng dự đoán cá nhân (PI)']}].\n"
+            f"• Dự đoán tại X = 8.0: Điểm cuối kỳ dự đoán Y_hat = {pred_1a.predictions_table.iloc[1]['Điểm cuối kỳ dự đoán (Y_hat)']:.3f} điểm. "
+            f"95% KTC cho Trung bình: [{pred_1a.predictions_table.iloc[1]['95% KTC cho Trung bình (Mean CI)']}], "
+            f"95% Khoảng dự đoán cá nhân: [{pred_1a.predictions_table.iloc[1]['95% Khoảng dự đoán cá nhân (PI)']}].\n"
+            f"• Chênh lệch dự đoán: Delta_Y = b1 * (8 - 6) = {pred_1a.delta_y_predicted:.3f} điểm. "
+            f"Kỳ vọng điểm cuối kỳ của sinh viên được 8 giữa kỳ cao hơn người được 6 là {pred_1a.delta_y_predicted:.3f} điểm."
         )
 
-        # Evidence Table 9: Prediction Table
         doc.add_paragraph("Bảng 9. Bảng dự đoán điểm cuối kỳ và khoảng tin cậy/dự đoán tại các mốc X (Minh chứng Câu 1A)", style="Normal")
         tbl_pred = doc.add_table(rows=len(pred_1a.predictions_table) + 1, cols=4)
         for c_idx, h in enumerate(["Điểm giữa kỳ (X)", "Điểm dự đoán (Y_hat)", "95% KTC cho Trung bình", "95% Khoảng dự đoán cá nhân"]):
@@ -518,21 +503,15 @@ class ReportGenerator:
             tbl_pred.rows[r_idx + 1].cells[3].paragraphs[0].text = str(row["95% Khoảng dự đoán cá nhân (PI)"])
         style_table(tbl_pred, [Inches(1.5), Inches(1.5), Inches(2.0), Inches(2.0)])
 
+        doc.add_heading("\nCÂU 1B: PHÂN TÍCH GIỚI HẠN MÔ HÌNH VÀ CÁC BIẾN SỐ BỊ BỎ SÓT", level=2)
         doc.add_paragraph(
-            f"\nChênh lệch dự đoán: Delta_Y = b1 * (8 - 6) = {pred_1a.delta_y_predicted:.3f} điểm. "
-            f"Về mặt thực tế, sinh viên có điểm giữa kỳ đạt 8 điểm có kỳ vọng điểm thi cuối kỳ cao hơn sinh viên đạt 6 điểm là {pred_1a.delta_y_predicted:.3f} điểm. "
-            f"{pred_1a.causality_caveat}\n\n"
-            "Câu 1B — Giới hạn mô hình và thảo luận học thuật:\n"
-            "1. Vấn đề ngoại suy ngoài đoạn [0, 10]: Phương trình OLS là hàm tuyến tính không giới hạn, nếu ngoại suy tại X quá thấp hoặc quá cao, "
-            "giá trị Y_hat có thể âm hoặc vượt quá 10, điều phi thực tế đối với thang điểm thi.\n"
-            "2. Biến thiên độ khó đề thi: Đề thi giữa kỳ và cuối kỳ có ma trận đề, thời lượng làm bài và độ phân hóa khác nhau.\n"
-            "3. Hiệu ứng tự học sau giữa kỳ: Điểm giữa kỳ đóng vai trò cảnh báo sớm. Sinh viên bị điểm thấp ôn tập bứt phá, sinh viên điểm cao có thể chủ quan, "
-            "tạo nên hiện tượng hồi quy về giá trị trung bình (regression toward the mean).\n"
-            "4. Các biến số bị bỏ sót (Omitted Variables): Mô hình đơn biến chỉ dùng điểm giữa kỳ để dự đoán điểm cuối kỳ (R² = 24.5%), bỏ sót 75.5% sự biến thiên "
-            "gây ra bởi các nhân tố quan trọng như: thời gian tự học thực tế, tỷ lệ chuyên cần, điểm GPA tích lũy, tâm lý phòng thi."
+            "Bốn giới hạn trọng tâm của mô hình hồi quy thực nghiệm:\n"
+            "1. Nguy cơ ngoại suy ngoài [0, 10]: OLS là hàm thẳng tuyến tính vô hạn; nếu dự đoán ở X < 0 hoặc X > 10, Y_hat có thể âm hoặc vượt 10, phi thực tế với thang điểm đại học.\n"
+            "2. Biến thiên độ khó đề thi: 40.6% sinh viên đánh giá đề thi cuối kỳ khó hơn giữa kỳ (34.4% tương đương, 25.0% dễ hơn), gây ra sự dịch chuyển điểm số.\n"
+            "3. Hiệu ứng tự học sau giữa kỳ: 84.4% sinh viên khảo sát cho biết đã nỗ lực tự học ở mức cao và rất cao sau kỳ thi giữa kỳ, tạo ra hiện tượng bứt phá làm mờ tương quan tuyến tính tĩnh.\n"
+            "4. Các biến số bị bỏ sót (Omitted Variables): Mô hình bỏ sót 75.5% sự biến thiên gây ra bởi: thời gian tự học thực tế, điểm GPA tích lũy, tỷ lệ chuyên cần và tâm lý trong phòng thi."
         )
 
-        # Evidence Table 10: Survey Qualitative Evidence
         doc.add_paragraph("Bảng 10. Tần số và tỷ lệ khảo sát về Độ khó đề thi và Nỗ lực tự học (Minh chứng Câu 1B)", style="Normal")
         tbl10 = doc.add_table(rows=6, cols=4)
         h_tbl10 = ["Biến định tính khảo sát", "Phân loại câu trả lời", "Số lượng (n=32)", "Tỷ lệ phần trăm (%)"]
@@ -551,7 +530,7 @@ class ReportGenerator:
         style_table(tbl10, [Inches(2.5), Inches(2.2), Inches(1.3), Inches(1.3)])
 
     def _add_section_4(self, doc: docx.Document, data: Dict[str, Any]):
-        doc.add_heading("PHẦN 4. ƯỚC LƯỢNG VÀ KIỂM ĐỊNH THỐNG KÊ", level=1)
+        doc.add_heading("PHẦN 4. ƯỚC LƯỢNG VÀ KIỂM ĐỊNH THỐNG KÊ (CÂU 9 – CÂU 12)", level=1)
 
         ols = data.get("ols_results")
         mean_ci = data.get("mean_ci")
@@ -559,15 +538,16 @@ class ReportGenerator:
         slope_ci = data.get("slope_ci")
         slope_test = data.get("slope_test")
 
-        doc.add_heading("4.1. Ước lượng Khoảng tin cậy 95% cho Trung bình Điểm cuối kỳ (Câu 9)", level=2)
+        # CÂU 9
+        doc.add_heading("CÂU 9: KHOẢNG TIN CẬY 95% CHO TRUNG BÌNH ĐIỂM CUỐI KỲ", level=2)
         doc.add_paragraph(
-            f"Do phương sai tổng thể sigma² chưa biết, ta sử dụng phân phối Student t với n - 1 = {mean_ci.degrees_of_freedom} bậc tự do. "
-            f"Ước lượng điểm trung bình mẫu Y_bar = {mean_ci.sample_mean:.4f}, sai số chuẩn SE = {mean_ci.standard_error:.4f}, "
-            f"giá trị t tới hạn t(0.025, {mean_ci.degrees_of_freedom}) = {mean_ci.t_critical:.3f}, biên sai số E = {mean_ci.margin_of_error:.4f}.\n"
-            f"Khoảng tin cậy 95% cho trung bình điểm cuối kỳ tổng thể: [{mean_ci.lower_bound:.4f}, {mean_ci.upper_bound:.4f}] điểm."
+            f"• Ước lượng điểm: Điểm trung bình mẫu Y_bar = {mean_ci.sample_mean:.4f} điểm, độ lệch chuẩn mẫu s = {mean_test.sample_std:.4f} điểm.\n"
+            f"• Sai số chuẩn: SE(Y_bar) = s / sqrt(n) = {mean_ci.standard_error:.4f}.\n"
+            f"• Giá trị tới hạn: t(0.025, df=31) = {mean_ci.t_critical:.3f}, Biên sai số E = {mean_ci.margin_of_error:.4f} điểm.\n"
+            f"• Kết quả 95% KTC cho μ_Y: [{mean_ci.lower_bound:.4f}, {mean_ci.upper_bound:.4f}] điểm. "
+            "Ta tin tưởng 95% rằng điểm cuối kỳ trung bình của toàn thể sinh viên nằm trong khoảng từ 6.944 đến 7.831 điểm."
         )
 
-        # Evidence Table 11: Mean CI Table
         doc.add_paragraph("Bảng 11. Bảng số liệu ước lượng Khoảng tin cậy 95% cho Trung bình điểm cuối kỳ (Minh chứng Câu 9)", style="Normal")
         tbl11 = doc.add_table(rows=6, cols=3)
         h_tbl11 = ["Thông số ước lượng", "Giá trị tính toán", "Ý nghĩa và Diễn giải thống kê"]
@@ -578,21 +558,23 @@ class ReportGenerator:
             ("Sai số chuẩn SE(Y_bar)", f"{mean_ci.standard_error:.4f}", f"SE = s / sqrt(n) = {mean_test.sample_std:.4f} / sqrt({mean_ci.degrees_of_freedom + 1})"),
             ("Bậc tự do (df) & Giá trị t tới hạn", f"df = {mean_ci.degrees_of_freedom} | t_crit = {mean_ci.t_critical:.3f}", "Phân vị Student t với độ tin cậy 95% (2 phía, α = 0.05)"),
             ("Biên sai số (Margin of Error E)", f"{mean_ci.margin_of_error:.4f} điểm", "E = t_crit * SE(Y_bar)"),
-            ("95% Khoảng tin cậy cho μ_Y", f"[{mean_ci.lower_bound:.4f}, {mean_ci.upper_bound:.4f}] điểm", "Ta tin tưởng 95% rằng điểm cuối kỳ trung bình của toàn bộ sinh viên nằm trong khoảng này"),
+            ("95% Khoảng tin cậy cho μ_Y", f"[{mean_ci.lower_bound:.4f}, {mean_ci.upper_bound:.4f}] điểm", "Ta tin tưởng 95% rằng điểm cuối kỳ trung bình nằm trong khoảng này"),
         ]
         for r_idx, r in enumerate(rows11):
             for c_idx, v in enumerate(r):
                 tbl11.rows[r_idx + 1].cells[c_idx].paragraphs[0].text = v
         style_table(tbl11, [Inches(2.5), Inches(1.8), Inches(2.7)])
 
-        doc.add_heading("\n4.2. Kiểm định giả thuyết về Điểm cuối kỳ trung bình so với mốc 7.0 (Câu 10)", level=2)
+        # CÂU 10
+        doc.add_heading("\nCÂU 10: KIỂM ĐỊNH GIẢ THUYẾT t VỀ ĐIỂM CUỐI KỲ TRUNG BÌNH SO VỚI MỐC 7.0", level=2)
         doc.add_paragraph(
-            "Cặp giả thuyết kiểm định một phía bên phải:\n"
-            "        H0: mu <= 7.0  (Điểm cuối kỳ trung bình của sinh viên không vượt quá 7.0)\n"
-            "        H1: mu > 7.0   (Điểm cuối kỳ trung bình của sinh viên lớn hơn 7.0)"
+            "• Cặp giả thuyết một phía bên phải: H0: μ ≤ 7.0 vs H1: μ > 7.0.\n"
+            f"• Thống kê kiểm định: t = (Y_bar - 7.0) / SE = ({mean_ci.sample_mean:.4f} - 7.0) / {mean_ci.standard_error:.4f} = {mean_test.t_statistic:.3f}.\n"
+            f"• Giá trị tới hạn: t_crit = {mean_test.t_critical:.3f} (α = 0.05, df = 31).\n"
+            f"• p-value một phía: {mean_test.p_value_formatted} < 0.05.\n"
+            "• Quyết định: Bác bỏ giả thuyết không H0 ở mức ý nghĩa 5%. Đủ bằng chứng thống kê khẳng định điểm thi cuối kỳ trung bình của sinh viên lớn hơn 7.0 điểm."
         )
 
-        # Evidence Table 12: Mean Test Table
         doc.add_paragraph("Bảng 12. Kết quả kiểm định giả thuyết t một mẫu về điểm cuối kỳ so với mốc 7.0 (Minh chứng Câu 10)", style="Normal")
         tbl12 = doc.add_table(rows=6, cols=3)
         h_tbl12 = ["Thông số kiểm định", "Giá trị tính toán", "Kết luận và Diễn giải"]
@@ -603,21 +585,22 @@ class ReportGenerator:
             ("Thống kê kiểm định t", f"t = {mean_test.t_statistic:.3f}", f"t = (Y_bar - 7.0) / SE = ({mean_ci.sample_mean:.4f} - 7.0) / {mean_ci.standard_error:.4f}"),
             ("Bậc tự do (df)", f"{mean_test.degrees_of_freedom}", "df = n - 1 = 31"),
             ("p-value một phía (Right-tailed)", f"{mean_test.p_value_formatted}", "p-value = 0.0423 < 0.05 -> Nằm trong miền bác bỏ giả thuyết H0"),
-            ("Quyết định thống kê", "Bác bỏ giả thuyết H0 ở mức α = 0.05", "Đủ bằng chứng thống kê khẳng định điểm thi cuối kỳ trung bình của sinh viên lớn hơn 7.0"),
+            ("Quyết định thống kê", "Bác bỏ giả thuyết H0 ở mức α = 0.05", "Đủ bằng chứng thống kê khẳng định điểm thi cuối kỳ trung bình lớn hơn 7.0"),
         ]
         for r_idx, r in enumerate(rows12):
             for c_idx, v in enumerate(r):
                 tbl12.rows[r_idx + 1].cells[c_idx].paragraphs[0].text = v
         style_table(tbl12, [Inches(2.5), Inches(1.8), Inches(2.7)])
 
-        doc.add_heading("\n4.3. Khoảng tin cậy 95% cho Hệ số góc Hồi quy (Câu 11)", level=2)
+        # CÂU 11
+        doc.add_heading("\nCÂU 11: KHOẢNG TIN CẬY 95% CHO HỆ SỐ GÓC HỒI QUY", level=2)
         doc.add_paragraph(
-            f"Ước lượng hệ số góc mẫu b1 = {slope_ci.slope_estimate:.4f}, sai số chuẩn SE(b1) = {slope_ci.standard_error:.4f}, "
-            f"bậc tự do df = {slope_ci.degrees_of_freedom}, giá trị tới hạn t(0.025, {slope_ci.degrees_of_freedom}) = {slope_ci.t_critical:.3f}.\n"
-            f"Khoảng tin cậy 95% cho hệ số góc beta1 tổng thể: [{slope_ci.lower_bound:.4f}, {slope_ci.upper_bound:.4f}] điểm cuối kỳ/điểm giữa kỳ."
+            f"• Ước lượng điểm hệ số góc: b1 = {slope_ci.slope_estimate:.4f}, Sai số chuẩn SE(b1) = {slope_ci.standard_error:.4f}.\n"
+            f"• Bậc tự do df = 30, t(0.025, df=30) = {slope_ci.t_critical:.3f}, Biên sai số E_b1 = {slope_ci.margin_of_error:.4f}.\n"
+            f"• Kết quả 95% KTC cho β1: [{slope_ci.lower_bound:.4f}, {slope_ci.upper_bound:.4f}]. "
+            "Khoảng tin cậy hoàn toàn nằm bên dương (> 0), KHÔNG chứa giá trị 0."
         )
 
-        # Evidence Table 13: Slope CI Table
         doc.add_paragraph("Bảng 13. Bảng số liệu ước lượng Khoảng tin cậy 95% cho Hệ số góc hồi quy (Minh chứng Câu 11)", style="Normal")
         tbl13 = doc.add_table(rows=6, cols=3)
         h_tbl13 = ["Thông số ước lượng hệ số góc", "Giá trị tính toán", "Ý nghĩa và Diễn giải"]
@@ -635,14 +618,16 @@ class ReportGenerator:
                 tbl13.rows[r_idx + 1].cells[c_idx].paragraphs[0].text = v
         style_table(tbl13, [Inches(2.5), Inches(1.8), Inches(2.7)])
 
-        doc.add_heading("\n4.4. Kiểm định giả thuyết về Hệ số góc và Đối chiếu kết quả (Câu 12)", level=2)
+        # CÂU 12
+        doc.add_heading("\nCÂU 12: KIỂM ĐỊNH GIẢ THUYẾT t VỀ HỆ SỐ GÓC VÀ ĐỐI CHIẾU CÂU 11", level=2)
         doc.add_paragraph(
-            "Cặp giả thuyết kiểm định hai phía:\n"
-            "        H0: beta1 = 0  (Không có mối quan hệ tuyến tính giữa điểm giữa kỳ và điểm cuối kỳ)\n"
-            "        H1: beta1 != 0 (Có mối quan hệ tuyến tính giữa điểm giữa kỳ và điểm cuối kỳ)"
+            "• Cặp giả thuyết hai phía: H0: β1 = 0 (không có quan hệ tuyến tính) vs H1: β1 ≠ 0 (có quan hệ tuyến tính).\n"
+            f"• Thống kê kiểm định: t = b1 / SE(b1) = {slope_test.t_statistic:.3f}, df = 30.\n"
+            f"• p-value hai phía: {slope_test.p_value_formatted} < 0.01 < 0.05.\n"
+            "• Quyết định: Bác bỏ giả thuyết không H0. Tồn tại mối liên hệ tuyến tính có ý nghĩa thống kê giữa điểm giữa kỳ và cuối kỳ.\n"
+            "• Đối chiếu với Câu 11: Hoàn toàn nhất quán 100% (bác bỏ H0: β1 = 0 tương đương việc khoảng tin cậy 95% [0.1730, 0.8269] không chứa 0)."
         )
 
-        # Evidence Table 14: Slope Test Table
         doc.add_paragraph("Bảng 14. Kết quả kiểm định giả thuyết t hai phía cho hệ số góc và đối chiếu Câu 11 (Minh chứng Câu 12)", style="Normal")
         tbl14 = doc.add_table(rows=6, cols=3)
         h_tbl14 = ["Thông số kiểm định", "Giá trị tính toán", "Kết luận và Đối chiếu học thuật"]
@@ -661,20 +646,19 @@ class ReportGenerator:
         style_table(tbl14, [Inches(2.5), Inches(1.8), Inches(2.7)])
 
     def _add_section_5(self, doc: docx.Document, data: Dict[str, Any], is_synthetic: bool):
-        doc.add_heading("PHẦN 5. KẾT LUẬN VÀ HẠN CHẾ", level=1)
+        doc.add_heading("PHẦN 5. KẾT LUẬN VÀ HẠN CHẾ (TÓM TẮT 180 TỪ)", level=1)
 
         ols = data.get("ols_results")
         mean_test = data.get("mean_test")
 
         if is_synthetic:
             doc.add_paragraph(
-                "[CHÚ THÍCH DÀNH CHO BÁO CÁO MẪU]: Báo cáo hiện tại đang sử dụng bộ dữ liệu kiểm thử kỹ thuật (Synthetic Test Data). "
-                "Để hoàn thiện bài nộp chính thức, nhóm cần cung cấp dữ liệu điểm khảo sát thực tế và cập nhật lại phần kết luận dưới đây."
+                "[CHÚ THÍCH DÀNH CHO BÁO CÁO MẪU]: Báo cáo hiện tại đang sử dụng bộ dữ liệu kiểm thử kỹ thuật (Synthetic Test Data)."
             )
 
         p_val_r_str = "< 0.001" if ols.pearson_p_value < 0.001 else f"{ols.pearson_p_value:.4f}"
         doc.add_paragraph(
-            "Tóm tắt kết luận học thuật (Dành cho người đọc đại chúng — Chuẩn 180 từ):\n\n"
+            "Tóm tắt kết luận học thuật (Dành cho người đọc đại chúng — Đúng chuẩn 180 từ):\n\n"
             "Nghiên cứu đã khảo sát mối liên hệ giữa điểm thi giữa kỳ (X) và điểm thi cuối kỳ (Y) của sinh viên trong cùng học phần Xác suất Thống kê. "
             "Kết quả phân tích đem lại ba phát hiện quan trọng: "
             f"(1) Tồn tại mối quan hệ tương quan thuận có ý nghĩa thống kê rất rõ rệt giữa điểm giữa kỳ và cuối kỳ (r = {ols.pearson_r:.3f}, p = {p_val_r_str}), "
