@@ -717,9 +717,9 @@ def main():
     if menu == "1. Tổng quan nghiên cứu":
         render_presenter_ribbon(
             "Mai Xuân Hiếu (DE200199)",
-            "Nhóm trưởng — Mở đầu & Thiết kế mẫu",
+            "Thành viên — Mở đầu & Thiết kế mẫu (Câu 1)",
             "Slide 1 & Slide 2",
-            "Trỏ vào huy hiệu cỡ mẫu n = 32, phương trình hồi quy OLS và 6 thẻ KPI cốt lõi của dự án.",
+            "Trỏ vào cỡ mẫu n = 32 hợp lệ, phương trình OLS và 6 chỉ số KPI thực nghiệm.",
             show_presenter_guide,
         )
 
@@ -801,11 +801,11 @@ def main():
                 st.markdown('<div class="section-header-title">🗺️ Bản đồ Phân công Thuyết trình 6 Thành viên Nhóm 1 & 12 Câu hỏi Học thuật</div>', unsafe_allow_html=True)
                 roadmap_df = pd.DataFrame([
                     {"Họ và Tên": "Mai Xuân Hiếu", "MSSV": "DE200199", "Vai trò": "Thành viên (Mở đầu & Làm sạch)", "Câu hỏi": "Câu 1, 2", "Slide": "Slide 1, 2", "Tab Streamlit": "Mục 1, 2, 3"},
-                    {"Họ và Tên": "Phan Dương Sinh", "MSSV": "DE200235", "Vai trò": "Chuyên viên Thống kê mô tả", "Câu hỏi": "Câu 3, 4", "Slide": "Slide 3, 4", "Tab Streamlit": "Mục 4, 5"},
-                    {"Họ và Tên": "Võ Ngọc Minh Quân", "MSSV": "DE200080", "Vai trò": "Nhóm trưởng (Mô hình hóa OLS)", "Câu hỏi": "Câu 5, 6, 7", "Slide": "Slide 5, 6", "Tab Streamlit": "Mục 6, 7"},
-                    {"Họ và Tên": "Vũ Hữu Thái", "MSSV": "DE200132", "Vai trò": "Chuyên viên Chẩn đoán giả định", "Câu hỏi": "Câu 8", "Slide": "Slide 7", "Tab Streamlit": "Mục 8"},
-                    {"Họ và Tên": "Nguyễn Hữu Hoàng Thắng", "MSSV": "DE200281", "Vai trò": "Chuyên viên Suy luận Thống kê", "Câu hỏi": "Câu 9, 10, 11, 12", "Slide": "Slide 8, 9", "Tab Streamlit": "Mục 9, 10"},
-                    {"Họ và Tên": "Trần Đức Duy", "MSSV": "DE180206", "Vai trò": "Chuyên viên Dự đoán & Tổng kết", "Câu hỏi": "Câu 1A, 1B, Phần 5", "Slide": "Slide 10, 11, 12", "Tab Streamlit": "Mục 11, 12"},
+                    {"Họ và Tên": "Phan Dương Sinh", "MSSV": "DE200235", "Vai trò": "Thành viên (Thống kê mô tả & Phân phối)", "Câu hỏi": "Câu 3, 4", "Slide": "Slide 3", "Tab Streamlit": "Mục 4, 5"},
+                    {"Họ và Tên": "Võ Ngọc Minh Quân", "MSSV": "DE200080", "Vai trò": "Nhóm trưởng (Hồi quy OLS & ANOVA)", "Câu hỏi": "Câu 5, 6, 7", "Slide": "Slide 4", "Tab Streamlit": "Mục 6, 7"},
+                    {"Họ và Tên": "Vũ Hữu Thái", "MSSV": "DE200132", "Vai trò": "Thành viên (Chẩn đoán Gauss-Markov)", "Câu hỏi": "Câu 8", "Slide": "Slide 5", "Tab Streamlit": "Mục 8"},
+                    {"Họ và Tên": "Nguyễn Hữu Hoàng Thắng", "MSSV": "DE200281", "Vai trò": "Thành viên (KTC & Kiểm định giả thuyết)", "Câu hỏi": "Câu 9, 10, 11, 12", "Slide": "Slide 6", "Tab Streamlit": "Mục 9, 10"},
+                    {"Họ và Tên": "Trần Đức Duy", "MSSV": "DE180206", "Vai trò": "Thành viên (Dự đoán 1A, Giới hạn 1B & Tổng kết)", "Câu hỏi": "Câu 1A, 1B, Phần 5", "Slide": "Slide 7", "Tab Streamlit": "Mục 11, 12"},
                 ])
                 st.dataframe(roadmap_df, hide_index=True, use_container_width=True)
 
@@ -815,9 +815,9 @@ def main():
     elif menu == "2. Import & Quản lý dữ liệu":
         render_presenter_ribbon(
             "Mai Xuân Hiếu (DE200199)",
-            "Thiết kế nghiên cứu & Thu thập dữ liệu (Câu 1)",
+            "Thành viên — Thiết kế nghiên cứu & Thu thập dữ liệu (Câu 1)",
             "Slide 2",
-            "Giải thích rõ định nghĩa biến X (Giữa kỳ), biến Y (Bài thi cuối kỳ, không dùng điểm tổng kết) và thiết kế khảo sát ẩn danh.",
+            "Chỉ vào định nghĩa biến X (Giữa kỳ), biến Y (Cuối kỳ, không dùng điểm tổng kết) và phương pháp khảo sát ẩn danh.",
             show_presenter_guide,
         )
 
@@ -868,9 +868,9 @@ def main():
     elif menu == "3. Làm sạch & Kiểm tra (Câu 2)":
         render_presenter_ribbon(
             "Mai Xuân Hiếu (DE200199)",
-            "Kiểm tra & Làm sạch dữ liệu (Câu 2)",
+            "Thành viên — Kiểm tra & Làm sạch dữ liệu (Câu 2)",
             "Slide 2",
-            "Chỉ vào dòng Tổng số phiếu ban đầu (35), Loại bỏ 3 dòng (2 từ chối đồng thuận + 1 trùng mã de200125) → Còn n = 32 hợp lệ.",
+            "Chỉ vào Tổng thu thập 35 phiếu, loại 3 phiếu (2 không đồng ý + 1 trùng de200125) → Chốt n = 32 hợp lệ.",
             show_presenter_guide,
         )
 
@@ -905,20 +905,20 @@ def main():
 
             with col_b:
                 with st.container(border=True):
-                    st.markdown('<div class="section-header-title">🛡️ Ba Nguyên tắc Làm sạch Học thuật Bắt buộc</div>', unsafe_allow_html=True)
+                    st.markdown('<div class="section-header-title">🛡️ Tiêu chuẩn Xử lý & Làm sạch Dữ liệu</div>', unsafe_allow_html=True)
                     render_insight_box(
-                        "Nguyên tắc 1 — Không tự động điền điểm thiếu bằng 0:",
-                        "Sinh viên vắng thi có phép hoặc bỏ trống phiếu không đồng nghĩa với năng lực 0 điểm. Tự ý gán 0 sẽ tạo ra ngoại lệ giả tạo và kéo lệch đường hồi quy.",
+                        "1. Tuân thủ đạo đức nghiên cứu:",
+                        "Loại bỏ 2 bản ghi người tham gia chọn 'Không đồng ý' chia sẻ dữ liệu nghiên cứu (Dòng 7 & 22).",
                         "warning",
                     )
                     render_insight_box(
-                        "Nguyên tắc 2 — Không xóa ngoại lệ để 'làm đẹp' mô hình:",
-                        "Các mức điểm cao/thấp thực tế nằm trong đoạn [0, 10] phản ánh trung thực sự phân hóa năng lực sinh viên, tuyệt đối được giữ nguyên.",
+                        "2. Khử trùng lặp mã sinh viên:",
+                        "Loại 1 bản ghi nộp lặp lại cùng mã định danh de200125, bảo toàn bản ghi gửi đầu tiên.",
                         "info",
                     )
                     render_insight_box(
-                        "Nguyên tắc 3 — Minh bạch hóa nhật ký loại bỏ (Audit Trail):",
-                        "Mọi dòng bị loại đều được lưu vết tự động kèm nguyên nhân cụ thể trong bảng nhật ký dưới đây.",
+                        "3. Bảo toàn năng lực học tập thực:",
+                        "100% 32 quan sát còn lại nằm trọn trong đoạn [0, 10], không có ô trống. Tuyệt đối không gọt giũa xóa điểm thực tế.",
                         "success",
                     )
 
@@ -935,9 +935,9 @@ def main():
     elif menu == "4. Thống kê mô tả (Câu 3)":
         render_presenter_ribbon(
             "Phan Dương Sinh (DE200235)",
-            "Chuyên viên Thống kê mô tả (Câu 3)",
+            "Thành viên — Thống kê mô tả 10 chỉ số (Câu 3)",
             "Slide 3",
-            "Trỏ vào Mean X (7.441) vs Mean Y (7.388), Median X (7.500) vs Median Y (7.450), và giải thích khi nào Median tốt hơn Mean.",
+            "Trỏ vào Mean X (7.441) vs Mean Y (7.388), Median X (7.500) vs Median Y (7.650), và độ lệch chuẩn s.",
             show_presenter_guide,
         )
 
@@ -966,16 +966,15 @@ def main():
 
             with col_c2:
                 with st.container(border=True):
-                    st.markdown('<div class="section-header-title">💡 Lý thuyết Trọng tâm: Khi nào Median tốt hơn Mean?</div>', unsafe_allow_html=True)
+                    st.markdown('<div class="section-header-title">💡 So sánh Trung vị (Median) và Trung bình (Mean)</div>', unsafe_allow_html=True)
                     render_insight_box(
-                        "1. Khi phân phối điểm bị lệch mạnh (Skewed Distribution):",
-                        "Nếu đề thi quá khó (điểm dồn về 3–4) hoặc quá dễ (điểm dồn về 9–10), trung bình cộng (Mean) sẽ bị kéo lệch về phía đuôi dài. Khi đó <b>Trung vị (Median)</b> phản ánh đúng tâm điểm 50% của lớp học hơn.",
+                        "Khi nào Median phản ánh tốt hơn Mean?",
+                        "Khi phân phối bị lệch mạnh hoặc xuất hiện điểm cực đoan (như sinh viên bỏ thi 0 điểm kéo tụt Mean), <b>Median</b> là thước đo vững (robust), không bị giá trị ngoại lai kéo lệch như Mean.",
                         "info",
                     )
                     render_insight_box(
-                        "2. Khi xuất hiện giá trị ngoại lệ cực đoan (Outliers):",
-                        "Chỉ cần 1–2 sinh viên đạt 0.5–1.0 điểm sẽ kéo tụt Mean của cả lớp xuống đáng kể, trong khi Median hoàn toàn trơ (robust) trước các điểm cực đoan này.<br>"
-                        "<i>Trong mẫu n = 32 của nhóm: Mean và Median rất sát nhau (7.441 vs 7.500 và 7.388 vs 7.450), chứng tỏ phân phối điểm rất cân đối.</i>",
+                        "Đặc trưng dữ liệu thực tế của nhóm:",
+                        f"Mean ({ols_res.mean_x:.3f} | {ols_res.mean_y:.3f}) xấp xỉ Median ({cleaned_df[X_COL].median():.3f} | {cleaned_df[Y_COL].median():.3f}), phản ánh đề thi phân hóa đều, phân phối cân đối, không bị lệch đuôi.",
                         "success",
                     )
         else:
@@ -987,9 +986,9 @@ def main():
     elif menu == "5. Phân phối & Ngoại lệ (Câu 4)":
         render_presenter_ribbon(
             "Phan Dương Sinh (DE200235)",
-            "Phân phối & Kiểm tra ngoại lệ 1.5×IQR (Câu 4)",
-            "Slide 4",
-            "Trỏ vào đường Mean (nét đứt đỏ) và Median (chấm xanh) sát nhau trên Histogram; chỉ vào bảng kiểm tra ngoại lệ 1.5×IQR = 0 ngoại lệ.",
+            "Thành viên — Phân phối & Kiểm tra ngoại lệ 1.5×IQR (Câu 4)",
+            "Slide 3",
+            "Trỏ vào biểu đồ Boxplot, đường chuông cân xứng và kết luận 0 ngoại lệ bất thường trong hàng rào 1.5 IQR.",
             show_presenter_guide,
         )
 
@@ -1037,8 +1036,8 @@ def main():
     elif menu == "6. Tương quan Pearson (Câu 5)":
         render_presenter_ribbon(
             "Võ Ngọc Minh Quân (DE200080)",
-            "Nhóm trưởng - Phân tích Tương quan Pearson (Câu 5)",
-            "Slide 5",
+            "Nhóm trưởng — Phân tích Tương quan Pearson (Câu 5)",
+            "Slide 4",
             "Trỏ vào hệ số r = 0.4954, p-value = 0.0039 và nhấn mạnh Tương quan KHÔNG đồng nghĩa với Nhân quả.",
             show_presenter_guide,
         )
@@ -1085,9 +1084,9 @@ def main():
     elif menu == "7. Hồi quy tuyến tính (Câu 6 & 7)":
         render_presenter_ribbon(
             "Võ Ngọc Minh Quân (DE200080)",
-            "Nhóm trưởng - Mô hình Hồi quy Tuyến tính OLS (Câu 6 & 7)",
-            "Slide 6",
-            "Trỏ vào phương trình Ŷ = 3.6676 + 0.4999X, bảng hệ số b₀, b₁, hệ số xác định R² = 24.5% và sai số chuẩn s = 1.0868.",
+            "Nhóm trưởng — Mô hình Hồi quy Tuyến tính OLS (Câu 6 & 7)",
+            "Slide 4",
+            "Trỏ vào phương trình Ŷ = 3.6676 + 0.4999X, b₁ = 0.50, R² = 24.54% và bảng ANOVA (F = 9.736, p = 0.0039).",
             show_presenter_guide,
         )
 
@@ -1127,6 +1126,14 @@ def main():
                     ])
                     st.dataframe(coeff_df, hide_index=True, use_container_width=True)
 
+                    f_stat = (ols_res.ssr / 1.0) / (ols_res.sse / ols_res.df_residual)
+                    anova_df = pd.DataFrame([
+                        {"Nguồn biến thiên": "Hồi quy (SSR)", "df": 1, "SS": f"{ols_res.ssr:.4f}", "MS": f"{ols_res.ssr:.4f}", "F": f"{f_stat:.3f}", "p-value": format_p_value(ols_res.p_val_b1)},
+                        {"Nguồn biến thiên": "Phần dư (SSE)", "df": ols_res.df_residual, "SS": f"{ols_res.sse:.4f}", "MS": f"{ols_res.sse/ols_res.df_residual:.4f}", "F": "—", "p-value": "—"},
+                        {"Nguồn biến thiên": "Toàn phần (SST)", "df": ols_res.n - 1, "SS": f"{ols_res.sst:.4f}", "MS": f"{ols_res.sst/(ols_res.n-1):.4f}", "F": "—", "p-value": "—"},
+                    ])
+                    st.dataframe(anova_df, hide_index=True, use_container_width=True)
+
                     render_insight_box(
                         "Giải thích ý nghĩa các hệ số (Câu 6):",
                         f"• <b>Hệ số góc b₁ = {ols_res.b1:.4f}:</b> Khi điểm thi giữa kỳ (X) tăng thêm <b>1.0 điểm</b>, điểm thi cuối kỳ (Y) trung bình dự đoán tăng thêm <b>{ols_res.b1:.4f} điểm</b> (xấp xỉ 0.50 điểm).<br>"
@@ -1159,9 +1166,9 @@ def main():
     elif menu == "8. Chẩn đoán mô hình (Câu 8)":
         render_presenter_ribbon(
             "Vũ Hữu Thái (DE200132)",
-            "Chuyên viên Thẩm định & Chẩn đoán Phần dư (Câu 8)",
-            "Slide 7",
-            "Trỏ vào bộ 3 biểu đồ phần dư và bảng 4 kiểm định: Shapiro-Wilk (p=0.216), Breusch-Pagan (p=0.835), Durbin-Watson (1.942).",
+            "Thành viên — Chẩn đoán 4 Giả định Gauss-Markov BLUE (Câu 8)",
+            "Slide 5",
+            "Trỏ vào 4 kiểm định: Shapiro-Wilk (p=0.334), Breusch-Pagan (p=0.518), Durbin-Watson (d=2.062), Linearity (p=0.776).",
             show_presenter_guide,
         )
 
@@ -1241,9 +1248,9 @@ def main():
     elif menu == "9. Khoảng tin cậy (Câu 9 & 11)":
         render_presenter_ribbon(
             "Nguyễn Hữu Hoàng Thắng (DE200281)",
-            "Ước lượng Khoảng tin cậy 95% (Câu 9 & Câu 11)",
-            "Slide 8 & Slide 9",
-            "Trỏ vào KTC 95% của μ_Y: [6.9438, 7.8312] (df=31) và KTC 95% của β₁: [0.1730, 0.8269] (df=30, hoàn toàn không chứa 0).",
+            "Thành viên — Ước lượng Khoảng tin cậy 95% (Câu 9 & 11)",
+            "Slide 6",
+            "Trỏ vào KTC 95% của μ_Y: [6.944, 7.831] (df=31) và KTC 95% của β₁: [0.1730, 0.8269] (df=30, không chứa 0).",
             show_presenter_guide,
         )
 
@@ -1297,8 +1304,8 @@ def main():
     elif menu == "10. Kiểm định giả thuyết (Câu 10 & 12)":
         render_presenter_ribbon(
             "Nguyễn Hữu Hoàng Thắng (DE200281)",
-            "Kiểm định Giả thuyết Thống kê (Câu 10 & Câu 12)",
-            "Slide 8 & Slide 9",
+            "Thành viên — Kiểm định Giả thuyết Thống kê t (Câu 10 & 12)",
+            "Slide 6",
             "Trỏ vào Câu 10: t = 1.781, p một phía = 0.0423 < 0.05 (Bác bỏ H₀) và Câu 12: t = 3.123, p hai phía = 0.0039 < 0.01 (Bác bỏ H₀).",
             show_presenter_guide,
         )
@@ -1324,7 +1331,7 @@ def main():
                         mean_test.contextual_conclusion,
                         "success",
                     )
-                    with st.expander("🔍 Phân tích Sai lầm Loại I, Sai lầm Loại II & Lưu ý học thuật", expanded=True):
+                    with st.expander("🔍 Phân tích Sai lầm Loại I, Sai lầm Loại II & Lưu ý học thuật", expanded=False):
                         st.markdown(f"- **Sai lầm Loại I (α = 0.05):** {mean_test.type_i_error_explanation}")
                         st.markdown(f"- **Sai lầm Loại II (β):** {mean_test.type_ii_error_explanation}")
                         st.markdown(f"- **Nguyên tắc suy luận:** {mean_test.null_acceptance_caveat}")
@@ -1349,7 +1356,7 @@ def main():
                         slope_test.statistical_vs_practical_significance,
                         "info",
                     )
-                    with st.expander("🔍 Cảnh báo Nhân quả & Tính nhất quán Lý thuyết", expanded=True):
+                    with st.expander("🔍 Cảnh báo Nhân quả & Tính nhất quán Lý thuyết", expanded=False):
                         st.markdown(f"- **Quan hệ Tương quan vs Nhân quả:** {slope_test.causation_caveat}")
                         st.markdown("- **Định lý Đối ngẫu:** Kiểm định t hai phía ở mức α = 0.05 bác bỏ H₀: β₁ = 0 khi và chỉ khi Khoảng tin cậy 95% của β₁ không chứa điểm 0.")
 
@@ -1359,9 +1366,9 @@ def main():
     elif menu == "11. Dự đoán điểm (Câu 1A & 1B)":
         render_presenter_ribbon(
             "Trần Đức Duy (DE180206)",
-            "Dự đoán Điểm (Câu 1A), Giới hạn Thực nghiệm (Câu 1B) & Tổng kết",
-            "Slide 10, Slide 11 & Slide 12",
-            "Kéo thanh trượt Interactive Predictor từ X = 6.0 (Ŷ = 6.67) sang X = 8.0 (Ŷ = 7.67) và chỉ vào bảng khảo sát Độ khó đề (40.6%) & Nỗ lực ôn tập (84.4%).",
+            "Thành viên — Dự đoán (1A), Giới hạn mô hình (1B) & Tổng kết (Phần 5)",
+            "Slide 7",
+            "Kéo thanh trượt Interactive Predictor: X = 6.0 (Ŷ = 6.67), X = 8.0 (Ŷ = 7.67) và 4 giới hạn thực tế.",
             show_presenter_guide,
         )
 
@@ -1486,7 +1493,7 @@ def main():
                         parts = text.split(":", 1)
                         title_part = parts[0]
                         body_part = parts[1].strip() if len(parts) > 1 else text
-                        with st.expander(f"📌 {title_part}", expanded=True):
+                        with st.expander(f"📌 {title_part}", expanded=False):
                             st.write(body_part)
 
     # =========================================================================
@@ -1495,9 +1502,9 @@ def main():
     elif menu == "12. Báo cáo & Xuất dữ liệu":
         render_presenter_ribbon(
             "Trần Đức Duy (DE180206)",
-            "Tổng kết Báo cáo & Bàn giao Hồ sơ Nộp (Phần 5)",
-            "Slide 12",
-            "Trình diễn kho tài liệu xuất bản tự động gồm Báo cáo Word/PDF, Slide PowerPoint/PDF, Kịch bản 6 thành viên và 4 file Excel.",
+            "Thành viên — Bàn giao Hồ sơ nộp bài & Hỏi đáp Q&A (Phần 5)",
+            "Slide 7",
+            "Giới thiệu file Báo cáo Word/PDF 1 file duy nhất cho Thầy Nhân, Slide 7 trang và Kịch bản 6 thành viên.",
             show_presenter_guide,
         )
 
