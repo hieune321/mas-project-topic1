@@ -88,10 +88,10 @@ class ReportGenerator:
 
         # Set page margins to standard 1 inch
         for section in doc.sections:
-            section.top_margin = Inches(1.0)
-            section.bottom_margin = Inches(1.0)
-            section.left_margin = Inches(1.0)
-            section.right_margin = Inches(1.0)
+            section.top_margin = Inches(0.8)
+            section.bottom_margin = Inches(0.8)
+            section.left_margin = Inches(0.8)
+            section.right_margin = Inches(0.8)
 
         # Set Normal style font
         style_normal = doc.styles["Normal"]
@@ -134,6 +134,18 @@ class ReportGenerator:
                 convert(str(out_path), str(pdf_path))
             except Exception as e:
                 print("PDF conversion skipped:", e)
+
+        # Also create official university-named copy
+        import shutil
+        official_docx = out_path.parent / "MAS291_Nhom1_BaoCao_ComputerProject_DeTai1.docx"
+        official_pdf = out_path.parent / "MAS291_Nhom1_BaoCao_ComputerProject_DeTai1.pdf"
+        try:
+            if out_path != official_docx:
+                shutil.copyfile(out_path, official_docx)
+            if generate_pdf and pdf_path.exists() and pdf_path != official_pdf:
+                shutil.copyfile(pdf_path, official_pdf)
+        except Exception as e:
+            print("Duplicate official files skipped:", e)
 
         return out_path
 
@@ -701,12 +713,12 @@ class ReportGenerator:
         for c_idx, h in enumerate(h_team):
             team_tbl.rows[0].cells[c_idx].paragraphs[0].text = h
         duties = [
-            "Thu thập dữ liệu khảo sát ẩn danh, kiểm tra tính hợp lệ, thiết kế quy chuẩn đạo đức nghiên cứu và làm sạch dữ liệu (Câu 1, 2).",
+            "Nhóm trưởng: Quản trị tiến độ dự án, tổ chức phân công, xây dựng kiến trúc mã nguồn Python & Streamlit, ước lượng tương quan Pearson và mô hình OLS (Câu 5, 6, 7).",
+            "Thu thập dữ liệu khảo sát ẩn danh qua Google Forms, kiểm tra tính hợp lệ, thiết kế quy chuẩn đạo đức nghiên cứu và quy trình làm sạch dữ liệu (Câu 1, 2).",
             "Xử lý thống kê mô tả, tính toán độ tập trung, độ phân tán và vẽ biểu đồ phân phối Histogram & Boxplot (Câu 3, 4).",
-            "Nhóm trưởng: Quản lý tiến độ dự án, tổ chức phân công, xây dựng kiến trúc mã nguồn Python & Streamlit, ước lượng tương quan Pearson và OLS (Câu 5, 6, 7).",
-            "Ước lượng mô hình hồi quy OLS, đánh giá R², sai số chuẩn s, thực hiện chẩn đoán giả định mô hình phần dư (Câu 6, 7, 8).",
+            "Đánh giá R², sai số chuẩn s, thực hiện kiểm định 4 giả định Gauss-Markov cho phần dư OLS (Câu 7, 8).",
             "Xây dựng khoảng tin cậy 95% cho trung bình và hệ số góc, kiểm định giả thuyết t một mẫu và hai phía (Câu 9, 10, 11, 12).",
-            "Thực hiện câu hỏi riêng 1A (dự đoán tại X=6, X=8) và 1B (phân tích giới hạn mô hình, biến số bị bỏ sót), tổng kết báo cáo.",
+            "Thực hiện câu hỏi riêng 1A (dự đoán tại X=6, X=8), câu hỏi 1B (phân tích giới hạn mô hình, biến số bị bỏ sót), tổng kết báo cáo 180 từ.",
         ]
         for r_idx, member in enumerate(self.metadata.get("members", [])):
             team_tbl.rows[r_idx + 1].cells[0].paragraphs[0].text = member.get("name", "")
@@ -764,7 +776,7 @@ class ReportGenerator:
                                 run.font.color.rgb = RGBColor(192, 0, 0)
                                 run.font.bold = True
 
-            style_table(tbl_raw, [Inches(0.5), Inches(1.1), Inches(1.1), Inches(1.0), Inches(1.0), Inches(1.1), Inches(1.2)])
+            style_table(tbl_raw, [Inches(0.4), Inches(1.1), Inches(1.0), Inches(0.9), Inches(0.9), Inches(1.1), Inches(1.5)])
 
         # Phụ lục D: Tập dữ liệu 32 quan sát đã làm sạch
         doc.add_heading("\nPhụ lục D. Tập dữ liệu nghiên cứu chính thức đã làm sạch (Cleaned Data — n = 32)", level=2)
@@ -802,7 +814,7 @@ class ReportGenerator:
                     for c in range(4, 8):
                         row_cells[c].paragraphs[0].text = ""
 
-            style_table(data_tbl, [Inches(0.6), Inches(1.1), Inches(1.0), Inches(1.0), Inches(0.6), Inches(1.1), Inches(1.0), Inches(1.0)])
+            style_table(data_tbl, [Inches(0.4), Inches(1.0), Inches(0.9), Inches(0.9), Inches(0.4), Inches(1.0), Inches(0.9), Inches(0.9)])
 
         # Phụ lục E: Bảng công thức Excel & Hướng dẫn chạy mã nguồn Python
         doc.add_heading("\nPhụ lục E. Bảng công thức tính toán Excel và Mã nguồn Python có thể tái lập (Reproducible)", level=2)
